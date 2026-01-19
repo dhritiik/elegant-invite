@@ -49,7 +49,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             transition={{ duration: 1, delay: 1.6 }}
           >
             <h1 className="font-display text-5xl md:text-7xl lg:text-8xl text-cream-light mb-2 tracking-wide">
-              Srishti
+              Saloni
             </h1>
             <motion.span
               className="block text-3xl md:text-4xl gold-text font-body italic my-4"
@@ -59,7 +59,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               &
             </motion.span>
             <h1 className="font-display text-5xl md:text-7xl lg:text-8xl text-cream-light tracking-wide">
-              Arjun
+              Jay
             </h1>
           </motion.div>
           
@@ -118,8 +118,46 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
         </motion.div>
       </section>
       
+      {/* Family Blessing Section */}
+      <section className="relative bg-cream-light paper-texture py-16 md:py-24">
+        <div className="container max-w-3xl mx-auto px-6 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            {/* Top decorative divider */}
+            <div className="flex items-center justify-center gap-4 mb-10">
+              <div className="h-px w-16 md:w-24 bg-gold/50" />
+              <span className="text-gold text-xl">✦</span>
+              <div className="h-px w-16 md:w-24 bg-gold/50" />
+            </div>
+            
+            <p className="font-body text-lg md:text-xl text-muted-foreground leading-relaxed mb-6">
+              With the blessings of our families, we,
+            </p>
+            
+            <h3 className="font-display text-3xl md:text-4xl text-foreground mb-6">
+              Saloni & Jay
+            </h3>
+            
+            <p className="font-body text-lg md:text-xl text-muted-foreground leading-relaxed">
+              cordially invite you to attend the following functions celebrating our union
+            </p>
+            
+            {/* Bottom decorative divider */}
+            <div className="flex items-center justify-center gap-4 mt-10">
+              <div className="h-px w-16 md:w-24 bg-gold/50" />
+              <span className="text-gold text-xl">✦</span>
+              <div className="h-px w-16 md:w-24 bg-gold/50" />
+            </div>
+          </motion.div>
+        </div>
+      </section>
+      
       {/* Timeline Section */}
-      <section className="relative bg-cream-light paper-texture py-20 md:py-32">
+      <section className="relative bg-sage/10 paper-texture py-20 md:py-32">
         <div className="container max-w-4xl mx-auto px-6">
           <motion.div
             className="text-center mb-16"
@@ -182,7 +220,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
       <footer className="bg-sage py-12">
         <div className="text-center">
           <p className="font-display text-2xl text-cream-light mb-2">
-            S & A
+            S & J
           </p>
           <p className="font-body text-cream-light/70 text-sm">
             December 15, 2026
