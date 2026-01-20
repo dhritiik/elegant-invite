@@ -184,25 +184,46 @@ const EventTimeline = ({ filteredEventName }: EventTimelineProps) => {
       // Filter events inside this group
       const filteredEvents = group.events.filter(event => {
         const titleLower = event.title.toLowerCase();
+        let shouldShow = false; // Default to false, set to true if ANY match found
 
-        // Specific Mapping Logic
+        // --- CUMULATIVE CHECKING LOGIC ---
+        
+        // 1. Check Wedding Matches
         if (isWedding) {
-          // If URL says Wedding, show Baarat (5) & Hast Melap (6)
-          return titleLower.includes("hast melap") || titleLower.includes("baarat");
+          if (titleLower.includes("hast melap") || titleLower.includes("baarat")) {
+            shouldShow = true;
+          }
         }
+
+        // 2. Check Mayra Matches (Mameru, Mandap, Haldi)
         if (isMayra) {
-          // If URL says Mayra, show Mameru (2) (and Mandap/Haldi if you prefer, but strict mapping is below)
-          return titleLower.includes("mameru") || titleLower.includes("mandap") || titleLower.includes("haldi");
+          if (titleLower.includes("mameru") || titleLower.includes("mandap") || titleLower.includes("haldi")) {
+            shouldShow = true;
+          }
         }
+
+        // 3. Check Reception Matches
         if (isReception) {
-          return titleLower.includes("reception");
+          if (titleLower.includes("reception")) {
+            shouldShow = true;
+          }
         }
+
+        // 4. Check Bhakti Matches
         if (isBhakti) {
-          return titleLower.includes("bhakti");
+          if (titleLower.includes("bhakti")) {
+            shouldShow = true;
+          }
         }
         
-        // Fallback: simple text match (e.g. "Haldi" matches "Haldi")
-        return titleLower.includes(searchStr) || searchStr.includes(titleLower);
+        // 5. Fallback: If no keywords were detected at all (e.g. searching "Haldi" directly), use simple search
+        if (!isWedding && !isMayra && !isReception && !isBhakti) {
+            if (titleLower.includes(searchStr) || searchStr.includes(titleLower)) {
+                shouldShow = true;
+            }
+        }
+
+        return shouldShow;
       });
 
       // Return the group with the new filtered events list
@@ -213,7 +234,7 @@ const EventTimeline = ({ filteredEventName }: EventTimelineProps) => {
     }).filter(group => group.events.length > 0); // Remove groups that became empty
   }, [filteredEventName]);
 
-  // Flip Card Component
+  // Flip Card Component (No changes here)
   const EventCard = ({ event }: { event: TimelineEvent }) => {
     const [isFlipped, setIsFlipped] = useState(false);
 
@@ -254,7 +275,6 @@ const EventTimeline = ({ filteredEventName }: EventTimelineProps) => {
                 <p className="text-center text-muted-foreground font-display">{event.title}</p>
               </div>
             )}
-            {/* Click indicator on front */}
             <motion.div
               className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-all flex items-center justify-center"
               animate={{ opacity: [0, 0.3, 0] }}
@@ -337,7 +357,6 @@ const EventTimeline = ({ filteredEventName }: EventTimelineProps) => {
             </div>
 
             <div className="relative z-10">
-              {/* Section Title */}
               <motion.h3 
                 className="text-center font-display text-2xl md:text-3xl text-foreground mb-16"
                 initial={{ opacity: 0, y: -20 }}
@@ -348,7 +367,6 @@ const EventTimeline = ({ filteredEventName }: EventTimelineProps) => {
                 {group.title}
               </motion.h3>
 
-              {/* Vertical Timeline for this group */}
               <div className="relative max-w-4xl mx-auto px-6">
                 <div className="space-y-12 md:space-y-20">
                   {group.events.map((event, eventIndex) => (
@@ -362,7 +380,6 @@ const EventTimeline = ({ filteredEventName }: EventTimelineProps) => {
                         viewport={{ once: true, margin: "-50px" }}
                         transition={{ duration: 0.6, delay: eventIndex * 0.15 }}
                       >
-                        {/* Flip Card Content */}
                         <div className={`w-80 md:w-96 z-10 ${
                           eventIndex % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
                         }`}>
@@ -370,7 +387,6 @@ const EventTimeline = ({ filteredEventName }: EventTimelineProps) => {
                         </div>
                       </motion.div>
 
-                      {/* Divider between events */}
                       {eventIndex < group.events.length - 1 && (
                         <motion.div 
                           className="flex items-center justify-center gap-4 mt-20 relative z-20"
@@ -407,7 +423,6 @@ const EventTimeline = ({ filteredEventName }: EventTimelineProps) => {
               </div>
             </div>
 
-            {/* Break divider between sections */}
             {groupIndex < visibleGroups.length - 1 && (
               <motion.div 
                 className="flex items-center justify-center gap-4 mt-20 relative z-20"
@@ -441,7 +456,6 @@ const EventTimeline = ({ filteredEventName }: EventTimelineProps) => {
           </div>
         ))
       ) : (
-         // Fallback if no matching events found
          <div className="py-20 text-center text-muted-foreground">
             <p className="font-display text-xl">Event details will be shared soon.</p>
          </div>
