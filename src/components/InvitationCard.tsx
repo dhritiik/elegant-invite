@@ -19,9 +19,9 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     setGuestDetails({
-      // Replaces underscores with spaces for cleaner URLs
+      // Replaces underscores with spaces for cleaner URLs (e.g. The_Gupta_Family -> The Gupta Family)
       name: params.get("name")?.replace(/_/g, " ") || "",
-      guests: params.get("guests") || "", // 'family', '2', etc.
+      guests: params.get("guests") || "", 
       event: params.get("event")?.replace(/_/g, " ") || ""
     });
   }, []);
@@ -40,7 +40,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-70"
           style={{ backgroundImage: `url(${heroBackground})` }}
         >
-            {/* Overlay for readability - slightly reduced intensity for the hero image */}
+            {/* Overlay for readability */}
             <div className="absolute inset-0 bg-gradient-to-b from-foreground/25 via-foreground/12 to-foreground/30" />
           
           {/* Animated floating particles */}
@@ -291,7 +291,6 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
                   "0 0 0 rgba(0,0,0,0)"
                 ]
               }}
-              // transition={{ duration: 4, repeat: Infinity }}
             >
               With the blessings and happiness, Vora Family warmly welcomes<br />
               <br />
@@ -312,7 +311,6 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
                   "0 0 0 rgba(0,0,0,0)"
                 ]
               }}
-              // transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
             >
               Saloni & Jay
             </motion.h3>
@@ -326,20 +324,26 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             >
               cordially invite
               
-              {/* DYNAMIC INVITATION LOGIC */}
+              {/* DYNAMIC INVITATION LOGIC START */}
               {guestDetails.name ? (
                 <div className="my-6">
+                  {/* Invited Person Name */}
                   <span className="block font-display text-2xl md:text-3xl text-gold mb-2">
                     {guestDetails.name}
                   </span>
-                  {/* Handle "Family" vs "2" Guests option */}
+                  
+                  {/* Guest Count / Details Logic */}
+                  {/* Option 1: Family */}
                   {guestDetails.guests.toLowerCase() === 'family' && (
                     <span className="block text-base italic opacity-80">(and Family)</span>
                   )}
+                  
+                  {/* Option 2: 2 Seats Reserved */}
                   {(guestDetails.guests === '2' || guestDetails.guests.toLowerCase() === 'couple') && (
-                    <span className="block text-base italic opacity-80">(Admit 2)</span>
+                    <span className="block text-base italic opacity-80">2 seats reserved for you</span>
                   )}
-                  {/* Generic catch-all if they type a number */}
+                  
+                  {/* Option 3: Generic numeric (e.g. guests=3) */}
                   {(!['family', '2', 'couple'].includes(guestDetails.guests.toLowerCase()) && guestDetails.guests) && (
                     <span className="block text-base italic opacity-80">(Guests: {guestDetails.guests})</span>
                   )}
@@ -348,12 +352,15 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
                 " you "
               )}
 
+              {/* Event Name Logic */}
               to attend {guestDetails.event ? (
                 <span className="text-foreground font-semibold"> {guestDetails.event} </span>
               ) : (
                 " the following functions "
               )} 
               celebrating our union
+              {/* DYNAMIC INVITATION LOGIC END */}
+
             </motion.div>
             
             {/* Bottom decorative divider */}
@@ -503,9 +510,6 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
           <EventTimeline />
         </div>
       </section>
-      
-     
-      
       
       {/* Footer */}
       <footer className="bg-sage py-12 relative overflow-hidden">
