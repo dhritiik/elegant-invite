@@ -174,7 +174,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             animate={isVisible ? { opacity: 1 } : {}}
             transition={{ duration: 0.8, delay: 2.2 }}
           >
-            December 15, 2026
+            10 March, 2026
           </motion.p>
         </motion.div>
         
@@ -291,9 +291,9 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
                   "0 0 0 rgba(0,0,0,0)"
                 ]
               }}
-              transition={{ duration: 4, repeat: Infinity }}
+              // transition={{ duration: 4, repeat: Infinity }}
             >
-              With the blessings of our families, we,
+              With the blessings and happiness, Vora Family warmly welcomes \n  [you]   to the sacred union of 
             </motion.p>
             
             <motion.h3 
@@ -309,7 +309,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
                   "0 0 0 rgba(0,0,0,0)"
                 ]
               }}
-              transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
+              // transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
             >
               Saloni & Jay
             </motion.h3>
@@ -680,7 +680,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            December 15, 2026
+            10 March, 2026
           </motion.p>
         </div>
       </footer>

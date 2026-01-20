@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 interface TimelineEvent {
   id: number;
@@ -9,6 +10,8 @@ interface TimelineEvent {
   icon: React.ReactNode;
   venue?: string;
   style?: 'horizontal' | 'vertical';
+  image?: string;
+  mapsUrl?: string;
 }
 
 const events: TimelineEvent[] = [
@@ -20,6 +23,8 @@ const events: TimelineEvent[] = [
     description: "Sacred wedding pavilion ceremony marking the beginning of our celebrations",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "horizontal",
+    image: "/src/assets/madamandup.png",
+    mapsUrl: "https://maps.google.com/?q=Kandivali+Recreation+Club+KRC,+Shantilal+Modi+Road,+Kandivali+West,+Mumbai",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <path d="M12 2L2 7L12 12L22 7L12 2Z" />
@@ -36,6 +41,8 @@ const events: TimelineEvent[] = [
     description: "Mameru ceremony",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "horizontal",
+    image: "/src/assets/mameru.jpg",
+    mapsUrl: "https://maps.google.com/?q=Kandivali+Recreation+Club+KRC,+Shantilal+Modi+Road,+Kandivali+West,+Mumbai",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <circle cx="9" cy="9" r="7" />
@@ -45,12 +52,14 @@ const events: TimelineEvent[] = [
   },
   {
     id: 3,
-    title: "Haldi & Mehendi alongside.",
+    title: "Haldi & Mehendi ",
     time: "11:00 AM onwards",
     date: "Sunday, 8th March",
     description: "Haldi ceremony & Mehendi alongside. Lunch to follow.",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "horizontal",
+    image: "/src/assets/haldi.jpg",
+    mapsUrl: "https://maps.google.com/?q=Kandivali+Recreation+Club+KRC,+Shantilal+Modi+Road,+Kandivali+West,+Mumbai",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <circle cx="9" cy="9" r="7" />
@@ -66,6 +75,8 @@ const events: TimelineEvent[] = [
     description: "An evening of devotional music, blessings, and spiritual togetherness. Choviyaar Compulsory.",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "vertical",
+    image: "/src/assets/bhakti.jpg",
+    mapsUrl: "https://maps.google.com/?q=Kandivali+Recreation+Club+KRC,+Shantilal+Modi+Road,+Kandivali+West,+Mumbai",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <path d="M9 18V5L21 3V16" />
@@ -82,6 +93,8 @@ const events: TimelineEvent[] = [
     description: "The ceremonial procession marking the arrival of the groom",
     venue: "Arcadia Banquet Hall, Sumer Nagar, Borivali West, Mumbai",
     style: "horizontal",
+    image: "/src/assets/baaraat.jpg",
+    mapsUrl: "https://maps.google.com/?q=Arcadia+Banquet+Hall,+Sumer+Nagar,+Borivali+West,+Mumbai",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
@@ -96,6 +109,8 @@ const events: TimelineEvent[] = [
     description: "The sacred union ceremony followed by reception & dinner. Choviyaar facility available.",
     venue: "Arcadia Banquet Hall, Sumer Nagar, Borivali West, Mumbai",
     style: "vertical",
+    image: "/src/assets/wedding.jpg",
+    mapsUrl: "https://maps.google.com/?q=Arcadia+Banquet+Hall,+Sumer+Nagar,+Borivali+West,+Mumbai",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
@@ -110,6 +125,8 @@ const events: TimelineEvent[] = [
     description: "The sacred union ceremony followed by reception & dinner. Choviyaar facility available.",
     venue: "Arcadia Banquet Hall, Sumer Nagar, Borivali West, Mumbai",
     style: "vertical",
+    image: "/src/assets/reception.jpg",
+    mapsUrl: "https://maps.google.com/?q=Arcadia+Banquet+Hall,+Sumer+Nagar,+Borivali+West,+Mumbai",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
@@ -119,376 +136,256 @@ const events: TimelineEvent[] = [
 ];
 
 const EventTimeline = () => {
-  return (
-    <div className="relative py-12">
-      {/* Main vertical timeline line - runs through all events */}
-      <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-gold via-sage-dark to-gold md:-translate-x-px z-0" />
+  // Define the 4 major event groups
+  const eventGroups = [
+    {
+      title: "Sunday, 8th March - Morning Celebrations",
+      bgColor: "bg-cream-light",
+      events: events.slice(0, 3),
+    },
+    {
+      title: "Sunday, 8th March - Evening Celebration",
+      bgColor: "bg-cream-light",
+      events: events.slice(3, 4),
+    },
+    {
+      title: "Tuesday, 10th March - Wedding Ceremonies",
+      bgColor: "bg-cream-light",
+      events: events.slice(4, 6),
+    },
+    {
+      title: "Tuesday, 10th March - Reception",
+      bgColor: "bg-cream-light",
+      events: events.slice(6, 7),
+    },
+  ];
 
-      <div className="space-y-20">
-        {/* ===== SUNDAY 8TH MARCH MORNING - Horizontal Timeline ===== */}
-        <div className="relative">
-          <motion.h3 
-            className="text-center font-display text-2xl text-foreground mb-12"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+  // Flip Card Component
+  const EventCard = ({ event }: { event: TimelineEvent }) => {
+    const [isFlipped, setIsFlipped] = useState(false);
+
+    const handleVenueClick = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      if (event.mapsUrl) {
+        window.open(event.mapsUrl, '_blank');
+      }
+    };
+
+    return (
+      <motion.div
+        className="w-full md:w-80 z-10 h-96 cursor-pointer"
+        onClick={() => setIsFlipped(!isFlipped)}
+        whileHover={{ scale: 1.05 }}
+        transition={{ type: "spring", stiffness: 300 }}
+      >
+        <motion.div
+          className="relative w-full h-full"
+          initial={false}
+          animate={{ rotateY: isFlipped ? 180 : 0 }}
+          transition={{ duration: 0.6 }}
+          style={{ transformStyle: "preserve-3d" }}
+        >
+          {/* Front side - Image */}
+          <motion.div
+            className="absolute w-full h-full bg-cream rounded-lg overflow-hidden invitation-shadow"
+            style={{ backfaceVisibility: "hidden" }}
           >
-            Sunday, 8th March - Morning Celebrations
-          </motion.h3>
+            {event.image ? (
+              <img
+                src={event.image}
+                alt={event.title}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-gold/20 to-sage/20 flex items-center justify-center">
+                <p className="text-center text-muted-foreground font-display">{event.title}</p>
+              </div>
+            )}
+            {/* Click indicator on front */}
+            <motion.div
+              className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-all flex items-center justify-center"
+              animate={{ opacity: [0, 0.3, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <p className="text-white font-display text-sm">Click to flip</p>
+            </motion.div>
+          </motion.div>
 
-          {/* Horizontal Events Container */}
-          <div className="relative overflow-x-auto">
-            <div className="flex items-center gap-8 pb-8 min-w-min px-4 md:px-0 md:justify-center">
-              {/* Horizontal connecting line for this section */}
-              <div className="absolute top-1/3 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent pointer-events-none" />
+          {/* Back side - Content */}
+          <motion.div
+            className="absolute w-full h-full bg-cream rounded-lg p-6 invitation-shadow flex flex-col overflow-y-auto"
+            style={{ 
+              backfaceVisibility: "hidden",
+              transform: "rotateY(180deg)"
+            }}
+          >
+            <div className="flex items-center justify-center mb-4">
+              <motion.div
+                className="bg-sage-dark text-cream-light px-4 py-2 rounded-full text-sm font-display font-bold"
+                animate={{ opacity: [0.8, 1, 0.8] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                {event.time}
+              </motion.div>
+            </div>
+            
+            <h3 className="font-display text-2xl md:text-3xl text-foreground mb-3 text-center">
+              {event.title}
+            </h3>
+            
+            <p className="font-body text-muted-foreground leading-relaxed mb-4 text-base flex-grow">
+              {event.description}
+            </p>
 
-              {events.slice(0, 3).map((event, index) => (
-                <motion.div
-                  key={event.id}
-                  className="flex flex-col items-center w-64 flex-shrink-0 relative"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.15 }}
-                >
-                  {/* Icon circle */}
-                  <motion.div
-                    className="w-20 h-20 rounded-full bg-cream-light border-2 border-gold flex items-center justify-center text-sage-dark invitation-shadow mb-6 relative z-20"
-                    animate={{ 
-                      scale: [1, 1.1, 1],
-                      boxShadow: [
-                        "0 0 0 rgba(43, 75, 50, 0)",
-                        "0 0 20px rgba(43, 75, 50, 0.3)",
-                        "0 0 0 rgba(43, 75, 50, 0)"
-                      ]
-                    }}
-                    transition={{ duration: 3, repeat: Infinity }}
-                    whileHover={{ scale: 1.15 }}
-                  >
+            {event.venue && (
+              <motion.button
+                onClick={handleVenueClick}
+                className="font-body text-sm text-sage italic border-t border-sage/20 pt-3 mt-auto hover:text-gold transition-colors cursor-pointer"
+                whileHover={{ scale: 1.05 }}
+              >
+                📍 {event.venue}
+              </motion.button>
+            )}
+          </motion.div>
+        </motion.div>
+      </motion.div>
+    );
+  };
+
+  return (
+    <div className="relative">
+      {eventGroups.map((group, groupIndex) => (
+        <div key={groupIndex} className={`${group.bgColor} py-20 md:py-32 relative overflow-hidden`}>
+          {/* Animated background elements */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <motion.div
+              className="absolute top-10 left-10 w-20 h-20 border border-gold/15 rounded-full"
+              animate={{ 
+                rotate: [0, 360],
+                scale: [1, 1.2, 1]
+              }}
+              transition={{ 
+                rotate: { duration: 25, repeat: Infinity, ease: "linear" },
+                scale: { duration: 6, repeat: Infinity }
+              }}
+            />
+            <motion.div
+              className="absolute bottom-10 right-10 w-16 h-16 border border-sage/20 rounded-full"
+              animate={{ 
+                rotate: [360, 0],
+                scale: [1, 1.3, 1]
+              }}
+              transition={{ 
+                rotate: { duration: 20, repeat: Infinity, ease: "linear" },
+                scale: { duration: 5, repeat: Infinity, delay: 0.5 }
+              }}
+            />
+          </div>
+
+          <div className="relative z-10">
+            {/* Section Title */}
+            <motion.h3 
+              className="text-center font-display text-2xl md:text-3xl text-foreground mb-16"
+              initial={{ opacity: 0, y: -20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              {group.title}
+            </motion.h3>
+
+            {/* Vertical Timeline for this group */}
+            <div className="relative max-w-4xl mx-auto px-6">
+              <div className="space-y-12 md:space-y-20">
+                {group.events.map((event, eventIndex) => (
+                  <div key={event.id}>
                     <motion.div
-                      animate={{ rotate: [0, 360] }}
-                      transition={{ duration: 12 + index * 2, repeat: Infinity, ease: "linear" }}
+                      className={`relative flex items-center gap-6 md:gap-0 ${
+                        eventIndex % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+                      }`}
+                      initial={{ opacity: 0, x: eventIndex % 2 === 0 ? -50 : 50 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, margin: "-50px" }}
+                      transition={{ duration: 0.6, delay: eventIndex * 0.15 }}
                     >
-                      {event.icon}
+                      {/* Flip Card Content */}
+                      <div className={`w-full md:w-80 z-10 ${
+                        eventIndex % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
+                      }`}>
+                        <EventCard event={event} />
+                      </div>
                     </motion.div>
-                  </motion.div>
 
-                  {/* Time badge */}
-                  <motion.div
-                    className="bg-sage-dark text-cream-light px-4 py-2 rounded-full text-sm font-display font-bold mb-4"
-                    animate={{ y: [0, -2, 0] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: index * 0.5 }}
-                  >
-                    {event.time}
-                  </motion.div>
-
-                  {/* Event details card */}
-                  <motion.div
-                    className="bg-cream rounded-lg p-5 invitation-shadow text-center w-full hover:shadow-lg transition-all"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, delay: index * 0.2 + 0.2 }}
-                    whileHover={{ y: -3 }}
-                  >
-                    <h4 className="font-display text-lg text-foreground mb-2">{event.title}</h4>
-                    <p className="text-xs text-gold tracking-wide mb-3 font-semibold">{event.date}</p>
-                    <p className="text-sm text-muted-foreground leading-relaxed mb-3">{event.description}</p>
-                    {event.venue && (
-                      <p className="text-xs text-sage italic border-t border-sage/20 pt-3 mt-3">📍 {event.venue}</p>
+                    {/* Divider between events */}
+                    {eventIndex < group.events.length - 1 && (
+                      <motion.div 
+                        className="flex items-center justify-center gap-4 mt-20 relative z-20"
+                        initial={{ opacity: 0, scale: 0 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.3 }}
+                      >
+                        <motion.div 
+                          className="h-px w-12 bg-gold/50"
+                          animate={{ scaleX: [1, 1.5, 1] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        />
+                        <motion.span 
+                          className="text-gold text-2xl"
+                          animate={{ 
+                            scale: [1, 1.3, 1],
+                            rotate: [0, 10, -10, 0]
+                          }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        >
+                          ✦
+                        </motion.span>
+                        <motion.div 
+                          className="h-px w-12 bg-gold/50"
+                          animate={{ scaleX: [1, 1.5, 1] }}
+                          transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+                        />
+                      </motion.div>
                     )}
-                  </motion.div>
-                </motion.div>
-              ))}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* ===== SUNDAY 8TH MARCH EVENING - Vertical Timeline ===== */}
-        <div className="relative pt-8">
-          <motion.h3 
-            className="text-center font-display text-2xl text-foreground mb-12"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            Sunday, 8th March - Evening Celebration
-          </motion.h3>
-
-          <div className="space-y-12 md:space-y-16">
-            {events.slice(3, 4).map((event, index) => (
-              <motion.div
-                key={event.id}
-                className={`relative flex items-center gap-6 md:gap-0 ${
-                  index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                }`}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+          {/* Break divider between sections */}
+          {groupIndex < eventGroups.length - 1 && (
+            <motion.div 
+              className="flex items-center justify-center gap-4 mt-20 relative z-20"
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <motion.div 
+                className="h-px w-12 bg-gold/50"
+                animate={{ scaleX: [1, 1.5, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+              <motion.span 
+                className="text-gold text-2xl"
+                animate={{ 
+                  scale: [1, 1.3, 1],
+                  rotate: [0, 10, -10, 0]
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
               >
-                {/* Icon circle - positioned on line */}
-                <div className="absolute left-1/2 -translate-x-1/2 z-20 flex-shrink-0">
-                  <motion.div
-                    className="w-16 h-16 rounded-full bg-cream-light border-2 border-gold flex items-center justify-center text-sage-dark invitation-shadow"
-                    whileHover={{ 
-                      scale: 1.1,
-                      rotate: [0, -10, 10, 0],
-                      boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.1)"
-                    }}
-                    animate={{ 
-                      boxShadow: [
-                        "0 20px 40px -15px rgba(0, 0, 0, 0.15), 0 8px 16px -8px rgba(0, 0, 0, 0.1)",
-                        "0 25px 50px -12px rgba(43, 75, 50, 0.2), 0 10px 20px -8px rgba(43, 75, 50, 0.1)",
-                        "0 20px 40px -15px rgba(0, 0, 0, 0.15), 0 8px 16px -8px rgba(0, 0, 0, 0.1)"
-                      ]
-                    }}
-                    transition={{ 
-                      type: "spring", 
-                      stiffness: 300,
-                      boxShadow: { duration: 3, repeat: Infinity }
-                    }}
-                  >
-                    <motion.div
-                      animate={{ rotate: [0, 360] }}
-                      transition={{ duration: 10 + index * 2, repeat: Infinity, ease: "linear" }}
-                    >
-                      {event.icon}
-                    </motion.div>
-                  </motion.div>
-                </div>
-
-                {/* Content card */}
-                <div className={`w-full md:w-72 z-10 ${
-                  index % 2 === 0 ? "md:mr-auto md:text-right" : "md:ml-auto md:text-left"
-                }`}>
-                  <motion.div
-                    className="bg-cream rounded-lg p-6 invitation-shadow backdrop-blur-sm hover:shadow-lg transition-all h-full flex flex-col"
-                    whileHover={{ y: -5, scale: 1.02 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    <div className="flex items-start gap-3 mb-3">
-                      <motion.div
-                        className="bg-sage-dark text-cream-light px-2 py-1 rounded text-xs font-bold whitespace-nowrap"
-                        animate={{ opacity: [0.8, 1, 0.8] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                      >
-                        {event.time}
-                      </motion.div>
-                      <p className="text-gold font-display text-xs tracking-[0.2em] uppercase">
-                        {event.date}
-                      </p>
-                    </div>
-                    
-                    <h3 className="font-display text-xl md:text-2xl text-foreground mb-2">
-                      {event.title}
-                    </h3>
-                    
-                    <p className="font-body text-muted-foreground leading-relaxed mb-3 flex-grow">
-                      {event.description}
-                    </p>
-
-                    {event.venue && (
-                      <motion.p
-                        className="font-body text-sm text-sage italic border-t border-sage/20 pt-3 mt-3"
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.2 }}
-                      >
-                        📍 {event.venue}
-                      </motion.p>
-                    )}
-                  </motion.div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                ✦
+              </motion.span>
+              <motion.div 
+                className="h-px w-12 bg-gold/50"
+                animate={{ scaleX: [1, 1.5, 1] }}
+                transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+              />
+            </motion.div>
+          )}
         </div>
-
-        {/* ===== TUESDAY 10TH MARCH MORNING - Horizontal Timeline ===== */}
-        <div className="relative pt-8">
-          <motion.h3 
-            className="text-center font-display text-2xl text-foreground mb-12"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            Tuesday, 10th March - Wedding Ceremonies
-          </motion.h3>
-
-          {/* Horizontal Events Container */}
-          <div className="flex flex-col md:flex-row md:justify-center md:items-stretch gap-8 relative md:mx-auto">
-            {/* Horizontal connecting line for this section (desktop only) */}
-            <div className="hidden md:block absolute top-24 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent pointer-events-none z-0" />
-
-            {events.slice(4, 6).map((event, index) => (
-              <motion.div
-                key={event.id}
-                className="flex flex-col items-center w-full md:w-72 flex-shrink-0 relative"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.15 }}
-              >
-                {/* Icon circle */}
-                <motion.div
-                  className="w-20 h-20 rounded-full bg-cream-light border-2 border-gold flex items-center justify-center text-sage-dark invitation-shadow mb-6 relative z-20 flex-shrink-0"
-                  animate={{ 
-                    scale: [1, 1.1, 1],
-                    boxShadow: [
-                      "0 0 0 rgba(43, 75, 50, 0)",
-                      "0 0 20px rgba(43, 75, 50, 0.3)",
-                      "0 0 0 rgba(43, 75, 50, 0)"
-                    ]
-                  }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                  whileHover={{ scale: 1.15 }}
-                >
-                  <motion.div
-                    animate={{ rotate: [0, 360] }}
-                    transition={{ duration: 12 + index * 2, repeat: Infinity, ease: "linear" }}
-                  >
-                    {event.icon}
-                  </motion.div>
-                </motion.div>
-
-                {/* Time badge */}
-                <motion.div
-                  className="bg-sage-dark text-cream-light px-4 py-2 rounded-full text-sm font-display font-bold mb-4 whitespace-nowrap"
-                  animate={{ y: [0, -2, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: index * 0.5 }}
-                >
-                  {event.time}
-                </motion.div>
-
-                {/* Event details card */}
-                <motion.div
-                  className="bg-cream rounded-lg p-5 invitation-shadow text-center w-full hover:shadow-lg transition-all flex-1 flex flex-col z-10"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: index * 0.2 + 0.2 }}
-                  whileHover={{ y: -3 }}
-                >
-                  <h4 className="font-display text-lg text-foreground mb-2">{event.title}</h4>
-                  <p className="text-xs text-gold tracking-wide mb-3 font-semibold">{event.date}</p>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-3 flex-grow">{event.description}</p>
-                  {event.venue && (
-                    <p className="text-xs text-sage italic border-t border-sage/20 pt-3 mt-3">{event.venue}</p>
-                  )}
-                </motion.div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* ===== TUESDAY 10TH MARCH EVENING - Vertical Timeline ===== */}
-        <div className="relative pt-8">
-          <motion.h3 
-            className="text-center font-display text-2xl text-foreground mb-12"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            Tuesday, 10th March - Reception
-          </motion.h3>
-
-          <div className="space-y-12 md:space-y-16">
-            {events.slice(6, 7).map((event, index) => (
-              <motion.div
-                key={event.id}
-                className={`relative flex items-center gap-6 md:gap-0 ${
-                  index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                }`}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                {/* Icon circle - positioned on line */}
-                <div className="absolute left-1/2 -translate-x-1/2 z-20 flex-shrink-0">
-                  <motion.div
-                    className="w-16 h-16 rounded-full bg-cream-light border-2 border-gold flex items-center justify-center text-sage-dark invitation-shadow"
-                    whileHover={{ 
-                      scale: 1.1,
-                      rotate: [0, -10, 10, 0],
-                      boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.1)"
-                    }}
-                    animate={{ 
-                      boxShadow: [
-                        "0 20px 40px -15px rgba(0, 0, 0, 0.15), 0 8px 16px -8px rgba(0, 0, 0, 0.1)",
-                        "0 25px 50px -12px rgba(43, 75, 50, 0.2), 0 10px 20px -8px rgba(43, 75, 50, 0.1)",
-                        "0 20px 40px -15px rgba(0, 0, 0, 0.15), 0 8px 16px -8px rgba(0, 0, 0, 0.1)"
-                      ]
-                    }}
-                    transition={{ 
-                      type: "spring", 
-                      stiffness: 300,
-                      boxShadow: { duration: 3, repeat: Infinity }
-                    }}
-                  >
-                    <motion.div
-                      animate={{ rotate: [0, 360] }}
-                      transition={{ duration: 10 + index * 2, repeat: Infinity, ease: "linear" }}
-                    >
-                      {event.icon}
-                    </motion.div>
-                  </motion.div>
-                </div>
-
-                {/* Content card */}
-                <div className={`w-full md:w-72 z-10 ${
-                  index % 2 === 0 ? "md:mr-auto md:text-right" : "md:ml-auto md:text-left"
-                }`}>
-                  <motion.div
-                    className="bg-cream rounded-lg p-6 invitation-shadow backdrop-blur-sm hover:shadow-lg transition-all h-full flex flex-col"
-                    whileHover={{ y: -5, scale: 1.02 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    <div className="flex items-start gap-3 mb-3">
-                      <motion.div
-                        className="bg-sage-dark text-cream-light px-2 py-1 rounded text-xs font-bold whitespace-nowrap"
-                        animate={{ opacity: [0.8, 1, 0.8] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                      >
-                        {event.time}
-                      </motion.div>
-                      <p className="text-gold font-display text-xs tracking-[0.2em] uppercase">
-                        {event.date}
-                      </p>
-                    </div>
-                    
-                    <h3 className="font-display text-xl md:text-2xl text-foreground mb-2">
-                      {event.title}
-                    </h3>
-                    
-                    <p className="font-body text-muted-foreground leading-relaxed mb-3 flex-grow">
-                      {event.description}
-                    </p>
-
-                    {event.venue && (
-                      <motion.p
-                        className="font-body text-sm text-sage italic border-t border-sage/20 pt-3 mt-3"
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.2 }}
-                      >
-                        📍 {event.venue}
-                      </motion.p>
-                    )}
-                  </motion.div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
+      ))}
     </div>
   );
 };
