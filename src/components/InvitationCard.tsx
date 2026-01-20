@@ -541,7 +541,6 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, textShadow: { duration: 3, repeat: Infinity } }}
             animate={{ 
               textShadow: [
                 "0 0 0 rgba(0,0,0,0)",
@@ -549,6 +548,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
                 "0 0 0 rgba(0,0,0,0)"
               ]
             }}
+            transition={{ textShadow: { duration: 3, repeat: Infinity } }}
           >
             S & J
           </motion.p>
