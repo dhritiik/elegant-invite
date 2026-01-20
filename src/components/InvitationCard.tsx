@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import heroBackground from "@/assets/hero-background.jpg";
+import heroBackground from "/hero-background.jpg";
 import EventTimeline from "./EventTimeline";
 import { useEffect, useState } from "react";
 
@@ -37,7 +37,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
       <section className="relative min-h-screen flex flex-col items-center justify-center">
         {/* Background Image */}
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-70"
           style={{ backgroundImage: `url(${heroBackground})` }}
         >
             {/* Overlay for readability - slightly reduced intensity for the hero image */}
@@ -76,7 +76,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
         >
           {/* Pre-title */}
           <motion.p
-            className="text-cream-light/90 font-display text-sm tracking-[0.3em] uppercase mb-8"
+            className="text-black/90 font-display text-sm tracking-[0.3em] uppercase mb-8"
             initial={{ opacity: 0 }}
             animate={isVisible ? { opacity: 1 } : {}}
             transition={{ duration: 0.8, delay: 1.4 }}
@@ -91,7 +91,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             transition={{ duration: 1, delay: 1.6 }}
           >
             <motion.h1 
-              className="font-display font-bold text-6xl md:text-8xl lg:text-9xl text-cream-light mb-2 tracking-wide"
+              className="font-display font-bold text-6xl md:text-8xl lg:text-9xl text-black mb-2 tracking-wide"
               animate={{ 
                 textShadow: [
                   "0 0 20px rgba(255, 215, 0, 0.3)",
@@ -104,7 +104,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               Saloni
             </motion.h1>
             <motion.span
-              className="block text-3xl md:text-4xl gold-text font-body italic my-4"
+              className="block text-3xl md:text-4xl black-text font-body italic my-4"
               animate={{ 
                 scale: [1, 1.1, 1],
                 rotate: [0, 5, -5, 0]
@@ -119,7 +119,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               &
             </motion.span>
             <motion.h1 
-              className="font-display font-bold text-6xl md:text-8xl lg:text-9xl text-cream-light tracking-wide"
+              className="font-display font-bold text-6xl md:text-8xl lg:text-9xl text-black tracking-wide"
               animate={{ 
                 textShadow: [
                   "0 0 20px rgba(255, 215, 0, 0.3)",
@@ -169,7 +169,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
           
           {/* Date */}
           <motion.p
-            className="font-body text-xl md:text-2xl text-cream-light italic"
+            className="font-body text-xl md:text-2xl text-black italic"
             initial={{ opacity: 0 }}
             animate={isVisible ? { opacity: 1 } : {}}
             transition={{ duration: 0.8, delay: 2.2 }}
@@ -293,11 +293,14 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               }}
               // transition={{ duration: 4, repeat: Infinity }}
             >
-              With the blessings and happiness, Vora Family warmly welcomes \n  [you]   to the sacred union of 
+              With the blessings and happiness, Vora Family warmly welcomes<br />
+              <br />
+              to the sacred union of 
             </motion.p>
             
             <motion.h3 
-              className="font-display text-3xl md:text-4xl text-foreground mb-6"
+              className="font-display text-3xl md:text-4xl text-foreground mb-6 font-bold italic"
+              style={{ fontFamily: "cursive" }}
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -501,131 +504,8 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
         </div>
       </section>
       
-      {/* Venue Section */}
-      <section className="relative bg-sage/10 paper-texture py-20 md:py-32 overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            className="absolute top-16 left-16 w-28 h-28 border border-gold/15 rounded-full"
-            animate={{ 
-              rotate: [0, -360],
-              scale: [1, 1.2, 1]
-            }}
-            transition={{ 
-              rotate: { duration: 30, repeat: Infinity, ease: "linear" },
-              scale: { duration: 4, repeat: Infinity }
-            }}
-          />
-          <motion.div
-            className="absolute bottom-16 right-16 w-20 h-20 border-2 border-sage/20 rounded-full"
-            animate={{ 
-              rotate: [360, 0],
-              scale: [1, 1.3, 1]
-            }}
-            transition={{ 
-              rotate: { duration: 25, repeat: Infinity, ease: "linear" },
-              scale: { duration: 5, repeat: Infinity, delay: 0.5 }
-            }}
-          />
-        </div>
-        
-        <div className="container max-w-4xl mx-auto px-6 text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <motion.p 
-              className="text-gold font-display text-sm tracking-[0.3em] uppercase mb-4"
-              animate={{ 
-                textShadow: [
-                  "0 0 0 rgba(0,0,0,0)",
-                  "0 0 10px rgba(43, 75, 50, 0.5)",
-                  "0 0 0 rgba(0,0,0,0)"
-                ]
-              }}
-              transition={{ duration: 3, repeat: Infinity }}
-            >
-              The Venue
-            </motion.p>
-            <motion.h2 
-              className="font-display text-3xl md:text-4xl text-foreground mb-6"
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              animate={{ 
-                textShadow: [
-                  "0 0 0 rgba(0,0,0,0)",
-                  "0 0 15px rgba(43, 75, 50, 0.3)",
-                  "0 0 0 rgba(0,0,0,0)"
-                ]
-              }}
-              transition={{ duration: 4, repeat: Infinity, delay: 0.3 }}
-            >
-              Raas Jodhpur
-            </motion.h2>
-            <motion.p 
-              className="font-body text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            >
-              Tunwarji Ka Jhalra, Makrana Mohalla<br />
-              Jodhpur, Rajasthan 342001
-            </motion.p>
-            
-            <motion.div 
-              className="mt-12 flex items-center justify-center gap-3"
-              initial={{ opacity: 0, scale: 0 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <motion.div 
-                className="h-px w-16 bg-gold/40"
-                animate={{ scaleX: [1, 1.4, 1] }}
-                transition={{ duration: 3, repeat: Infinity }}
-              />
-              <motion.span 
-                className="text-gold text-2xl"
-                animate={{ 
-                  scale: [1, 1.3, 1],
-                  rotate: [0, 15, -15, 0]
-                }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                ✦
-              </motion.span>
-              <motion.div 
-                className="h-px w-16 bg-gold/40"
-                animate={{ scaleX: [1, 1.4, 1] }}
-                transition={{ duration: 3, repeat: Infinity, delay: 1.5 }}
-              />
-            </motion.div>
-            
-            <motion.p 
-              className="font-body text-base text-muted-foreground mt-8 italic"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              animate={{ 
-                textShadow: [
-                  "0 0 0 rgba(0,0,0,0)",
-                  "0 0 8px rgba(43, 75, 50, 0.2)",
-                  "0 0 0 rgba(0,0,0,0)"
-                ]
-              }}
-              transition={{ duration: 4, repeat: Infinity, delay: 0.8 }}
-            >
-              We can't wait to celebrate with you
-            </motion.p>
-          </motion.div>
-        </div>
-      </section>
+     
+      
       
       {/* Footer */}
       <footer className="bg-sage py-12 relative overflow-hidden">

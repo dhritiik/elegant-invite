@@ -23,7 +23,7 @@ const events: TimelineEvent[] = [
     description: "Sacred wedding pavilion ceremony marking the beginning of our celebrations",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "horizontal",
-    image: "/src/assets/madamandup.png",
+    image: "/madamandup.png",
     mapsUrl: "https://maps.google.com/?q=Kandivali+Recreation+Club+KRC,+Shantilal+Modi+Road,+Kandivali+West,+Mumbai",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -41,7 +41,7 @@ const events: TimelineEvent[] = [
     description: "Mameru ceremony",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "horizontal",
-    image: "/src/assets/mameru.jpg",
+    image: "/mameru.jpg",
     mapsUrl: "https://maps.google.com/?q=Kandivali+Recreation+Club+KRC,+Shantilal+Modi+Road,+Kandivali+West,+Mumbai",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -58,7 +58,7 @@ const events: TimelineEvent[] = [
     description: "Haldi ceremony & Mehendi alongside. Lunch to follow.",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "horizontal",
-    image: "/src/assets/haldi.jpg",
+    image: "/haldi.jpg",
     mapsUrl: "https://maps.google.com/?q=Kandivali+Recreation+Club+KRC,+Shantilal+Modi+Road,+Kandivali+West,+Mumbai",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -75,7 +75,7 @@ const events: TimelineEvent[] = [
     description: "An evening of devotional music, blessings, and spiritual togetherness. Choviyaar Compulsory.",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "vertical",
-    image: "/src/assets/bhakti.jpg",
+    image: "/bhakti.jpg",
     mapsUrl: "https://maps.google.com/?q=Kandivali+Recreation+Club+KRC,+Shantilal+Modi+Road,+Kandivali+West,+Mumbai",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -93,7 +93,7 @@ const events: TimelineEvent[] = [
     description: "The ceremonial procession marking the arrival of the groom",
     venue: "Arcadia Banquet Hall, Sumer Nagar, Borivali West, Mumbai",
     style: "horizontal",
-    image: "/src/assets/baaraat.jpg",
+    image: "/baaraat.jpg",
     mapsUrl: "https://maps.google.com/?q=Arcadia+Banquet+Hall,+Sumer+Nagar,+Borivali+West,+Mumbai",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -109,7 +109,7 @@ const events: TimelineEvent[] = [
     description: "The sacred union ceremony followed by reception & dinner. Choviyaar facility available.",
     venue: "Arcadia Banquet Hall, Sumer Nagar, Borivali West, Mumbai",
     style: "vertical",
-    image: "/src/assets/wedding.jpg",
+    image: "/wedding.jpg",
     mapsUrl: "https://maps.google.com/?q=Arcadia+Banquet+Hall,+Sumer+Nagar,+Borivali+West,+Mumbai",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -125,7 +125,7 @@ const events: TimelineEvent[] = [
     description: "The sacred union ceremony followed by reception & dinner. Choviyaar facility available.",
     venue: "Arcadia Banquet Hall, Sumer Nagar, Borivali West, Mumbai",
     style: "vertical",
-    image: "/src/assets/reception.jpg",
+    image: "/reception.jpg",
     mapsUrl: "https://maps.google.com/?q=Arcadia+Banquet+Hall,+Sumer+Nagar,+Borivali+West,+Mumbai",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -173,7 +173,7 @@ const EventTimeline = () => {
 
     return (
       <motion.div
-        className="w-full md:w-80 z-10 h-96 cursor-pointer"
+        className="w-80 h-80 md:w-96 md:h-96 z-10 cursor-pointer"
         onClick={() => setIsFlipped(!isFlipped)}
         whileHover={{ scale: 1.05 }}
         transition={{ type: "spring", stiffness: 300 }}
@@ -194,7 +194,7 @@ const EventTimeline = () => {
               <img
                 src={event.image}
                 alt={event.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover object-bottom"
               />
             ) : (
               <div className="w-full h-full bg-gradient-to-br from-gold/20 to-sage/20 flex items-center justify-center">
@@ -309,7 +309,7 @@ const EventTimeline = () => {
                       transition={{ duration: 0.6, delay: eventIndex * 0.15 }}
                     >
                       {/* Flip Card Content */}
-                      <div className={`w-full md:w-80 z-10 ${
+                      <div className={`w-80 md:w-96 z-10 ${
                         eventIndex % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
                       }`}>
                         <EventCard event={event} />
@@ -355,34 +355,37 @@ const EventTimeline = () => {
 
           {/* Break divider between sections */}
           {groupIndex < eventGroups.length - 1 && (
-            <motion.div 
-              className="flex items-center justify-center gap-4 mt-20 relative z-20"
-              initial={{ opacity: 0, scale: 0 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
+            <>
               <motion.div 
-                className="h-px w-12 bg-gold/50"
-                animate={{ scaleX: [1, 1.5, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-              <motion.span 
-                className="text-gold text-2xl"
-                animate={{ 
-                  scale: [1, 1.3, 1],
-                  rotate: [0, 10, -10, 0]
-                }}
-                transition={{ duration: 2, repeat: Infinity }}
+                className="flex items-center justify-center gap-4 mt-20 relative z-20"
+                initial={{ opacity: 0, scale: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.3 }}
               >
-                ✦
-              </motion.span>
-              <motion.div 
-                className="h-px w-12 bg-gold/50"
-                animate={{ scaleX: [1, 1.5, 1] }}
-                transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-              />
-            </motion.div>
+                <motion.div 
+                  className="h-px w-12 bg-gold/50"
+                  animate={{ scaleX: [1, 1.5, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+                <motion.span 
+                  className="text-gold text-2xl"
+                  animate={{ 
+                    scale: [1, 1.3, 1],
+                    rotate: [0, 10, -10, 0]
+                  }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  ✦
+                </motion.span>
+                <motion.div 
+                  className="h-px w-12 bg-gold/50"
+                  animate={{ scaleX: [1, 1.5, 1] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+                />
+              </motion.div>
+              
+            </>
           )}
         </div>
       ))}
