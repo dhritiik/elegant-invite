@@ -507,7 +507,8 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             </motion.div>
           </motion.div>
           
-          <EventTimeline />
+          {/* UPDATED: Pass the filtered event name to the Timeline */}
+          <EventTimeline filteredEventName={guestDetails.event} />
         </div>
       </section>
       

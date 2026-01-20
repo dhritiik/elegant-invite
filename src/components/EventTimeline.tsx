@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 interface TimelineEvent {
   id: number;
@@ -135,30 +135,83 @@ const events: TimelineEvent[] = [
   },
 ];
 
-const EventTimeline = () => {
-  // Define the 4 major event groups
-  const eventGroups = [
-    {
-      title: "Sunday, 8th March - Morning Celebrations",
-      bgColor: "bg-cream-light",
-      events: events.slice(0, 3),
-    },
-    {
-      title: "Sunday, 8th March - Evening Celebration",
-      bgColor: "bg-cream-light",
-      events: events.slice(3, 4),
-    },
-    {
-      title: "Tuesday, 10th March - Wedding Ceremonies",
-      bgColor: "bg-cream-light",
-      events: events.slice(4, 6),
-    },
-    {
-      title: "Tuesday, 10th March - Reception",
-      bgColor: "bg-cream-light",
-      events: events.slice(6, 7),
-    },
-  ];
+interface EventTimelineProps {
+  filteredEventName?: string;
+}
+
+const EventTimeline = ({ filteredEventName }: EventTimelineProps) => {
+  // We use useMemo to calculate the visible groups based on the URL parameter
+  const visibleGroups = useMemo(() => {
+    // 1. Define the base groups (structure)
+    const baseGroups = [
+      {
+        title: "Sunday, 8th March - Morning Celebrations",
+        bgColor: "bg-cream-light",
+        events: events.slice(0, 3), // Mandap, Mameru, Haldi
+      },
+      {
+        title: "Sunday, 8th March - Evening Celebration",
+        bgColor: "bg-cream-light",
+        events: events.slice(3, 4), // Bhakti Sandhya
+      },
+      {
+        title: "Tuesday, 10th March - Wedding Ceremonies",
+        bgColor: "bg-cream-light",
+        events: events.slice(4, 6), // Baarat, Hast Melap
+      },
+      {
+        title: "Tuesday, 10th March - Reception",
+        bgColor: "bg-cream-light",
+        events: events.slice(6, 7), // Reception
+      },
+    ];
+
+    // 2. If no filter is applied, return all groups
+    if (!filteredEventName || filteredEventName.trim() === "") {
+      return baseGroups;
+    }
+
+    const searchStr = filteredEventName.toLowerCase();
+
+    // 3. Define Keywords to map URL text to Timeline Events
+    const isWedding = searchStr.includes("wedding") || searchStr.includes("lagan") || searchStr.includes("shaadi");
+    const isMayra = searchStr.includes("mayra") || searchStr.includes("mameru");
+    const isReception = searchStr.includes("reception");
+    const isBhakti = searchStr.includes("bhakti") || searchStr.includes("sandhya");
+
+    // 4. Filter the groups
+    return baseGroups.map(group => {
+      // Filter events inside this group
+      const filteredEvents = group.events.filter(event => {
+        const titleLower = event.title.toLowerCase();
+
+        // Specific Mapping Logic
+        if (isWedding) {
+          // If URL says Wedding, show Baarat (5) & Hast Melap (6)
+          return titleLower.includes("hast melap") || titleLower.includes("baarat");
+        }
+        if (isMayra) {
+          // If URL says Mayra, show Mameru (2) (and Mandap/Haldi if you prefer, but strict mapping is below)
+          return titleLower.includes("mameru") || titleLower.includes("mandap") || titleLower.includes("haldi");
+        }
+        if (isReception) {
+          return titleLower.includes("reception");
+        }
+        if (isBhakti) {
+          return titleLower.includes("bhakti");
+        }
+        
+        // Fallback: simple text match (e.g. "Haldi" matches "Haldi")
+        return titleLower.includes(searchStr) || searchStr.includes(titleLower);
+      });
+
+      // Return the group with the new filtered events list
+      return {
+        ...group,
+        events: filteredEvents
+      };
+    }).filter(group => group.events.length > 0); // Remove groups that became empty
+  }, [filteredEventName]);
 
   // Flip Card Component
   const EventCard = ({ event }: { event: TimelineEvent }) => {
@@ -254,108 +307,108 @@ const EventTimeline = () => {
 
   return (
     <div className="relative">
-      {eventGroups.map((group, groupIndex) => (
-        <div key={groupIndex} className={`${group.bgColor} py-20 md:py-32 relative overflow-hidden`}>
-          {/* Animated background elements */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <motion.div
-              className="absolute top-10 left-10 w-20 h-20 border border-gold/15 rounded-full"
-              animate={{ 
-                rotate: [0, 360],
-                scale: [1, 1.2, 1]
-              }}
-              transition={{ 
-                rotate: { duration: 25, repeat: Infinity, ease: "linear" },
-                scale: { duration: 6, repeat: Infinity }
-              }}
-            />
-            <motion.div
-              className="absolute bottom-10 right-10 w-16 h-16 border border-sage/20 rounded-full"
-              animate={{ 
-                rotate: [360, 0],
-                scale: [1, 1.3, 1]
-              }}
-              transition={{ 
-                rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-                scale: { duration: 5, repeat: Infinity, delay: 0.5 }
-              }}
-            />
-          </div>
+      {visibleGroups.length > 0 ? (
+        visibleGroups.map((group, groupIndex) => (
+          <div key={groupIndex} className={`${group.bgColor} py-20 md:py-32 relative overflow-hidden`}>
+            {/* Animated background elements */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              <motion.div
+                className="absolute top-10 left-10 w-20 h-20 border border-gold/15 rounded-full"
+                animate={{ 
+                  rotate: [0, 360],
+                  scale: [1, 1.2, 1]
+                }}
+                transition={{ 
+                  rotate: { duration: 25, repeat: Infinity, ease: "linear" },
+                  scale: { duration: 6, repeat: Infinity }
+                }}
+              />
+              <motion.div
+                className="absolute bottom-10 right-10 w-16 h-16 border border-sage/20 rounded-full"
+                animate={{ 
+                  rotate: [360, 0],
+                  scale: [1, 1.3, 1]
+                }}
+                transition={{ 
+                  rotate: { duration: 20, repeat: Infinity, ease: "linear" },
+                  scale: { duration: 5, repeat: Infinity, delay: 0.5 }
+                }}
+              />
+            </div>
 
-          <div className="relative z-10">
-            {/* Section Title */}
-            <motion.h3 
-              className="text-center font-display text-2xl md:text-3xl text-foreground mb-16"
-              initial={{ opacity: 0, y: -20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              {group.title}
-            </motion.h3>
+            <div className="relative z-10">
+              {/* Section Title */}
+              <motion.h3 
+                className="text-center font-display text-2xl md:text-3xl text-foreground mb-16"
+                initial={{ opacity: 0, y: -20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+              >
+                {group.title}
+              </motion.h3>
 
-            {/* Vertical Timeline for this group */}
-            <div className="relative max-w-4xl mx-auto px-6">
-              <div className="space-y-12 md:space-y-20">
-                {group.events.map((event, eventIndex) => (
-                  <div key={event.id}>
-                    <motion.div
-                      className={`relative flex items-center gap-6 md:gap-0 ${
-                        eventIndex % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                      }`}
-                      initial={{ opacity: 0, x: eventIndex % 2 === 0 ? -50 : 50 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true, margin: "-50px" }}
-                      transition={{ duration: 0.6, delay: eventIndex * 0.15 }}
-                    >
-                      {/* Flip Card Content */}
-                      <div className={`w-80 md:w-96 z-10 ${
-                        eventIndex % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
-                      }`}>
-                        <EventCard event={event} />
-                      </div>
-                    </motion.div>
-
-                    {/* Divider between events */}
-                    {eventIndex < group.events.length - 1 && (
-                      <motion.div 
-                        className="flex items-center justify-center gap-4 mt-20 relative z-20"
-                        initial={{ opacity: 0, scale: 0 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.3 }}
+              {/* Vertical Timeline for this group */}
+              <div className="relative max-w-4xl mx-auto px-6">
+                <div className="space-y-12 md:space-y-20">
+                  {group.events.map((event, eventIndex) => (
+                    <div key={event.id}>
+                      <motion.div
+                        className={`relative flex items-center gap-6 md:gap-0 ${
+                          eventIndex % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+                        }`}
+                        initial={{ opacity: 0, x: eventIndex % 2 === 0 ? -50 : 50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true, margin: "-50px" }}
+                        transition={{ duration: 0.6, delay: eventIndex * 0.15 }}
                       >
-                        <motion.div 
-                          className="h-px w-12 bg-gold/50"
-                          animate={{ scaleX: [1, 1.5, 1] }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                        />
-                        <motion.span 
-                          className="text-gold text-2xl"
-                          animate={{ 
-                            scale: [1, 1.3, 1],
-                            rotate: [0, 10, -10, 0]
-                          }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                        >
-                          ✦
-                        </motion.span>
-                        <motion.div 
-                          className="h-px w-12 bg-gold/50"
-                          animate={{ scaleX: [1, 1.5, 1] }}
-                          transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-                        />
+                        {/* Flip Card Content */}
+                        <div className={`w-80 md:w-96 z-10 ${
+                          eventIndex % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
+                        }`}>
+                          <EventCard event={event} />
+                        </div>
                       </motion.div>
-                    )}
-                  </div>
-                ))}
+
+                      {/* Divider between events */}
+                      {eventIndex < group.events.length - 1 && (
+                        <motion.div 
+                          className="flex items-center justify-center gap-4 mt-20 relative z-20"
+                          initial={{ opacity: 0, scale: 0 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.6, delay: 0.3 }}
+                        >
+                          <motion.div 
+                            className="h-px w-12 bg-gold/50"
+                            animate={{ scaleX: [1, 1.5, 1] }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                          />
+                          <motion.span 
+                            className="text-gold text-2xl"
+                            animate={{ 
+                              scale: [1, 1.3, 1],
+                              rotate: [0, 10, -10, 0]
+                            }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                          >
+                            ✦
+                          </motion.span>
+                          <motion.div 
+                            className="h-px w-12 bg-gold/50"
+                            animate={{ scaleX: [1, 1.5, 1] }}
+                            transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+                          />
+                        </motion.div>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Break divider between sections */}
-          {groupIndex < eventGroups.length - 1 && (
-            <>
+            {/* Break divider between sections */}
+            {groupIndex < visibleGroups.length - 1 && (
               <motion.div 
                 className="flex items-center justify-center gap-4 mt-20 relative z-20"
                 initial={{ opacity: 0, scale: 0 }}
@@ -384,11 +437,15 @@ const EventTimeline = () => {
                   transition={{ duration: 2, repeat: Infinity, delay: 1 }}
                 />
               </motion.div>
-              
-            </>
-          )}
-        </div>
-      ))}
+            )}
+          </div>
+        ))
+      ) : (
+         // Fallback if no matching events found
+         <div className="py-20 text-center text-muted-foreground">
+            <p className="font-display text-xl">Event details will be shared soon.</p>
+         </div>
+      )}
     </div>
   );
 };
