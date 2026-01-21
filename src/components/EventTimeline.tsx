@@ -14,7 +14,6 @@ interface TimelineEvent {
   mapsUrl?: string;
 }
 
-// Updated Events Array with specific Reception formatting
 const events: TimelineEvent[] = [
   {
     id: 1,
@@ -123,7 +122,6 @@ const events: TimelineEvent[] = [
     title: "Reception",
     time: "7:30 PM onwards",
     date: "Tuesday, 10th March",
-    // Used '\n' to denote new lines for the requested format
     description: "The sacred union ceremony\nfollowed by reception & dinner.\nChoviyaar facility available.",
     venue: "Arcadia Banquet Hall, Sumer Nagar, Borivali West, Mumbai",
     style: "vertical",
@@ -149,13 +147,11 @@ interface EventTimelineProps {
 }
 
 const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) => {
-  // Logic to determine which guest count applies to which event
   const getEventSpecificGuestCount = (eventTitle: string) => {
     if (!guestCounts) return "";
     
     const title = eventTitle.toLowerCase();
     
-    // Check specific event matches first
     if (title.includes("mandap") || title.includes("mameru") || title.includes("haldi")) {
       return guestCounts.mayra || guestCounts.global;
     }
@@ -169,96 +165,79 @@ const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) =
       return guestCounts.reception || guestCounts.global;
     }
     
-    // Fallback to global
     return guestCounts.global;
   };
 
   const getGuestDisplayString = (countStr: string) => {
     if (!countStr) return null;
     const c = countStr.toLowerCase();
-    if (c === 'family') return "Looking forward to welcome your family!";
-    if (c === '2' || c === 'couple') return "Looking forward to welcome 2 guests";
-    // Checks if it's a simple number (like "3") or custom text
-    if (!isNaN(Number(countStr))) return `Looking forward to welcome ${countStr} guests`;
+    if (c === 'family') return "Whole Family Invited";
+    if (c === '2' || c === 'couple') return "2 Seats Reserved";
+    if (!isNaN(Number(countStr))) return `${countStr} Seats Reserved`;
     return `${countStr} Invited`;
   };
 
   const visibleGroups = useMemo(() => {
-    // 1. Define the base groups (structure)
     const baseGroups = [
       {
         title: "madamandap, mameru, haldi & mehendi",
         bgColor: "bg-cream-light",
-        events: events.slice(0, 3), // Mandap, Mameru, Haldi
+        events: events.slice(0, 3), 
       },
       {
         title: "bhakti sandhya",
         bgColor: "bg-cream-light",
-        events: events.slice(3, 4), // Bhakti Sandhya
+        events: events.slice(3, 4), 
       },
       {
         title: "wedding",
         bgColor: "bg-cream-light",
-        events: events.slice(4, 6), // Baarat, Hast Melap
+        events: events.slice(4, 6), 
       },
       {
         title: "reception",
         bgColor: "bg-cream-light",
-        events: events.slice(6, 7), // Reception
+        events: events.slice(6, 7), 
       },
     ];
 
-    // 2. If no filter is applied, return all groups
     if (!filteredEventName || filteredEventName.trim() === "") {
       return baseGroups;
     }
 
     const searchStr = filteredEventName.toLowerCase();
 
-    // 3. Define Keywords to map URL text to Timeline Events
     const isWedding = searchStr.includes("wedding") || searchStr.includes("lagan") || searchStr.includes("shaadi");
     const isMayra = searchStr.includes("mayra") || searchStr.includes("mameru");
     const isReception = searchStr.includes("reception");
     const isBhakti = searchStr.includes("bhakti") || searchStr.includes("sandhya");
 
-    // 4. Filter the groups (Cumulative Logic)
     return baseGroups.map(group => {
-      // Filter events inside this group
       const filteredEvents = group.events.filter(event => {
         const titleLower = event.title.toLowerCase();
-        let shouldShow = false; // Default to false, set to true if ANY match found
+        let shouldShow = false; 
 
-        // --- CUMULATIVE CHECKING LOGIC ---
-        
-        // 1. Check Wedding Matches
         if (isWedding) {
           if (titleLower.includes("hast melap") || titleLower.includes("baarat")) {
             shouldShow = true;
           }
         }
-
-        // 2. Check Mayra Matches (Mameru, Mandap, Haldi)
         if (isMayra) {
           if (titleLower.includes("mameru") || titleLower.includes("mandap") || titleLower.includes("haldi")) {
             shouldShow = true;
           }
         }
-
-        // 3. Check Reception Matches
         if (isReception) {
           if (titleLower.includes("reception")) {
             shouldShow = true;
           }
         }
-
-        // 4. Check Bhakti Matches
         if (isBhakti) {
           if (titleLower.includes("bhakti")) {
             shouldShow = true;
           }
         }
         
-        // 5. Fallback: If no keywords were detected at all (e.g. searching "Haldi" directly), use simple search
         if (!isWedding && !isMayra && !isReception && !isBhakti) {
             if (titleLower.includes(searchStr) || searchStr.includes(titleLower)) {
                 shouldShow = true;
@@ -268,19 +247,16 @@ const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) =
         return shouldShow;
       });
 
-      // Return the group with the new filtered events list
       return {
         ...group,
         events: filteredEvents
       };
-    }).filter(group => group.events.length > 0); // Remove groups that became empty
+    }).filter(group => group.events.length > 0);
   }, [filteredEventName]);
 
-  // Flip Card Component
   const EventCard = ({ event }: { event: TimelineEvent }) => {
     const [isFlipped, setIsFlipped] = useState(false);
     
-    // Get guest count text for this specific event
     const guestCountRaw = getEventSpecificGuestCount(event.title);
     const guestCountDisplay = getGuestDisplayString(guestCountRaw);
 
@@ -305,7 +281,7 @@ const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) =
           transition={{ duration: 0.6 }}
           style={{ transformStyle: "preserve-3d" }}
         >
-          {/* Front side - Image */}
+          {/* Front side */}
           <motion.div
             className="absolute w-full h-full bg-cream rounded-lg overflow-hidden invitation-shadow"
             style={{ backfaceVisibility: "hidden" }}
@@ -330,7 +306,7 @@ const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) =
             </motion.div>
           </motion.div>
 
-          {/* Back side - Content */}
+          {/* Back side */}
           <motion.div
             className="absolute w-full h-full bg-cream rounded-lg p-6 invitation-shadow flex flex-col overflow-y-auto"
             style={{ 
@@ -338,7 +314,6 @@ const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) =
               transform: "rotateY(180deg)"
             }}
           >
-            {/* DATE AND TIME SECTION (Date Added Above Time) */}
             <div className="flex flex-col items-center justify-center mb-4">
               <span className="font-display text-sage-dark text-sm mb-1">{event.date}</span>
               <motion.div
@@ -354,14 +329,12 @@ const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) =
               {event.title}
             </h3>
             
-            {/* Description - Splitting newlines for Reception formatting */}
             <div className="font-body text-muted-foreground leading-relaxed mb-4 text-base flex-grow text-center">
                {event.description.split('\n').map((line, i) => (
                  <p key={i} className={i > 0 ? "mt-2" : ""}>{line}</p>
                ))}
             </div>
 
-            {/* Guest Count for this Event */}
             {guestCountDisplay && (
                 <div className="mb-4 text-center">
                     <span className="text-gold font-display italic text-lg border-b border-gold/30 pb-1">
@@ -390,11 +363,9 @@ const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) =
       {visibleGroups.length > 0 ? (
         visibleGroups.map((group, groupIndex) => (
           <div key={groupIndex} className={`${group.bgColor} py-20 md:py-32 relative overflow-hidden`}>
-            {/* Animated background elements */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            </div>
+            {/* Removed Animated background circles */}
 
-            <div className="relative z-10">
+            <div className="relative z-10 w-full flex flex-col items-center">
               <motion.h3 
                 className="text-center font-display text-2xl md:text-3xl text-foreground mb-16"
                 initial={{ opacity: 0, y: -20 }}
@@ -405,21 +376,21 @@ const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) =
                 {group.title}
               </motion.h3>
 
-              <div className="relative max-w-4xl mx-auto px-6">
-                <div className="space-y-12 md:space-y-20">
+              <div className="relative w-full max-w-4xl mx-auto px-6 flex flex-col items-center">
+                <div className="space-y-12 md:space-y-20 w-full flex flex-col items-center">
                   {group.events.map((event, eventIndex) => (
-                    <div key={event.id}>
+                    <div key={event.id} className="w-full flex flex-col items-center">
                       <motion.div
-                        className={`relative flex items-center gap-6 md:gap-0 ${
+                        className={`relative flex items-center justify-center gap-6 md:gap-0 ${
                           eventIndex % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
                         }`}
-                        initial={{ opacity: 0, x: eventIndex % 2 === 0 ? -50 : 50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true, margin: "-50px" }}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: eventIndex * 0.15 }}
                       >
-                        <div className={`w-80 md:w-96 z-10 ${
-                          eventIndex % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
+                        <div className={`w-80 md:w-96 z-10 relative mx-auto ${
+                            eventIndex % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
                         }`}>
                           <EventCard event={event} />
                           <motion.p
@@ -432,13 +403,14 @@ const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) =
                         </div>
                       </motion.div>
 
-                      
+                     
                     </div>
                   ))}
                 </div>
               </div>
             </div>
 
+            {/* Section Break */}
             {groupIndex < visibleGroups.length - 1 && (
               <motion.div 
                 className="flex items-center justify-center gap-4 mt-20 relative z-20"
@@ -447,26 +419,9 @@ const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) =
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
-                <motion.div 
-                  className="h-px w-12 bg-gold/50"
-                  animate={{ scaleX: [1, 1.5, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
-                <motion.span 
-                  className="text-gold text-2xl"
-                  animate={{ 
-                    scale: [1, 1.3, 1],
-                    rotate: [0, 10, -10, 0]
-                  }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  ✦
-                </motion.span>
-                <motion.div 
-                  className="h-px w-12 bg-gold/50"
-                  animate={{ scaleX: [1, 1.5, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-                />
+                <div className="h-px w-12 bg-gold/50" />
+                <span className="text-gold text-2xl">✦</span>
+                <div className="h-px w-12 bg-gold/50" />
               </motion.div>
             )}
           </div>

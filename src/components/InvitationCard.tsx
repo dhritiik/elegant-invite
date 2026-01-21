@@ -54,7 +54,6 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
       transition={{ duration: 1.2, delay: 0.8 }}
     >
       {/* Hero Section */}
-      {/* Added pb-24 to shift the visual center upwards */}
       <section className="relative min-h-screen flex flex-col items-center justify-center pb-24">
         {/* Background Image */}
         <div 
@@ -63,29 +62,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
         >
             {/* Overlay for readability */}
             <div className="absolute inset-0 bg-gradient-to-b from-foreground/25 via-foreground/12 to-foreground/30" />
-          
-          {/* Animated floating particles */}
-          <div className="absolute inset-0 overflow-hidden">
-            {[...Array(20)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-1 h-1 bg-gold/30 rounded-full"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                }}
-                animate={{
-                  y: [0, -20, 0],
-                  opacity: [0.3, 0.8, 0.3],
-                }}
-                transition={{
-                  duration: 3 + Math.random() * 2,
-                  repeat: Infinity,
-                  delay: Math.random() * 2,
-                }}
-              />
-            ))}
-          </div>
+            {/* Removed Animated Particles */}
         </div>
         
         {/* Content */}
@@ -96,14 +73,14 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
           transition={{ duration: 1, delay: 1.2 }}
         >
           {/* Pre-title */}
-          <motion.p
+          {/* <motion.p
             className="text-black/90 font-display text-sm tracking-[0.3em] uppercase mb-4"
             initial={{ opacity: 0 }}
             animate={isVisible ? { opacity: 1 } : {}}
             transition={{ duration: 0.8, delay: 1.4 }}
           >
             We're Getting Married
-          </motion.p>
+          </motion.p> */}
           
           {/* Names */}
           <motion.div
@@ -122,7 +99,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               }}
               transition={{ duration: 3, repeat: Infinity }}
             >
-              Saloni
+              saloni
             </motion.h1>
             <motion.span
               className="block text-3xl md:text-4xl black-text font-body italic my-4"
@@ -150,24 +127,24 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               }}
               transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
             >
-              Jay
+              jay
             </motion.h1>
           </motion.div>
           
           {/* Date */}
-          <motion.p
+          {/* <motion.p
             className="font-display text-2xl font-bold md:text-2xl text-black italic mt-8"
             initial={{ opacity: 0 }}
             animate={isVisible ? { opacity: 1 } : {}}
             transition={{ duration: 0.8, delay: 2.2 }}
           >
             10 MARCH, 2026
-          </motion.p>
+          </motion.p> */}
         </motion.div>
         
-        {/* Scroll indicator - Centered Absolutely */}
+        {/* Scroll indicator */}
         <motion.div
-          className="absolute bottom-8 "
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center w-full pointer-events-none"
           initial={{ opacity: 0 }}
           animate={isVisible ? { 
             opacity: 1, 
@@ -181,7 +158,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
           }}
         >
           <motion.p
-            className="text-cream-light/80 font-display text-xs text-center tracking-[0.2em] uppercase mb-2"
+            className="text-cream-light/80 font-display text-xs "
             animate={{ opacity: [0.6, 1, 0.6] }}
             transition={{ duration: 5, repeat: Infinity }}
           >
@@ -202,19 +179,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
       
       {/* Family Blessing Section */}
       <section className="relative bg-cream-light paper-texture py-16 md:py-24 overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            className="absolute top-10 left-10 w-20 h-20 border border-gold/20 rounded-full"
-            animate={{ rotate: [0, 360], scale: [1, 1.2, 1] }}
-            transition={{ rotate: { duration: 20, repeat: Infinity, ease: "linear" }, scale: { duration: 4, repeat: Infinity } }}
-          />
-          <motion.div
-            className="absolute bottom-10 right-10 w-16 h-16 border border-sage/20 rounded-full"
-            animate={{ rotate: [360, 0], scale: [1, 1.3, 1] }}
-            transition={{ rotate: { duration: 15, repeat: Infinity, ease: "linear" }, scale: { duration: 5, repeat: Infinity } }}
-          />
-        </div>
+        {/* Removed Animated background circles */}
         
         <div className="container max-w-3xl mx-auto px-6 text-center relative z-10">
           <motion.div
@@ -244,7 +209,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              || Shree Ganeshay Namah || <br className="md:hidden"/> || Shree Neminathay Namah || <br className="md:hidden"/> || Shree Chamunda Bhavani Matay Namah ||
+              || Shri Ganeshay Namah || <br className="md:hidden"/> || Shri Neminathay Namah || <br className="md:hidden"/> || Shri Chamunda Bhavani Matay Namah ||
             </motion.p>
 
             {/* 2. INTRO TEXT */}
@@ -300,7 +265,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
                 {/* SALONI */}
                 <h2 className="font-cursive font-bold text-4xl md:text-5xl text-gold mb-2 tracking-wide">SALONI</h2>
                 <p className="font-body text-xs md:text-sm text-muted-foreground uppercase tracking-wide">
-                  (D/O Smt. Sejal & Shree. Piyush Lalitkumar Vora)
+                  (D/O Smt. Sejal & Shri Piyush Lalitbhai Vora)
                 </p>
 
                 <div className="my-6">
@@ -310,7 +275,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
                 {/* JAY */}
                 <h2 className="font-display font-bold text-4xl md:text-5xl text-gold mb-2 tracking-wide">JAY</h2>
                 <p className="font-body text-sm md:text-sm text-muted-foreground uppercase tracking-wide">
-                  (S/O Lt. Leena & Shree. Alpesh Jeevanlal Shah)
+                  (S/O Late. Leena & Shri Alpesh Jeevanlal Shah)
                 </p>
             </motion.div>
 
@@ -334,7 +299,6 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               transition={{ duration: 0.8, delay: 0.8 }}
             >
               <p className="font-display text-sage-dark text-md mb-1">With Love & Best Compliments</p>
-              {/* Reduced font size as requested */}
               <p className="font-display text-gold text-base md:text-lg font-bold">Smt. Kokilaben Lalitkumar Vora & Family</p>
             </motion.div>
             
@@ -356,6 +320,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
       
       {/* Timeline Section */}
       <section className="relative bg-sage/10 paper-texture py-20 md:py-32 overflow-hidden">
+        {/* Removed Animated background circles */}
         <div className="container max-w-4xl mx-auto px-6 relative z-10">
            <div className="text-center mb-16">
               <h2 className="font-display text-3xl md:text-5xl text-foreground mb-4">the celebration</h2>
@@ -413,8 +378,8 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               transition={{ duration: 0.8, delay: 0.4 }}
             >
               <div className="font-body text-lg text-muted-foreground leading-relaxed">
-                <p className="mb-4">✦ No Gifts Please</p>
-                <p>✦ Valet Parking is available at all locations</p>
+                <p className="mb-4">✦ Your presence is the only gift we desire.</p>
+                <p>✦ Valet Parking Available</p>
               </div>
             </motion.div>
 
@@ -434,6 +399,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
       </section>
       
       <footer className="bg-sage py-12 relative overflow-hidden">
+        {/* Removed Animated background circles */}
         <div className="text-center relative z-10">
           <p className="font-display text-2xl text-cream-light mb-2">S & J</p>
           <p className="font-body text-cream-light/70 text-sm">10 March, 2026</p>
