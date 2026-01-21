@@ -20,7 +20,7 @@ const events: TimelineEvent[] = [
     title: "Mandap Muhurat",
     time: "9:00 AM",
     date: "Sunday, 8th March",
-    description: "Sacred wedding pavilion ceremony marking the beginning of our celebrations",
+    description: "Invoking the Blessings of Lord Ganesha for a Joyous Beginning",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "horizontal",
     image: "/madamandup.png",
@@ -38,7 +38,7 @@ const events: TimelineEvent[] = [
     title: "Mameru",
     time: "10:30 AM ",
     date: "Sunday, 8th March",
-    description: "Mameru ceremony",
+    description: "A Shower of Blessings and Love from the Maternal Family",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "horizontal",
     image: "/mameru.jpg",
@@ -55,7 +55,7 @@ const events: TimelineEvent[] = [
     title: "Haldi & Mehendi ",
     time: "11:00 AM onwards",
     date: "Sunday, 8th March",
-    description: "Haldi ceremony & Mehendi alongside. Lunch to follow.",
+    description: "Hues of Turmeric + Glow of Love = Shades of Sunshine",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "horizontal",
     image: "/haldi.jpg",
@@ -72,7 +72,7 @@ const events: TimelineEvent[] = [
     title: "Bhakti Sandhya",
     time: "7:30 PM",
     date: "Sunday, 8th March",
-    description: "An evening of devotional music, blessings, and spiritual togetherness. Choviyaar Compulsory.",
+    description: "An evening of devotional music, blessings, and spiritual togetherness.\n Choviyaar Compulsory.",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "vertical",
     image: "/bhakti.jpg",
@@ -106,7 +106,7 @@ const events: TimelineEvent[] = [
     title: "Hast Melap",
     time: "4:05 PM ",
     date: "Tuesday, 10th March",
-    description: "The sacred union ceremony followed by reception & dinner. Choviyaar facility available.",
+    description: "The sacred union where two hands, two hearts, and two families come together\n Choviyaar facility available.",
     venue: "Arcadia Banquet Hall, Sumer Nagar, Borivali West, Mumbai",
     style: "vertical",
     image: "/wedding.jpg",
@@ -122,7 +122,7 @@ const events: TimelineEvent[] = [
     title: "Reception",
     time: "7:30 PM onwards",
     date: "Tuesday, 10th March",
-    description: "The sacred union ceremony\nfollowed by reception & dinner.\nChoviyaar facility available.",
+    description: "A grand celebration honoring love, togetherness, and new beginnings\nChoviyaar facility available.",
     venue: "Arcadia Banquet Hall, Sumer Nagar, Borivali West, Mumbai",
     style: "vertical",
     image: "/reception.jpg",
@@ -317,9 +317,9 @@ const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) =
             }}
           >
             <div className="flex flex-col items-center justify-center mb-4">
-              <span className="font-display text-sage-dark text-sm mb-1">{event.date}</span>
+              <span className="font-display text-sage-dark text-md mb-1">{event.date}</span>
               <motion.div
-                className="bg-sage-dark text-cream-light px-4 py-2 rounded-full text-sm font-display font-bold"
+                className="bg-sage-dark text-cream-light px-4 py-2 rounded-full text-md font-display font-bold"
                 animate={{ opacity: [0.8, 1, 0.8] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
@@ -339,7 +339,7 @@ const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) =
 
             {guestCountDisplay && (
               <div className="mb-4 text-center">
-                <span className="text-gold font-display italic text-base border-b border-black/30 pb-1">
+                <span className="text-black font-display italic text-md border-b border-black/30 pb-1">
                   {guestCountDisplay}
                 </span>
               </div>
