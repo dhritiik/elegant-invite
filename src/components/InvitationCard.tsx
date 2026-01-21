@@ -54,7 +54,8 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
       transition={{ duration: 1.2, delay: 0.8 }}
     >
       {/* Hero Section */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center">
+      {/* Added pb-24 to shift the visual center upwards */}
+      <section className="relative min-h-screen flex flex-col items-center justify-center pb-24">
         {/* Background Image */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-70"
@@ -96,7 +97,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
         >
           {/* Pre-title */}
           <motion.p
-            className="text-black/90 font-display text-sm tracking-[0.3em] uppercase mb-8"
+            className="text-black/90 font-display text-sm tracking-[0.3em] uppercase mb-4"
             initial={{ opacity: 0 }}
             animate={isVisible ? { opacity: 1 } : {}}
             transition={{ duration: 0.8, delay: 1.4 }}
@@ -153,24 +154,20 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             </motion.h1>
           </motion.div>
           
-         
-          
           {/* Date */}
           <motion.p
-            className="font-body text-2xl font-bold md:text-2xl text-black italic"
+            className="font-display text-2xl font-bold md:text-2xl text-black italic mt-8"
             initial={{ opacity: 0 }}
             animate={isVisible ? { opacity: 1 } : {}}
             transition={{ duration: 0.8, delay: 2.2 }}
           >
-
-
             10 MARCH, 2026
           </motion.p>
         </motion.div>
         
-        {/* Scroll indicator */}
+        {/* Scroll indicator - Centered Absolutely */}
         <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          className="absolute bottom-8 "
           initial={{ opacity: 0 }}
           animate={isVisible ? { 
             opacity: 1, 
@@ -191,7 +188,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             Scroll for more
           </motion.p>
           <motion.svg
-            className="w-6 h-6 mx-auto text-cream-light/80"
+            className="w-6 h-6 text-cream-light/80"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -203,10 +200,21 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
         </motion.div>
       </section>
       
-      {/* Family Blessing Section - NEW CONTENT */}
+      {/* Family Blessing Section */}
       <section className="relative bg-cream-light paper-texture py-16 md:py-24 overflow-hidden">
         {/* Animated background elements */}
-        
+        <div className="absolute inset-0 overflow-hidden">
+          <motion.div
+            className="absolute top-10 left-10 w-20 h-20 border border-gold/20 rounded-full"
+            animate={{ rotate: [0, 360], scale: [1, 1.2, 1] }}
+            transition={{ rotate: { duration: 20, repeat: Infinity, ease: "linear" }, scale: { duration: 4, repeat: Infinity } }}
+          />
+          <motion.div
+            className="absolute bottom-10 right-10 w-16 h-16 border border-sage/20 rounded-full"
+            animate={{ rotate: [360, 0], scale: [1, 1.3, 1] }}
+            transition={{ rotate: { duration: 15, repeat: Infinity, ease: "linear" }, scale: { duration: 5, repeat: Infinity } }}
+          />
+        </div>
         
         <div className="container max-w-3xl mx-auto px-6 text-center relative z-10">
           <motion.div
@@ -250,7 +258,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               With divine grace and blessings, Vora Family seeks your gracious presence and blessings to celebrate the union of hearts and families.
             </motion.p>
             
-            {/* 3. DYNAMIC INVITATION (We Cordially Invite...) */}
+            {/* 3. DYNAMIC INVITATION */}
             <motion.div 
               className="font-body text-xl md:text-2xl text-sage-dark mb-4"
               initial={{ opacity: 0 }}
@@ -326,7 +334,8 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               transition={{ duration: 0.8, delay: 0.8 }}
             >
               <p className="font-display text-sage-dark text-md mb-1">With Love & Best Compliments</p>
-              <p className="font-display text-gold text-xl md:text-1xl font-bold">Smt. Kokilaben Lalitkumar Vora & Family</p>
+              {/* Reduced font size as requested */}
+              <p className="font-display text-gold text-base md:text-lg font-bold">Smt. Kokilaben Lalitkumar Vora & Family</p>
             </motion.div>
             
             {/* Bottom decorative divider */}
@@ -352,7 +361,6 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               <h2 className="font-display text-3xl md:text-5xl text-foreground mb-4">the celebration</h2>
            </div>
            
-           {/* PASS ALL GUEST CONFIGS TO TIMELINE */}
            <EventTimeline 
              filteredEventName={guestDetails.event}
              guestCounts={{
@@ -363,6 +371,65 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
                reception: guestDetails.guestsReception
              }}
            />
+        </div>
+      </section>
+
+      {/* Additional Details Section */}
+      <section className="relative bg-cream-light paper-texture py-16 md:py-24 overflow-hidden">
+        <div className="container max-w-3xl mx-auto px-6 text-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <motion.div 
+              className="flex items-center justify-center gap-4 mb-8"
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <motion.div className="h-px w-12 md:w-20 bg-gold/50" animate={{ scaleX: [1, 1.5, 1] }} transition={{ duration: 3, repeat: Infinity }} />
+              <span className="text-gold text-xl">✦</span>
+              <motion.div className="h-px w-12 md:w-20 bg-gold/50" animate={{ scaleX: [1, 1.5, 1] }} transition={{ duration: 3, repeat: Infinity, delay: 1 }} />
+            </motion.div>
+
+            <motion.h2 
+              className="font-display text-3xl md:text-4xl text-foreground mb-8"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+            >
+              Additional Details
+            </motion.h2>
+
+            <motion.div
+              className="space-y-6"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              <div className="font-body text-lg text-muted-foreground leading-relaxed">
+                <p className="mb-4">✦ No Gifts Please</p>
+                <p>✦ Valet Parking is available at all locations</p>
+              </div>
+            </motion.div>
+
+            <motion.div 
+              className="flex items-center justify-center gap-4 mt-12"
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+            >
+              <div className="h-px w-16 md:w-24 bg-gold/50" />
+              <span className="text-gold text-xl">✦</span>
+              <div className="h-px w-16 md:w-24 bg-gold/50" />
+            </motion.div>
+          </motion.div>
         </div>
       </section>
       

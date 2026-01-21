@@ -392,28 +392,6 @@ const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) =
           <div key={groupIndex} className={`${group.bgColor} py-20 md:py-32 relative overflow-hidden`}>
             {/* Animated background elements */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
-              <motion.div
-                className="absolute top-10 left-10 w-20 h-20 border border-gold/15 rounded-full"
-                animate={{ 
-                  rotate: [0, 360],
-                  scale: [1, 1.2, 1]
-                }}
-                transition={{ 
-                  rotate: { duration: 25, repeat: Infinity, ease: "linear" },
-                  scale: { duration: 6, repeat: Infinity }
-                }}
-              />
-              <motion.div
-                className="absolute bottom-10 right-10 w-16 h-16 border border-sage/20 rounded-full"
-                animate={{ 
-                  rotate: [360, 0],
-                  scale: [1, 1.3, 1]
-                }}
-                transition={{ 
-                  rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-                  scale: { duration: 5, repeat: Infinity, delay: 0.5 }
-                }}
-              />
             </div>
 
             <div className="relative z-10">
@@ -444,39 +422,17 @@ const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) =
                           eventIndex % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
                         }`}>
                           <EventCard event={event} />
+                          <motion.p
+                            className="text-center font-body text-sm text-muted-foreground mt-3 italic"
+                            animate={{ opacity: [0.6, 1, 0.6] }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                          >
+                            Tap Above to Flip
+                          </motion.p>
                         </div>
                       </motion.div>
 
-                      {eventIndex < group.events.length - 1 && (
-                        <motion.div 
-                          className="flex items-center justify-center gap-4 mt-20 relative z-20"
-                          initial={{ opacity: 0, scale: 0 }}
-                          whileInView={{ opacity: 1, scale: 1 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.6, delay: 0.3 }}
-                        >
-                          <motion.div 
-                            className="h-px w-12 bg-gold/50"
-                            animate={{ scaleX: [1, 1.5, 1] }}
-                            transition={{ duration: 2, repeat: Infinity }}
-                          />
-                          <motion.span 
-                            className="text-gold text-2xl"
-                            animate={{ 
-                              scale: [1, 1.3, 1],
-                              rotate: [0, 10, -10, 0]
-                            }}
-                            transition={{ duration: 2, repeat: Infinity }}
-                          >
-                            ✦
-                          </motion.span>
-                          <motion.div 
-                            className="h-px w-12 bg-gold/50"
-                            animate={{ scaleX: [1, 1.5, 1] }}
-                            transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-                          />
-                        </motion.div>
-                      )}
+                      
                     </div>
                   ))}
                 </div>
