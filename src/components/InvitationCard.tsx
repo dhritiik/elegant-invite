@@ -91,7 +91,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             className="w-full"
           >
             <motion.h1 
-              className="font-display font-bold text-6xl md:text-8xl lg:text-9xl text-black mb-2 tracking-wide leading-tight"
+              className="font-display font-bold text-5xl md:text-6xl lg:text-9xl text-black mb-2 tracking-wide leading-tight"
               animate={{ 
                 textShadow: [
                   "0 0 20px rgba(255, 215, 0, 0.3)",
@@ -119,7 +119,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               &
             </motion.span>
             <motion.h1 
-              className="font-display font-bold text-6xl md:text-8xl lg:text-9xl text-black tracking-wide leading-tight"
+              className="font-display font-bold text-5xl md:text-6xl lg:text-9xl text-black tracking-wide leading-tight"
               animate={{ 
                 textShadow: [
                   "0 0 20px rgba(255, 215, 0, 0.3)",
