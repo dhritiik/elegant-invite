@@ -171,11 +171,13 @@ const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) =
   const getGuestDisplayString = (countStr: string) => {
     if (!countStr) return null;
     const c = countStr.toLowerCase();
-    if (c === 'family') return "Whole Family Invited";
-    if (c === '2' || c === 'couple') return "2 Seats Reserved";
-    if (!isNaN(Number(countStr))) return `${countStr} Seats Reserved`;
+    if (c === 'family') return "Looking forward to welcome your Family ";
+    if (c === '2' || c === 'couple') return "Looking forward to welcome 2 guests";
+    if (!isNaN(Number(countStr))) return `Looking forward to welcome ${countStr} guests`;
     return `${countStr} Invited`;
   };
+
+
 
   const visibleGroups = useMemo(() => {
     const baseGroups = [
