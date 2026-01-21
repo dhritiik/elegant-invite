@@ -300,7 +300,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
                 {/* SALONI */}
                 <h2 className="font-cursive font-bold text-4xl md:text-5xl text-gold mb-2 tracking-wide">SALONI</h2>
                 <p className="font-body text-xs md:text-sm text-muted-foreground uppercase tracking-wide">
-                  (D/O of Mrs. Sejal & Mr. Piyush Lalitkumar Vora)
+                  (D/O Smt. Sejal & Shree. Piyush Lalitkumar Vora)
                 </p>
 
                 <div className="my-6">
@@ -310,7 +310,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
                 {/* JAY */}
                 <h2 className="font-display font-bold text-4xl md:text-5xl text-gold mb-2 tracking-wide">JAY</h2>
                 <p className="font-body text-sm md:text-sm text-muted-foreground uppercase tracking-wide">
-                  (S/O of Lt. Leena & Mr. Alpesh Jeevanlal Shah)
+                  (S/O Lt. Leena & Shree. Alpesh Jeevanlal Shah)
                 </p>
             </motion.div>
 
