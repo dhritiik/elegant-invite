@@ -187,22 +187,22 @@ const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) =
     // 1. Define the base groups (structure)
     const baseGroups = [
       {
-        title: "Sunday, 8th March - Morning Celebrations",
+        title: "madamandap, mameru, haldi & mehendi",
         bgColor: "bg-cream-light",
         events: events.slice(0, 3), // Mandap, Mameru, Haldi
       },
       {
-        title: "Sunday, 8th March - Evening Celebration",
+        title: "bhakti sandhya",
         bgColor: "bg-cream-light",
         events: events.slice(3, 4), // Bhakti Sandhya
       },
       {
-        title: "Tuesday, 10th March - Wedding Ceremonies",
+        title: "wedding",
         bgColor: "bg-cream-light",
         events: events.slice(4, 6), // Baarat, Hast Melap
       },
       {
-        title: "Tuesday, 10th March - Reception",
+        title: "reception",
         bgColor: "bg-cream-light",
         events: events.slice(6, 7), // Reception
       },

@@ -153,48 +153,18 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             </motion.h1>
           </motion.div>
           
-          {/* Decorative divider */}
-          <motion.div
-            className="flex items-center justify-center gap-4 my-8"
-            initial={{ opacity: 0, scaleX: 0 }}
-            animate={isVisible ? { opacity: 1, scaleX: 1 } : {}}
-            transition={{ duration: 0.8, delay: 2 }}
-          >
-            <motion.div 
-              className="h-px w-16 md:w-24 bg-gold/60"
-              animate={{ scaleX: [1, 1.2, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            />
-            <motion.svg
-              className="w-6 h-6 text-gold"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              animate={{ 
-                rotate: [0, 360],
-                scale: [1, 1.2, 1]
-              }}
-              transition={{ 
-                rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-                scale: { duration: 3, repeat: Infinity }
-              }}
-            >
-              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-            </motion.svg>
-            <motion.div 
-              className="h-px w-16 md:w-24 bg-gold/60"
-              animate={{ scaleX: [1, 1.2, 1] }}
-              transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-            />
-          </motion.div>
+         
           
           {/* Date */}
           <motion.p
-            className="font-body text-xl md:text-2xl text-black italic"
+            className="font-body text-2xl font-bold md:text-2xl text-black italic"
             initial={{ opacity: 0 }}
             animate={isVisible ? { opacity: 1 } : {}}
             transition={{ duration: 0.8, delay: 2.2 }}
           >
-            10 March, 2026
+
+
+            10 MARCH, 2026
           </motion.p>
         </motion.div>
         
@@ -214,11 +184,11 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
           }}
         >
           <motion.p
-            className="text-cream-light/80 font-display text-xs tracking-[0.2em] uppercase mb-2"
+            className="text-cream-light/80 font-display text-xs text-center tracking-[0.2em] uppercase mb-2"
             animate={{ opacity: [0.6, 1, 0.6] }}
-            transition={{ duration: 2, repeat: Infinity }}
+            transition={{ duration: 5, repeat: Infinity }}
           >
-            Scroll for details
+            Scroll for more
           </motion.p>
           <motion.svg
             className="w-6 h-6 mx-auto text-cream-light/80"
@@ -236,30 +206,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
       {/* Family Blessing Section - NEW CONTENT */}
       <section className="relative bg-cream-light paper-texture py-16 md:py-24 overflow-hidden">
         {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            className="absolute top-10 left-10 w-20 h-20 border border-gold/20 rounded-full"
-            animate={{ 
-              rotate: [0, 360],
-              scale: [1, 1.2, 1]
-            }}
-            transition={{ 
-              rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-              scale: { duration: 4, repeat: Infinity }
-            }}
-          />
-          <motion.div
-            className="absolute bottom-10 right-10 w-16 h-16 border border-sage/20 rounded-full"
-            animate={{ 
-              rotate: [360, 0],
-              scale: [1, 1.3, 1]
-            }}
-            transition={{ 
-              rotate: { duration: 15, repeat: Infinity, ease: "linear" },
-              scale: { duration: 5, repeat: Infinity }
-            }}
-          />
-        </div>
+        
         
         <div className="container max-w-3xl mx-auto px-6 text-center relative z-10">
           <motion.div
@@ -315,13 +262,13 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               
               {guestDetails.name ? (
                 <div className="my-4">
-                  <span className="block font-display text-3xl md:text-4xl text-gold mb-1">
+                  <span className="block font-display text-3xl md:text-4xl text-sage-dark mb-1">
                     {guestDetails.name}
                   </span>
                   {getMainGuestText(guestDetails.guests)}
                 </div>
               ) : (
-                <span className="font-display text-gold px-2"> You </span>
+                <span className="font-display text-sage-dark px-2"> You </span>
               )}
             </motion.div>
 
@@ -343,7 +290,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
                className="mb-8"
             >
                 {/* SALONI */}
-                <h2 className="font-display font-bold text-4xl md:text-5xl text-gold mb-2 tracking-wide">SALONI</h2>
+                <h2 className="font-cursive font-bold text-4xl md:text-5xl text-gold mb-2 tracking-wide">SALONI</h2>
                 <p className="font-body text-xs md:text-sm text-muted-foreground uppercase tracking-wide">
                   (D/O of Mrs. Sejal & Mr. Piyush Lalitkumar Vora)
                 </p>
@@ -402,8 +349,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
       <section className="relative bg-sage/10 paper-texture py-20 md:py-32 overflow-hidden">
         <div className="container max-w-4xl mx-auto px-6 relative z-10">
            <div className="text-center mb-16">
-              <p className="text-sage font-display text-sm tracking-[0.3em] uppercase mb-4">The Celebration</p>
-              <h2 className="font-display text-3xl md:text-5xl text-foreground mb-4">Our Wedding Journey</h2>
+              <h2 className="font-display text-3xl md:text-5xl text-foreground mb-4">the celebration</h2>
            </div>
            
            {/* PASS ALL GUEST CONFIGS TO TIMELINE */}
