@@ -91,7 +91,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             className="w-full"
           >
             <motion.h1 
-              className="font-display font-bold text-5xl md:text-6xl lg:text-9xl text-black mb-2 tracking-wide leading-tight"
+              className="font-display font-bold text-5xl md:text-6xl lg:text-9xl text-red-600 mb-2 tracking-wide leading-tight"
               animate={{ 
                 textShadow: [
                   "0 0 20px rgba(255, 215, 0, 0.3)",
@@ -104,7 +104,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               saloni
             </motion.h1>
             <motion.span
-              className="block text-4xl md:text-5xl black-text font-body italic my-2 md:my-4"
+              className="block text-4xl md:text-5xl text-red-600 font-body italic my-2 md:my-4"
               animate={{ 
                 scale: [1, 1.1, 1],
                 rotate: [0, 5, -5, 0]
@@ -119,7 +119,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               &
             </motion.span>
             <motion.h1 
-              className="font-display font-bold text-5xl md:text-6xl lg:text-9xl text-black tracking-wide leading-tight"
+              className="font-display font-bold text-5xl md:text-6xl lg:text-9xl text-blue-700 tracking-wide leading-tight"
               animate={{ 
                 textShadow: [
                   "0 0 20px rgba(255, 215, 0, 0.3)",

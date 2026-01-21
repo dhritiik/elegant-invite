@@ -53,7 +53,7 @@ const events: TimelineEvent[] = [
   {
     id: 3,
     title: "Haldi & Mehendi ",
-    time: "11:00 AM onwards",
+    time: "11:30 AM onwards",
     date: "Sunday, 8th March",
     description: "Hues of Turmeric + Glow of Love = Shades of Sunshine",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
@@ -106,7 +106,7 @@ const events: TimelineEvent[] = [
     title: "Hast Melap",
     time: "4:05 PM ",
     date: "Tuesday, 10th March",
-    description: "The sacred union where two hands, two hearts, and two families come together\n Choviyaar facility available.",
+    description: "The sacred union where two hands, two hearts, and two families come together",
     venue: "Arcadia Banquet Hall, Sumer Nagar, Borivali West, Mumbai",
     style: "vertical",
     image: "/wedding.jpg",
@@ -122,7 +122,7 @@ const events: TimelineEvent[] = [
     title: "Reception",
     time: "7:30 PM onwards",
     date: "Tuesday, 10th March",
-    description: "A grand celebration honoring love, togetherness, and new beginnings\nChoviyaar facility available.",
+    description: "A grand celebration honoring love, togetherness and new beginnings\nChoviyaar Facility Available",
     venue: "Arcadia Banquet Hall, Sumer Nagar, Borivali West, Mumbai",
     style: "vertical",
     image: "/reception.jpg",
@@ -339,7 +339,7 @@ const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) =
 
             {guestCountDisplay && (
               <div className="mb-4 text-center">
-                <span className="text-black font-display italic text-md border-b border-black/30 pb-1">
+                <span className="text-black font-display italic text-base border-b border-black/30 pb-1">
                   {guestCountDisplay}
                 </span>
               </div>
