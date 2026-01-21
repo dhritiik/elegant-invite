@@ -271,7 +271,7 @@ const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) =
 
     return (
       <motion.div
-        className="w-80 h-80 md:w-96 md:h-96 z-10 cursor-pointer"
+        className="w-80 h-96 md:w-96 md:h-[28rem] z-10 cursor-pointer"
         onClick={() => setIsFlipped(!isFlipped)}
         whileHover={{ scale: 1.05 }}
         transition={{ type: "spring", stiffness: 300 }}
@@ -338,17 +338,17 @@ const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) =
             </div>
 
             {guestCountDisplay && (
-                <div className="mb-4 text-center">
-                    <span className="text-gold font-display italic text-lg border-b border-gold/30 pb-1">
-                        {guestCountDisplay}
-                    </span>
-                </div>
+              <div className="mb-4 text-center">
+                <span className="text-gold font-display italic text-base border-b border-black/30 pb-1">
+                  {guestCountDisplay}
+                </span>
+              </div>
             )}
 
             {event.venue && (
               <motion.button
                 onClick={handleVenueClick}
-                className="font-body text-sm text-sage italic border-t border-sage/20 pt-3 mt-auto hover:text-gold transition-colors cursor-pointer"
+                className="font-body text-base md:text-base text-sage italic border-t border-sage/20 pt-3 mt-auto hover:text-gold transition-colors cursor-pointer"
                 whileHover={{ scale: 1.05 }}
               >
                 📍 {event.venue}

@@ -228,7 +228,8 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               We cordially invite
               
               {guestDetails.name ? (
-                <div className="my-4">
+                // CHANGED HERE: "my-4" -> "mt-1 mb-4" to reduce top gap
+                <div className="mt-1 mb-4">
                   <span className="block font-display text-3xl md:text-4xl text-sage-dark mb-1">
                     {guestDetails.name}
                   </span>
@@ -258,7 +259,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             >
                 {/* SALONI */}
                 <h2 className="font-cursive font-bold text-4xl md:text-5xl text-gold mb-2 tracking-wide">SALONI</h2>
-                <p className="font-body text-xs md:text-sm text-muted-foreground uppercase tracking-wide">
+                <p className="font-body text-sm md:text-sm text-muted-foreground uppercase tracking-wide">
                   (D/O Smt. Sejal & Shri Piyush Lalitbhai Vora)
                 </p>
 
@@ -269,7 +270,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
                 {/* JAY */}
                 <h2 className="font-display font-bold text-4xl md:text-5xl text-gold mb-2 tracking-wide">JAY</h2>
                 <p className="font-body text-sm md:text-sm text-muted-foreground uppercase tracking-wide">
-                  (S/O Lt. Leena & Shri Alpesh Jeevanlal Shah)
+                  (S/O Late Leena & Shri Alpesh Jeevanlal Shah)
                 </p>
             </motion.div>
 
