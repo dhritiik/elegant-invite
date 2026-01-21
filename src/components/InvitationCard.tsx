@@ -11,8 +11,13 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
   // State to hold URL parameters
   const [guestDetails, setGuestDetails] = useState({
     name: "",
-    guests: "",
-    event: ""
+    guests: "",      // Global default
+    event: "",
+    // Specific event counts
+    guestsMayra: "",
+    guestsBhakti: "",
+    guestsWedding: "",
+    guestsReception: ""
   });
 
   // Effect to parse URL parameters on component mount
@@ -22,9 +27,24 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
       // Replaces underscores with spaces for cleaner URLs (e.g. The_Gupta_Family -> The Gupta Family)
       name: params.get("name")?.replace(/_/g, " ") || "",
       guests: params.get("guests") || "", 
-      event: params.get("event")?.replace(/_/g, " ") || ""
+      event: params.get("event")?.replace(/_/g, " ") || "",
+      
+      // Parse specific event guests
+      guestsMayra: params.get("guests_mayra") || "",
+      guestsBhakti: params.get("guests_bhakti") || "",
+      guestsWedding: params.get("guests_wedding") || "",
+      guestsReception: params.get("guests_reception") || ""
     });
   }, []);
+
+  // Helper to format guest text for the main card (Global fallback display)
+  const getMainGuestText = (count: string) => {
+    if (!count) return null;
+    const c = count.toLowerCase();
+    if (c === 'family') return <span className="block text-base italic opacity-80">(and Family)</span>;
+    if (c === '2' || c === 'couple') return <span className="block text-base italic opacity-80">2 seats reserved for you</span>;
+    return <span className="block text-base italic opacity-80">(Guests: {count})</span>;
+  };
 
   return (
     <motion.div
@@ -332,21 +352,8 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
                     {guestDetails.name}
                   </span>
                   
-                  {/* Guest Count / Details Logic */}
-                  {/* Option 1: Family */}
-                  {guestDetails.guests.toLowerCase() === 'family' && (
-                    <span className="block text-base italic opacity-80">(and Family)</span>
-                  )}
-                  
-                  {/* Option 2: 2 Seats Reserved */}
-                  {(guestDetails.guests === '2' || guestDetails.guests.toLowerCase() === 'couple') && (
-                    <span className="block text-base italic opacity-80">2 seats reserved for you</span>
-                  )}
-                  
-                  {/* Option 3: Generic numeric (e.g. guests=3) */}
-                  {(!['family', '2', 'couple'].includes(guestDetails.guests.toLowerCase()) && guestDetails.guests) && (
-                    <span className="block text-base italic opacity-80">(Guests: {guestDetails.guests})</span>
-                  )}
+                  {/* Global Guest Count Fallback for main card */}
+                  {getMainGuestText(guestDetails.guests)}
                 </div>
               ) : (
                 " you "
@@ -398,174 +405,30 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
       
       {/* Timeline Section */}
       <section className="relative bg-sage/10 paper-texture py-20 md:py-32 overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            className="absolute top-20 left-20 w-32 h-32 border-2 border-gold/10 rounded-full"
-            animate={{ 
-              rotate: [0, 180, 360],
-              scale: [1, 1.1, 1]
-            }}
-            transition={{ 
-              rotate: { duration: 25, repeat: Infinity, ease: "linear" },
-              scale: { duration: 6, repeat: Infinity }
-            }}
-          />
-          <motion.div
-            className="absolute bottom-20 right-20 w-24 h-24 border border-sage/15 rounded-full"
-            animate={{ 
-              rotate: [360, 180, 0],
-              scale: [1, 1.2, 1]
-            }}
-            transition={{ 
-              rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-              scale: { duration: 5, repeat: Infinity, delay: 1 }
-            }}
-          />
-          {/* Floating particles */}
-          {[...Array(15)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-2 h-2 bg-gold/20 rounded-full"
-              style={{
-                left: `${20 + Math.random() * 60}%`,
-                top: `${20 + Math.random() * 60}%`,
-              }}
-              animate={{
-                y: [0, -30, 0],
-                x: [0, Math.random() * 20 - 10, 0],
-                opacity: [0.2, 0.6, 0.2],
-              }}
-              transition={{
-                duration: 4 + Math.random() * 3,
-                repeat: Infinity,
-                delay: Math.random() * 2,
-              }}
-            />
-          ))}
-        </div>
-        
         <div className="container max-w-4xl mx-auto px-6 relative z-10">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <motion.p 
-              className="text-sage font-display text-sm tracking-[0.3em] uppercase mb-4"
-              animate={{ 
-                textShadow: [
-                  "0 0 0 rgba(0,0,0,0)",
-                  "0 0 8px rgba(95, 25, 85, 0.4)",
-                  "0 0 0 rgba(0,0,0,0)"
-                ]
-              }}
-              transition={{ duration: 3, repeat: Infinity }}
-            >
-              The Celebration
-            </motion.p>
-            <motion.h2 
-              className="font-display text-3xl md:text-5xl text-foreground mb-4"
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              Our Wedding Journey
-            </motion.h2>
-            <motion.div 
-              className="flex items-center justify-center gap-3"
-              initial={{ opacity: 0, scaleX: 0 }}
-              whileInView={{ opacity: 1, scaleX: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <motion.div 
-                className="h-px w-12 bg-gold/50"
-                animate={{ scaleX: [1, 1.3, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-              <motion.div 
-                className="w-2 h-2 rounded-full bg-gold"
-                animate={{ 
-                  scale: [1, 1.5, 1],
-                  boxShadow: [
-                    "0 0 0 rgba(43, 75, 50, 0)",
-                    "0 0 15px rgba(43, 75, 50, 0.6)",
-                    "0 0 0 rgba(43, 75, 50, 0)"
-                  ]
-                }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-              <motion.div 
-                className="h-px w-12 bg-gold/50"
-                animate={{ scaleX: [1, 1.3, 1] }}
-                transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-              />
-            </motion.div>
-          </motion.div>
-          
-          {/* UPDATED: Pass the filtered event name to the Timeline */}
-          <EventTimeline filteredEventName={guestDetails.event} />
+           <div className="text-center mb-16">
+              <p className="text-sage font-display text-sm tracking-[0.3em] uppercase mb-4">The Celebration</p>
+              <h2 className="font-display text-3xl md:text-5xl text-foreground mb-4">Our Wedding Journey</h2>
+           </div>
+           
+           {/* PASS ALL GUEST CONFIGS TO TIMELINE */}
+           <EventTimeline 
+             filteredEventName={guestDetails.event}
+             guestCounts={{
+               global: guestDetails.guests,
+               mayra: guestDetails.guestsMayra,
+               bhakti: guestDetails.guestsBhakti,
+               wedding: guestDetails.guestsWedding,
+               reception: guestDetails.guestsReception
+             }}
+           />
         </div>
       </section>
       
-      {/* Footer */}
       <footer className="bg-sage py-12 relative overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            className="absolute top-4 left-4 w-12 h-12 border border-cream-light/20 rounded-full"
-            animate={{ 
-              rotate: [0, 360],
-              scale: [1, 1.2, 1]
-            }}
-            transition={{ 
-              rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-              scale: { duration: 3, repeat: Infinity }
-            }}
-          />
-          <motion.div
-            className="absolute bottom-4 right-4 w-8 h-8 border border-cream-light/15 rounded-full"
-            animate={{ 
-              rotate: [360, 0],
-              scale: [1, 1.3, 1]
-            }}
-            transition={{ 
-              rotate: { duration: 15, repeat: Infinity, ease: "linear" },
-              scale: { duration: 4, repeat: Infinity, delay: 0.5 }
-            }}
-          />
-        </div>
-        
         <div className="text-center relative z-10">
-          <motion.p 
-            className="font-display text-2xl text-cream-light mb-2"
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            animate={{ 
-              textShadow: [
-                "0 0 0 rgba(0,0,0,0)",
-                "0 0 12px rgba(255, 248, 220, 0.4)",
-                "0 0 0 rgba(0,0,0,0)"
-              ]
-            }}
-            transition={{ textShadow: { duration: 3, repeat: Infinity } }}
-          >
-            S & J
-          </motion.p>
-          <motion.p 
-            className="font-body text-cream-light/70 text-sm"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            10 March, 2026
-          </motion.p>
+          <p className="font-display text-2xl text-cream-light mb-2">S & J</p>
+          <p className="font-body text-cream-light/70 text-sm">10 March, 2026</p>
         </div>
       </footer>
     </motion.div>

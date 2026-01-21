@@ -14,6 +14,7 @@ interface TimelineEvent {
   mapsUrl?: string;
 }
 
+// Updated Events Array with specific Reception formatting
 const events: TimelineEvent[] = [
   {
     id: 1,
@@ -122,7 +123,8 @@ const events: TimelineEvent[] = [
     title: "Reception",
     time: "7:30 PM onwards",
     date: "Tuesday, 10th March",
-    description: "The sacred union ceremony followed by reception & dinner. Choviyaar facility available.",
+    // Used '\n' to denote new lines for the requested format
+    description: "The sacred union ceremony\nfollowed by reception & dinner.\nChoviyaar facility available.",
     venue: "Arcadia Banquet Hall, Sumer Nagar, Borivali West, Mumbai",
     style: "vertical",
     image: "/reception.jpg",
@@ -137,10 +139,50 @@ const events: TimelineEvent[] = [
 
 interface EventTimelineProps {
   filteredEventName?: string;
+  guestCounts?: {
+    global: string;
+    mayra: string;
+    bhakti: string;
+    wedding: string;
+    reception: string;
+  };
 }
 
-const EventTimeline = ({ filteredEventName }: EventTimelineProps) => {
-  // We use useMemo to calculate the visible groups based on the URL parameter
+const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) => {
+  // Logic to determine which guest count applies to which event
+  const getEventSpecificGuestCount = (eventTitle: string) => {
+    if (!guestCounts) return "";
+    
+    const title = eventTitle.toLowerCase();
+    
+    // Check specific event matches first
+    if (title.includes("mandap") || title.includes("mameru") || title.includes("haldi")) {
+      return guestCounts.mayra || guestCounts.global;
+    }
+    if (title.includes("bhakti")) {
+      return guestCounts.bhakti || guestCounts.global;
+    }
+    if (title.includes("baarat") || title.includes("hast melap") || title.includes("wedding")) {
+      return guestCounts.wedding || guestCounts.global;
+    }
+    if (title.includes("reception")) {
+      return guestCounts.reception || guestCounts.global;
+    }
+    
+    // Fallback to global
+    return guestCounts.global;
+  };
+
+  const getGuestDisplayString = (countStr: string) => {
+    if (!countStr) return null;
+    const c = countStr.toLowerCase();
+    if (c === 'family') return "Whole Family Invited";
+    if (c === '2' || c === 'couple') return "2 Seats Reserved";
+    // Checks if it's a simple number (like "3") or custom text
+    if (!isNaN(Number(countStr))) return `${countStr} Seats Reserved`;
+    return `${countStr} Invited`;
+  };
+
   const visibleGroups = useMemo(() => {
     // 1. Define the base groups (structure)
     const baseGroups = [
@@ -179,7 +221,7 @@ const EventTimeline = ({ filteredEventName }: EventTimelineProps) => {
     const isReception = searchStr.includes("reception");
     const isBhakti = searchStr.includes("bhakti") || searchStr.includes("sandhya");
 
-    // 4. Filter the groups
+    // 4. Filter the groups (Cumulative Logic)
     return baseGroups.map(group => {
       // Filter events inside this group
       const filteredEvents = group.events.filter(event => {
@@ -234,9 +276,13 @@ const EventTimeline = ({ filteredEventName }: EventTimelineProps) => {
     }).filter(group => group.events.length > 0); // Remove groups that became empty
   }, [filteredEventName]);
 
-  // Flip Card Component (No changes here)
+  // Flip Card Component
   const EventCard = ({ event }: { event: TimelineEvent }) => {
     const [isFlipped, setIsFlipped] = useState(false);
+    
+    // Get guest count text for this specific event
+    const guestCountRaw = getEventSpecificGuestCount(event.title);
+    const guestCountDisplay = getGuestDisplayString(guestCountRaw);
 
     const handleVenueClick = (e: React.MouseEvent) => {
       e.stopPropagation();
@@ -292,7 +338,9 @@ const EventTimeline = ({ filteredEventName }: EventTimelineProps) => {
               transform: "rotateY(180deg)"
             }}
           >
-            <div className="flex items-center justify-center mb-4">
+            {/* DATE AND TIME SECTION (Date Added Above Time) */}
+            <div className="flex flex-col items-center justify-center mb-4">
+              <span className="font-display text-sage-dark text-sm mb-1">{event.date}</span>
               <motion.div
                 className="bg-sage-dark text-cream-light px-4 py-2 rounded-full text-sm font-display font-bold"
                 animate={{ opacity: [0.8, 1, 0.8] }}
@@ -306,9 +354,21 @@ const EventTimeline = ({ filteredEventName }: EventTimelineProps) => {
               {event.title}
             </h3>
             
-            <p className="font-body text-muted-foreground leading-relaxed mb-4 text-base flex-grow">
-              {event.description}
-            </p>
+            {/* Description - Splitting newlines for Reception formatting */}
+            <div className="font-body text-muted-foreground leading-relaxed mb-4 text-base flex-grow text-center">
+               {event.description.split('\n').map((line, i) => (
+                 <p key={i} className={i > 0 ? "mt-2" : ""}>{line}</p>
+               ))}
+            </div>
+
+            {/* Guest Count for this Event */}
+            {guestCountDisplay && (
+                <div className="mb-4 text-center">
+                    <span className="text-gold font-display italic text-lg border-b border-gold/30 pb-1">
+                        {guestCountDisplay}
+                    </span>
+                </div>
+            )}
 
             {event.venue && (
               <motion.button
