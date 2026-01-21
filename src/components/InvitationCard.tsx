@@ -238,7 +238,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             
             {/* 1. RELIGIOUS HEADER */}
             <motion.p 
-              className="font-display text-sage-dark/80 text-xs md:text-sm tracking-widest mb-8 leading-loose uppercase"
+              className="font-display font-bold text-sage-dark/80 text-xs md:text-sm tracking-widest mb-8 leading-loose uppercase"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
