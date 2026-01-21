@@ -24,7 +24,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     setGuestDetails({
-      // Replaces underscores with spaces for cleaner URLs (e.g. The_Gupta_Family -> The Gupta Family)
+      // Replaces underscores with spaces for cleaner URLs
       name: params.get("name")?.replace(/_/g, " ") || "",
       guests: params.get("guests") || "", 
       event: params.get("event")?.replace(/_/g, " ") || "",
@@ -41,9 +41,9 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
   const getMainGuestText = (count: string) => {
     if (!count) return null;
     const c = count.toLowerCase();
-    if (c === 'family') return <span className="block text-base italic opacity-80">(and Family)</span>;
-    if (c === '2' || c === 'couple') return <span className="block text-base italic opacity-80">2 seats reserved for you</span>;
-    return <span className="block text-base italic opacity-80">(Guests: {count})</span>;
+    if (c === 'family') return <span className="block text-base text-sage-dark italic opacity-80 mt-1">(and Family)</span>;
+    if (c === '2' || c === 'couple') return <span className="block text-base text-sage-dark italic opacity-80 mt-1">2 seats reserved for you</span>;
+    return <span className="block text-base text-sage-dark italic opacity-80 mt-1">(Guests: {count})</span>;
   };
 
   return (
@@ -233,7 +233,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
         </motion.div>
       </section>
       
-      {/* Family Blessing Section */}
+      {/* Family Blessing Section - NEW CONTENT */}
       <section className="relative bg-cream-light paper-texture py-16 md:py-24 overflow-hidden">
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
@@ -270,134 +270,129 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
           >
             {/* Top decorative divider */}
             <motion.div 
-              className="flex items-center justify-center gap-4 mb-10"
+              className="flex items-center justify-center gap-4 mb-8"
               initial={{ opacity: 0, scale: 0 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <motion.div 
-                className="h-px w-16 md:w-24 bg-gold/50"
-                animate={{ scaleX: [1, 1.5, 1] }}
-                transition={{ duration: 3, repeat: Infinity }}
-              />
-              <motion.span 
-                className="text-gold text-xl"
-                animate={{ 
-                  scale: [1, 1.2, 1],
-                  rotate: [0, 10, -10, 0]
-                }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                ✦
-              </motion.span>
-              <motion.div 
-                className="h-px w-16 md:w-24 bg-gold/50"
-                animate={{ scaleX: [1, 1.5, 1] }}
-                transition={{ duration: 3, repeat: Infinity, delay: 1 }}
-              />
+              <motion.div className="h-px w-12 md:w-20 bg-gold/50" animate={{ scaleX: [1, 1.5, 1] }} transition={{ duration: 3, repeat: Infinity }} />
+              <span className="text-gold text-xl">✦</span>
+              <motion.div className="h-px w-12 md:w-20 bg-gold/50" animate={{ scaleX: [1, 1.5, 1] }} transition={{ duration: 3, repeat: Infinity, delay: 1 }} />
             </motion.div>
             
+            {/* 1. RELIGIOUS HEADER */}
             <motion.p 
-              className="font-body text-lg md:text-xl text-muted-foreground leading-relaxed mb-6"
+              className="font-display text-sage-dark/80 text-xs md:text-sm tracking-widest mb-8 leading-loose uppercase"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              animate={{ 
-                textShadow: [
-                  "0 0 0 rgba(0,0,0,0)",
-                  "0 0 10px rgba(43, 75, 50, 0.3)",
-                  "0 0 0 rgba(0,0,0,0)"
-                ]
-              }}
             >
-              With the blessings and happiness, Vora Family warmly welcomes<br />
-              <br />
-              to the sacred union of 
+              || Shree Ganeshay Namah || <br className="md:hidden"/> || Shree Neminathay Namah || <br className="md:hidden"/> || Shree Chamunda Bhavani Matay Namah ||
             </motion.p>
-            
-            <motion.h3 
-              className="font-display text-3xl md:text-4xl text-foreground mb-6 font-bold italic"
-              style={{ fontFamily: "cursive" }}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+
+            {/* 2. INTRO TEXT */}
+            <motion.p 
+              className="font-body text-lg text-muted-foreground leading-relaxed mb-8 italic"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              animate={{ 
-                textShadow: [
-                  "0 0 0 rgba(0,0,0,0)",
-                  "0 0 15px rgba(43, 75, 50, 0.4)",
-                  "0 0 0 rgba(0,0,0,0)"
-                ]
-              }}
             >
-              Saloni & Jay
-            </motion.h3>
+              With divine grace and blessings, Vora Family seeks your gracious presence and blessings to celebrate the union of hearts and families.
+            </motion.p>
             
+            {/* 3. DYNAMIC INVITATION (We Cordially Invite...) */}
             <motion.div 
-              className="font-body text-lg md:text-xl text-muted-foreground leading-relaxed"
+              className="font-body text-xl md:text-2xl text-sage-dark mb-4"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.5 }}
             >
-              cordially invite
+              We cordially invite
               
-              {/* DYNAMIC INVITATION LOGIC START */}
               {guestDetails.name ? (
-                <div className="my-6">
-                  {/* Invited Person Name */}
-                  <span className="block font-display text-2xl md:text-3xl text-gold mb-2">
+                <div className="my-4">
+                  <span className="block font-display text-3xl md:text-4xl text-gold mb-1">
                     {guestDetails.name}
                   </span>
-                  
-                  {/* Global Guest Count Fallback for main card */}
                   {getMainGuestText(guestDetails.guests)}
                 </div>
               ) : (
-                " you "
+                <span className="font-display text-gold px-2"> You </span>
               )}
+            </motion.div>
 
-              {/* Event Name Logic */}
-              to attend {guestDetails.event ? (
-                <span className="text-foreground font-semibold"> {guestDetails.event} </span>
+            {/* 4. EVENT CONTEXT */}
+            <p className="font-body text-muted-foreground mb-8">
+              {guestDetails.event ? (
+                 <>to attend <span className="text-foreground font-semibold">{guestDetails.event}</span> of</>
               ) : (
-                " the following functions "
-              )} 
-              celebrating our union
-              {/* DYNAMIC INVITATION LOGIC END */}
+                 "at the wedding ceremony of"
+              )}
+            </p>
 
+            {/* 5. BRIDE & GROOM SECTION */}
+            <motion.div
+               initial={{ opacity: 0, scale: 0.95 }}
+               whileInView={{ opacity: 1, scale: 1 }}
+               viewport={{ once: true }}
+               transition={{ duration: 0.8, delay: 0.6 }}
+               className="mb-8"
+            >
+                {/* SALONI */}
+                <h2 className="font-display font-bold text-4xl md:text-5xl text-gold mb-2 tracking-wide">SALONI</h2>
+                <p className="font-body text-xs md:text-sm text-muted-foreground uppercase tracking-wide">
+                  (D/O of Mrs. Sejal & Mr. Piyush Lalitkumar Vora)
+                </p>
+
+                <div className="my-6">
+                  <span className="font-display text-3xl text-sage-dark/60">&</span>
+                </div>
+
+                {/* JAY */}
+                <h2 className="font-display font-bold text-4xl md:text-5xl text-gold mb-2 tracking-wide">JAY</h2>
+                <p className="font-body text-sm md:text-sm text-muted-foreground uppercase tracking-wide">
+                  (S/O of Lt. Leena & Mr. Alpesh Jeevanlal Shah)
+                </p>
+            </motion.div>
+
+            {/* 6. CLOSING TEXT */}
+            <motion.p 
+              className="font-body text-base md:text-lg text-muted-foreground leading-relaxed mb-10 max-w-xl mx-auto italic"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+            >
+              As they embark on their journey of love and togetherness, your presence will make their special day even more memorable.
+            </motion.p>
+
+            {/* 7. SIGN OFF */}
+            <motion.div 
+              className="border-t border-gold/30 pt-8 mt-4"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+            >
+              <p className="font-display text-sage-dark text-md mb-1">With Love & Best Compliments</p>
+              <p className="font-display text-gold text-xl md:text-1xl font-bold">Smt. Kokilaben Lalitkumar Vora & Family</p>
             </motion.div>
             
             {/* Bottom decorative divider */}
             <motion.div 
-              className="flex items-center justify-center gap-4 mt-10"
+              className="flex items-center justify-center gap-4 mt-12"
               initial={{ opacity: 0, scale: 0 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.6 }}
+              transition={{ duration: 0.6, delay: 0.9 }}
             >
-              <motion.div 
-                className="h-px w-16 md:w-24 bg-gold/50"
-                animate={{ scaleX: [1, 1.5, 1] }}
-                transition={{ duration: 3, repeat: Infinity, delay: 2 }}
-              />
-              <motion.span 
-                className="text-gold text-xl"
-                animate={{ 
-                  scale: [1, 1.2, 1],
-                  rotate: [0, -10, 10, 0]
-                }}
-                transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-              >
-                ✦
-              </motion.span>
-              <motion.div 
-                className="h-px w-16 md:w-24 bg-gold/50"
-                animate={{ scaleX: [1, 1.5, 1] }}
-                transition={{ duration: 3, repeat: Infinity, delay: 3 }}
-              />
+              <div className="h-px w-16 md:w-24 bg-gold/50" />
+              <span className="text-gold text-xl">✦</span>
+              <div className="h-px w-16 md:w-24 bg-gold/50" />
             </motion.div>
           </motion.div>
         </div>
