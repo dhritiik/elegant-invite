@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 // Replace these with your actual asset imports
 import envelopeImage from "/bg.png"; 
-import envelopeVideo from "/intro.mov";
+import envelopeVideo from "/intro.mp4";
 
 interface EnvelopeProps {
   onOpen: () => void;

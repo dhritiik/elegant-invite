@@ -15,7 +15,9 @@ export default {
     extend: {
       fontFamily: {
         display: ["Cinzel", "serif"],
+        elegant: ['"Pinyon Script"', 'cursive'],
         body: ["Cormorant Garamond", "serif"],
+        italianno: ['"Italianno"', 'cursive'],
       },
       colors: {
         border: "hsl(var(--border))",

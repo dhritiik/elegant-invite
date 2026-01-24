@@ -88,23 +88,26 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={isVisible ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 1, delay: 1.8 }}
-            className="w-full"
+            className="w-full text-center"
           >
+            {/* Saloni */}
             <motion.h1 
-              className="font-display font-bold text-5xl md:text-6xl lg:text-9xl text-red-600 mb-2 tracking-wide leading-tight"
+              className="font-italianno text-7xl md:text-8xl lg:text-[9rem] text-red-600 mb-0 tracking-wide leading-none"
               animate={{ 
                 textShadow: [
-                  "0 0 20px rgba(255, 215, 0, 0.3)",
-                  "0 0 30px rgba(255, 215, 0, 0.5)",
-                  "0 0 20px rgba(255, 215, 0, 0.3)"
+                  "0 0 15px rgba(255, 215, 0, 0.2)",
+                  "0 0 25px rgba(255, 215, 0, 0.4)",
+                  "0 0 15px rgba(255, 215, 0, 0.2)"
                 ]
               }}
               transition={{ duration: 3, repeat: Infinity }}
             >
-              saloni
+              Saloni
             </motion.h1>
+
+            {/* Ampersand - Slightly smaller than names for balance */}
             <motion.span
-              className="block text-4xl md:text-5xl text-red-600 font-body italic my-2 md:my-4"
+              className="block text-5xl md:text-6xl text-red-600 font-italianno my-1 opacity-90"
               animate={{ 
                 scale: [1, 1.1, 1],
                 rotate: [0, 5, -5, 0]
@@ -118,28 +121,27 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             >
               &
             </motion.span>
+
+            {/* Jay */}
             <motion.h1 
-              className="font-display font-bold text-5xl md:text-6xl lg:text-9xl text-blue-700 tracking-wide leading-tight"
+              className="font-italianno text-7xl md:text-8xl lg:text-[9rem] text-red-600 tracking-wide leading-none"
               animate={{ 
                 textShadow: [
-                  "0 0 20px rgba(255, 215, 0, 0.3)",
-                  "0 0 30px rgba(255, 215, 0, 0.5)",
-                  "0 0 20px rgba(255, 215, 0, 0.3)"
+                  "0 0 15px rgba(255, 215, 0, 0.2)",
+                  "0 0 25px rgba(255, 215, 0, 0.4)",
+                  "0 0 15px rgba(255, 215, 0, 0.2)"
                 ]
               }}
               transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
             >
-              jay
+              Jay
             </motion.h1>
-          </motion.div>
-          
-          {/* REMOVED DATE AND "WE'RE GETTING MARRIED" TEXT */}
-          
+          </motion.div>    
         </motion.div>
         
         {/* Scroll indicator */}
         <motion.div
-          className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center w-full pointer-events-none"
+          className="absolute bottom-6 md:bottom-8 "
           initial={{ opacity: 0 }}
           animate={isVisible ? { 
             opacity: 1, 
@@ -153,14 +155,14 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
           }}
         >
           <motion.p
-            className="text-cream-light/80 font-display text-[10px] md:text-xs text-center tracking-[0.2em] uppercase mb-2"
+            className="text-cream-light/80 "
             animate={{ opacity: [0.6, 1, 0.6] }}
             transition={{ duration: 5, repeat: Infinity }}
           >
             Scroll for more
           </motion.p>
           <motion.svg
-            className="w-5 h-5 md:w-6 md:h-6 text-cream-light/80"
+            className="absolute text-cream-light/80"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -173,7 +175,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
       </section>
       
       {/* Family Blessing Section */}
-      <section className="relative bg-cream-light paper-texture py-16 md:py-24 overflow-hidden">
+      <section className="relative bg-white paper-texture py-16 md:py-24 overflow-hidden">
         
         <div className="container max-w-3xl mx-auto px-6 text-center relative z-10">
           <motion.div
@@ -208,7 +210,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
 
             {/* 2. INTRO TEXT */}
             <motion.p 
-              className="font-body text-lg text-muted-foreground leading-relaxed mb-8 italic"
+              className="font-body font-bold text-lg text-muted-foreground leading-relaxed mb-8 italic"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -314,7 +316,8 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
       </section>
       
       {/* Timeline Section */}
-      <section className="relative bg-sage/10 paper-texture py-20 md:py-32 overflow-hidden">
+      <section className="relative bg-[#FFF7ED] paper-texture bg-blend-multiply py-20 md:py-32 overflow-hidden">
+
         <div className="container max-w-4xl mx-auto px-6 relative z-10">
            <div className="text-center mb-16">
               <h2 className="font-display text-3xl md:text-5xl text-foreground mb-4">the celebration</h2>
