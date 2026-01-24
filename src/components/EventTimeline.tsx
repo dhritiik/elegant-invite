@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useState, useMemo } from "react";
+import { ThemeType } from "./AmbientBackground";
 
 interface TimelineEvent {
   id: number;
@@ -144,9 +145,10 @@ interface EventTimelineProps {
     wedding: string;
     reception: string;
   };
+  onThemeChange: (theme: ThemeType) => void;
 }
 
-const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) => {
+const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventTimelineProps) => {
   const getEventSpecificGuestCount = (eventTitle: string) => {
     if (!guestCounts) return "";
     
@@ -173,11 +175,19 @@ const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) =
     const c = countStr.toLowerCase();
     if (c === 'family') return "Looking forward to welcome your Family ";
     if (c === '2' || c === 'couple') return "Looking forward to welcome 2 guests";
+    if (c === '1' || c === 'couple') return "Looking forward to welcome 1 guest";
     if (!isNaN(Number(countStr))) return `Looking forward to welcome ${countStr} guests`;
     return `${countStr} Invited`;
   };
 
-
+  const getThemeForGroup = (groupTitle: string): ThemeType => {
+    const t = groupTitle.toLowerCase();
+    if (t.includes('mandap') || t.includes('mameru')) return 'mayra';
+    if (t.includes('bhakti')) return 'bhakti';
+    if (t.includes('wedding')) return 'wedding';
+    if (t.includes('reception')) return 'reception';
+    return 'default';
+  };
 
   const visibleGroups = useMemo(() => {
     const baseGroups = [
@@ -364,12 +374,21 @@ const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) =
     <div className="relative">
       {visibleGroups.length > 0 ? (
         visibleGroups.map((group, groupIndex) => (
-          <div key={groupIndex} className={`${group.bgColor} py-20 md:py-32 relative overflow-hidden`}>
+          <motion.div 
+            key={groupIndex} 
+            // Removed group.bgColor so transparency works for the ambient background
+            className="py-20 md:py-32 relative overflow-hidden"
+            onViewportEnter={() => onThemeChange(getThemeForGroup(group.title))}
+            viewport={{ amount: 0.3 }}
+          >
             {/* Removed Animated background circles */}
 
             <div className="relative z-10 w-full flex flex-col items-center">
               <motion.h3 
-                className="text-center font-display text-2xl md:text-3xl text-foreground mb-16"
+                // Dynamic text color for reception theme
+                className={`text-center font-display text-2xl md:text-3xl mb-16 transition-colors duration-500 ${
+                  getThemeForGroup(group.title) === 'reception' ? 'text-white' : 'text-foreground'
+                }`}
                 initial={{ opacity: 0, y: -20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -396,7 +415,9 @@ const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) =
                         }`}>
                           <EventCard event={event} />
                           <motion.p
-                            className="text-center font-body text-sm text-muted-foreground mt-3 italic"
+                            className={`text-center font-body text-sm mt-3 italic transition-colors duration-500 ${
+                                getThemeForGroup(group.title) === 'reception' ? 'text-white/60' : 'text-muted-foreground'
+                            }`}
                             animate={{ opacity: [0.6, 1, 0.6] }}
                             transition={{ duration: 2, repeat: Infinity }}
                           >
@@ -426,7 +447,7 @@ const EventTimeline = ({ filteredEventName, guestCounts }: EventTimelineProps) =
                 <div className="h-px w-12 bg-gold/50" />
               </motion.div>
             )}
-          </div>
+          </motion.div>
         ))
       ) : (
          <div className="py-20 text-center text-muted-foreground">

@@ -3,6 +3,7 @@ import heroBackground from "/hero-background.jpg";
 import logo from "/logo_sj.png"; 
 import EventTimeline from "./EventTimeline";
 import { useEffect, useState } from "react";
+import { AmbientBackground, ThemeType } from "./AmbientBackground";
 
 interface InvitationCardProps {
   isVisible: boolean;
@@ -18,6 +19,8 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
     guestsWedding: "",
     guestsReception: ""
   });
+
+  const [currentTheme, setCurrentTheme] = useState<ThemeType>('default');
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -41,11 +44,20 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
   };
 
   return (
+    <>
+    <AmbientBackground currentTheme={currentTheme} />
+    
     <motion.div
       className="fixed inset-0 overflow-y-auto overflow-x-hidden"
       initial={{ opacity: 0 }}
       animate={isVisible ? { opacity: 1 } : { opacity: 0, pointerEvents: "none" }}
       transition={{ duration: 1.2, delay: 0.8 }}
+      onScroll={(e) => {
+        const target = e.target as HTMLElement;
+        if (target.scrollTop < 500) {
+          if (currentTheme !== 'default') setCurrentTheme('default');
+        }
+      }}
     >
       {/* Hero Section */}
       <section className="relative min-h-screen flex flex-col items-center justify-center pb-20 md:pb-24 pt-10">
@@ -69,16 +81,11 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={isVisible ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 1, delay: 1.4 }}
-            // CHANGES MADE HERE:
-            // 1. '-mt-32': Increased negative margin to pull everything higher up (was -mt-24).
-            // 2. 'mb-0': Removed bottom margin to decrease space between Logo and Saloni (was mb-6).
             className="mb-0 md:mb-10 -mt-32 md:mt-0" 
           >
             <img 
               src={logo} 
               alt="S&J Wedding Logo" 
-              // CHANGES MADE HERE:
-              // 1. 'w-56 h-56': Increased mobile size slightly (was w-48 h-48).
               className="w-56 h-56 md:w-74 md:h-74 object-contain mx-auto drop-shadow-lg rounded-full mix-blend-multiply" 
             />
           </motion.div>
@@ -105,7 +112,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               Saloni
             </motion.h1>
 
-            {/* Ampersand - Slightly smaller than names for balance */}
+            {/* Ampersand */}
             <motion.span
               className="block text-5xl md:text-6xl text-red-600 font-italianno my-1 opacity-90"
               animate={{ 
@@ -165,7 +172,6 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
-            // Optional: Add a subtle specific bounce to the arrow itself if needed
             animate={{ y: [0, 3, 0] }} 
             transition={{ duration: 1.5, repeat: Infinity }}
           >
@@ -175,7 +181,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
       </section>
       
       {/* Family Blessing Section */}
-      <section className="relative bg-white py-16 md:py-24 overflow-hidden">
+      <section className="relative bg-white/90 backdrop-blur-sm py-16 md:py-24 overflow-hidden transition-colors duration-700">
         
         <div className="container max-w-3xl mx-auto px-6 text-center relative z-10">
           <motion.div
@@ -230,7 +236,6 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               We cordially invite
               
               {guestDetails.name ? (
-                // CHANGED HERE: "my-4" -> "mt-1 mb-4" to reduce top gap
                 <div className="mt-1 mb-4">
                   <span className="block font-display text-3xl md:text-4xl text-sage-dark mb-1">
                     {guestDetails.name}
@@ -316,11 +321,12 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
       </section>
       
       {/* Timeline Section */}
-      <section className="relative bg-[#FFF7ED] paper-texture bg-blend-multiply py-20 md:py-32 overflow-hidden">
-
+      <section className="relative py-20 md:py-32 overflow-hidden">
         <div className="container max-w-4xl mx-auto px-6 relative z-10">
            <div className="text-center mb-16">
-              <h2 className="font-display text-3xl md:text-5xl text-foreground mb-4">the celebration</h2>
+              <h2 className={`font-display text-3xl md:text-5xl mb-4 transition-colors duration-500 ${currentTheme === 'reception' ? 'text-white' : 'text-foreground'}`}>
+                the celebration
+              </h2>
            </div>
            
            <EventTimeline 
@@ -332,6 +338,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
                wedding: guestDetails.guestsWedding,
                reception: guestDetails.guestsReception
              }}
+             onThemeChange={setCurrentTheme}
            />
         </div>
       </section>
@@ -402,6 +409,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
         </div>
       </footer>
     </motion.div>
+    </>
   );
 };
 
