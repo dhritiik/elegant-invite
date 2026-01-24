@@ -60,7 +60,7 @@ const Envelope = ({ onOpen }: EnvelopeProps) => {
             <div className="absolute inset-0 flex flex-col items-center justify-center pb-12">
                {/* You can place a clickable 'invisible' div here or just let the whole image trigger it */}
                <div className="mt-40 animate-pulse text-cream-light/60 text-sm">
-                 Tap to open
+                 
                </div>
             </div>
           </motion.div>

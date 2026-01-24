@@ -141,32 +141,32 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
         
         {/* Scroll indicator */}
         <motion.div
-          className="absolute bottom-6 md:bottom-8 "
+          className="absolute bottom-6 md:bottom-8 flex flex-col items-center justify-center gap-1"
           initial={{ opacity: 0 }}
           animate={isVisible ? { 
             opacity: 1, 
             y: [0, 10, 0],
-            scale: [1, 1.1, 1]
           } : {}}
           transition={{ 
             opacity: { duration: 0.8, delay: 2.5 },
-            y: { duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 2.5 },
-            scale: { duration: 2, repeat: Infinity, delay: 2.5 }
+            y: { duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 2.5 }
           }}
         >
           <motion.p
-            className="text-cream-light/80 "
+            className="text-cream-light/80 text-sm md:text-base tracking-widest uppercase font-medium"
             animate={{ opacity: [0.6, 1, 0.6] }}
             transition={{ duration: 5, repeat: Infinity }}
           >
             Scroll for more
           </motion.p>
+          
           <motion.svg
-            className="absolute text-cream-light/80"
+            className="w-5 h-5 md:w-6 md:h-6 text-cream-light/80"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
-            animate={{ y: [0, 5, 0] }}
+            // Optional: Add a subtle specific bounce to the arrow itself if needed
+            animate={{ y: [0, 3, 0] }} 
             transition={{ duration: 1.5, repeat: Infinity }}
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
@@ -175,7 +175,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
       </section>
       
       {/* Family Blessing Section */}
-      <section className="relative bg-white paper-texture py-16 md:py-24 overflow-hidden">
+      <section className="relative bg-white py-16 md:py-24 overflow-hidden">
         
         <div className="container max-w-3xl mx-auto px-6 text-center relative z-10">
           <motion.div
