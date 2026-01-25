@@ -73,7 +73,8 @@ const events: TimelineEvent[] = [
     title: "bhakti sandhya",
     time: "7:30 PM",
     date: "Sunday, 8th March",
-    description: "An evening of devotional music, blessings, and spiritual togetherness\n Choviyaar Compulsory",
+    // UPDATED: Added the Dinner timing line
+    description: "An evening of devotional music, blessings, and spiritual togetherness\n 5:30 to 7:30 PM - Dinner",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "vertical",
     image: "/bhakti.jpg",
@@ -170,7 +171,6 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
     return guestCounts.global;
   };
 
-  // Helper to separate the number/count part
   const getGuestCountText = (countStr: string) => {
     if (!countStr) return null;
     const c = countStr.toLowerCase();
@@ -271,7 +271,6 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
     const [isFlipped, setIsFlipped] = useState(false);
     
     const guestCountRaw = getEventSpecificGuestCount(event.title);
-    // Get just the "2 guests" / "Family" part
     const guestCountSuffix = getGuestCountText(guestCountRaw);
 
     const handleVenueClick = (e: React.MouseEvent) => {
@@ -280,6 +279,11 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
         window.open(event.mapsUrl, '_blank');
       }
     };
+
+    // Logic to split the venue name and address
+    // We assume the first comma separates the Hall Name from the Address
+    const [venueName, ...venueAddressParts] = event.venue ? event.venue.split(',') : ["", ""];
+    const venueAddress = venueAddressParts.join(',').trim();
 
     return (
       <motion.div
@@ -311,7 +315,6 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
                 <p className="text-center text-muted-foreground font-display">{event.title}</p>
               </div>
             )}
-
           </motion.div>
 
           {/* Back side */}
@@ -339,9 +342,15 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
               </motion.h3>
             </div>
             
-            <div className="font-body text-muted-foreground leading-relaxed mb-4 text-base flex-grow text-center">
+            <div className="font-body text-black leading-relaxed mb-4 text-base flex-grow text-center">
                {event.description.split('\n').map((line, i) => (
-                 <p key={i} className={i > 0 ? "mt-2" : ""}>{line}</p>
+                 // UPDATED: Check for "Dinner" to make line bold
+                 <p 
+                   key={i} 
+                   className={`${i > 0 ? "mt-2" : ""} ${line.toLowerCase().includes('dinner') ? "font-bold" : ""}`}
+                 >
+                   {line}
+                 </p>
                ))}
             </div>
 
@@ -350,7 +359,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
                 <span className="block text-black font-display italic text-sm">
                   Looking forward to welcome
                 </span>
-                <span className="block text-black font-display italic text-sm font-bold mt-1">
+                <span className="block text-black font-display italic text-sm mt-1">
                   {guestCountSuffix}
                 </span>
               </div>
@@ -359,10 +368,19 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
             {event.venue && (
               <motion.button
                 onClick={handleVenueClick}
-                className="font-body text-base md:text-base text-sage italic border-t border-sage/20 pt-3 mt-auto hover:text-gold transition-colors cursor-pointer"
+                // UPDATED: Changed to flex-col for 2-line layout
+                className="w-full flex flex-col items-center gap-1 font-body text-sage-dark italic border-t border-sage/20 pt-3 mt-auto hover:text-gold transition-colors cursor-pointer"
                 whileHover={{ scale: 1.05 }}
               >
-                📍 {event.venue}
+                <div className="flex items-center gap-1 text-center leading-tight">
+                    <span className="text-xl">📍</span>
+                    {/* Venue Name: Bigger and Bold */}
+                    <span className="text-lg font-bold font-display not-italic">{venueName}</span>
+                </div>
+                {/* Address: Normal size, next line */}
+                {venueAddress && (
+                    <span className="text-sm opacity-90 font-semibold">{venueAddress}</span>
+                )}
               </motion.button>
             )}
           </motion.div>
