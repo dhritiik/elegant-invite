@@ -114,7 +114,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
 
             {/* Ampersand */}
             <motion.span
-              className="block text-5xl md:text-6xl text-red-600 font-imperial my-1 opacity-90 [text-shadow:0.5px_0_0_currentColor]"
+              className="block text-5xl md:text-6xl text-red-700 font-imperial my-1 opacity-90 [text-shadow:0.5px_0_0_currentColor]"
               animate={{ 
                 scale: [1, 1.1, 1],
                 rotate: [0, 5, -5, 0]
@@ -131,7 +131,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
 
             {/* Jay: Added EXTRA thickening (0.8px) to fix the "narrow/thin" look */}
             <motion.h1 
-              className="font-imperial text-7xl md:text-8xl lg:text-[9rem] text-red-600 tracking-wide leading-none [text-shadow:0.8px_0_0_currentColor]"
+              className="font-imperial text-7xl md:text-8xl lg:text-[9rem] text-red-700 tracking-wide leading-none [text-shadow:0.8px_0_0_currentColor]"
               animate={{ 
                 textShadow: [
                   "0.8px 0 0 currentColor", // Base thickness (thicker than Saloni)
@@ -237,7 +237,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               
               {guestDetails.name ? (
                 <div className="mt-1 mb-4">
-                  <span className="block font-display text-3xl md:text-4xl text-sage-dark mb-1">
+                  <span className="block font-display text-2xl md:text-3xl text-sage-dark mb-1">
                     {guestDetails.name}
                   </span>
                   {getMainGuestText(guestDetails.guests)}
@@ -249,11 +249,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
 
             {/* 4. EVENT CONTEXT */}
             <p className="font-body text-muted-foreground mb-8">
-              {guestDetails.event ? (
-                 <>to attend <span className="text-foreground font-semibold">{guestDetails.event}</span> of</>
-              ) : (
-                 "at the wedding ceremony of"
-              )}
+                to bless the sacred union of
             </p>
 
             {/* 5. BRIDE & GROOM SECTION - UPDATED */}
@@ -414,6 +410,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
              alt="S & J Logo" 
              className="w-56 h-56 md:w-74 md:h-74 object-contain mb-4 opacity-90 drop-shadow-md"
           />
+          <p className="font-body text-cream-light/70 text-sm">Saloni & Jay</p>
         </div>
       </footer>
     </motion.div>
