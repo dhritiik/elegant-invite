@@ -328,18 +328,22 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
           >
             <div className="flex flex-col items-center justify-center mb-4">
               <span className="font-display text-sage-dark text-md mb-1">{event.date}</span>
-              <motion.div
-                className="bg-sage-dark text-cream-light px-4 py-2 rounded-full text-md font-display font-bold"
-                animate={{ opacity: [0.8, 1, 0.8] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
+              {/* UPDATED: Time is now plain text, no background */}
+              <div className="text-sage-dark text-md font-display font-bold">
                 {event.time}
-              </motion.div>
+              </div>
             </div>
             
-            <h3 className="font-display text-2xl md:text-3xl text-foreground mb-3 text-center">
-              {event.title}
-            </h3>
+            {/* UPDATED: Title now has the Green Background pill + Pulse animation */}
+            <div className="flex justify-center mb-3">
+              <motion.h3 
+                className="font-display text-xl md:text-2xl text-cream-light bg-sage-dark px-6 py-2 rounded-full shadow-sm text-center"
+                animate={{ scale: [1, 1.02, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                {event.title}
+              </motion.h3>
+            </div>
             
             <div className="font-body text-muted-foreground leading-relaxed mb-4 text-base flex-grow text-center">
                {event.description.split('\n').map((line, i) => (
@@ -349,7 +353,8 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
 
             {guestCountDisplay && (
               <div className="mb-3 text-center">
-                <span className="text-black font-display italic text-base border-b border-black/30 pb-1">
+                {/* UPDATED: Smaller font (text-xs/sm), removed underline border */}
+                <span className="text-black font-display italic text-sm">
                   {guestCountDisplay}
                 </span>
               </div>
@@ -376,16 +381,12 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
         visibleGroups.map((group, groupIndex) => (
           <motion.div 
             key={groupIndex} 
-            // Removed group.bgColor so transparency works for the ambient background
             className="py-20 md:py-32 relative overflow-hidden"
             onViewportEnter={() => onThemeChange(getThemeForGroup(group.title))}
             viewport={{ amount: 0.3 }}
           >
-            {/* Removed Animated background circles */}
-
             <div className="relative z-10 w-full flex flex-col items-center">
               <motion.h3 
-                // Dynamic text color for reception theme
                 className={`text-center font-display text-2xl md:text-3xl mb-16 transition-colors duration-500 ${
                   getThemeForGroup(group.title) === 'reception' ? 'text-white' : 'text-foreground'
                 }`}
@@ -425,8 +426,6 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
                           </motion.p>
                         </div>
                       </motion.div>
-
-                     
                     </div>
                   ))}
                 </div>

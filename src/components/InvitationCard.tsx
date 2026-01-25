@@ -97,14 +97,14 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             transition={{ duration: 1, delay: 1.8 }}
             className="w-full text-center"
           >
-            {/* Saloni: Standard weight + very subtle thickening */}
+            {/* Saloni */}
             <motion.h1 
               className="font-imperial text-7xl md:text-8xl lg:text-[9rem] text-red-700 mb-0 tracking-wide leading-none [text-shadow:0.5px_0_0_currentColor]"
               animate={{ 
                 textShadow: [
-                  "0.5px 0 0 currentColor", // Maintain base thickness
-                  "0.5px 0 0 currentColor, 0 0 15px rgba(255, 215, 0, 0.3)", // Add glow
-                  "0.5px 0 0 currentColor"  // Back to base
+                  "0.5px 0 0 currentColor", 
+                  "0.5px 0 0 currentColor, 0 0 15px rgba(255, 215, 0, 0.3)", 
+                  "0.5px 0 0 currentColor"
                 ]
               }}
               transition={{ duration: 3, repeat: Infinity }}
@@ -112,38 +112,36 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               Saloni
             </motion.h1>
 
-            {/* Ampersand */}
+            {/* Ampersand - Updated to match style */}
             <motion.span
               className="block text-5xl md:text-6xl text-red-700 font-imperial my-1 opacity-90 [text-shadow:0.5px_0_0_currentColor]"
               animate={{ 
-                scale: [1, 1.1, 1],
-                rotate: [0, 5, -5, 0]
+                textShadow: [
+                  "0.5px 0 0 currentColor", 
+                  "0.5px 0 0 currentColor, 0 0 15px rgba(255, 215, 0, 0.3)", 
+                  "0.5px 0 0 currentColor"  
+                ]
               }}
-              transition={{ 
-                duration: 2, 
-                repeat: Infinity, 
-                repeatDelay: 3,
-                rotate: { duration: 0.5, repeat: Infinity, repeatDelay: 4 }
-              }}
+              transition={{ duration: 3, repeat: Infinity, delay: 0.2 }}
             >
               &
             </motion.span>
 
-            {/* Jay: Added EXTRA thickening (0.8px) to fix the "narrow/thin" look */}
+            {/* Jay */}
             <motion.h1 
               className="font-imperial text-7xl md:text-8xl lg:text-[9rem] text-red-700 tracking-wide leading-none [text-shadow:0.8px_0_0_currentColor]"
               animate={{ 
                 textShadow: [
-                  "0.8px 0 0 currentColor", // Base thickness (thicker than Saloni)
-                  "0.8px 0 0 currentColor, 0 0 15px rgba(255, 215, 0, 0.3)", // Glow
-                  "0.8px 0 0 currentColor"  // Back to base
+                  "0.8px 0 0 currentColor", 
+                  "0.8px 0 0 currentColor, 0 0 15px rgba(255, 215, 0, 0.3)", 
+                  "0.8px 0 0 currentColor" 
                 ]
               }}
               transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
             >
               Jay
             </motion.h1>
-          </motion.div>    
+          </motion.div>   
         </motion.div>
         
         {/* Scroll indicator */}
@@ -237,7 +235,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               
               {guestDetails.name ? (
                 <div className="mt-1 mb-4">
-                  <span className="block font-display text-2xl md:text-3xl text-sage-dark mb-1">
+                  <span className="block font-display text-1xl md:text-2xl text-sage-dark mb-1">
                     {guestDetails.name}
                   </span>
                   {getMainGuestText(guestDetails.guests)}

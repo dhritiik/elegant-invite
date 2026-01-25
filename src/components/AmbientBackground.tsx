@@ -115,9 +115,9 @@ const WeddingEffect = () => {
     id: i,
     left: `${Math.random() * 100}%`,
     delay: Math.random() * 5,      
-    duration: 6 + Math.random() * 4, 
+    duration: 6 + Math.random() * 3, 
     // Roses might be slightly larger than marigolds
-    size: 20 + Math.random() * 25, // 20px to 45px
+    size: 20 + Math.random() * 20, // 20px to 45px
     rotateStart: Math.random() * 360 
   }));
 
