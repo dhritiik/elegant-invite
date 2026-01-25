@@ -18,7 +18,7 @@ interface TimelineEvent {
 const events: TimelineEvent[] = [
   {
     id: 1,
-    title: "Mandap Muhurat",
+    title: "mandap muhurat",
     time: "9:00 AM",
     date: "Sunday, 8th March",
     description: "Invoking the Blessings of Lord Ganesha for a Joyous Beginning",
@@ -36,7 +36,7 @@ const events: TimelineEvent[] = [
   },
   {
     id: 2,
-    title: "Mameru",
+    title: "mameru",
     time: "10:30 AM ",
     date: "Sunday, 8th March",
     description: "A Shower of Blessings and Love from the Maternal Family",
@@ -53,7 +53,7 @@ const events: TimelineEvent[] = [
   },
   {
     id: 3,
-    title: "Haldi & Mehendi ",
+    title: "haldi & mehendi ",
     time: "11:30 AM onwards",
     date: "Sunday, 8th March",
     description: "Hues of Turmeric + Glow of Love = Shades of Sunshine",
@@ -70,7 +70,7 @@ const events: TimelineEvent[] = [
   },
   {
     id: 4,
-    title: "Bhakti Sandhya",
+    title: "bhakti sandhya",
     time: "7:30 PM",
     date: "Sunday, 8th March",
     description: "An evening of devotional music, blessings, and spiritual togetherness\n Choviyaar Compulsory",
@@ -88,7 +88,7 @@ const events: TimelineEvent[] = [
   },
   {
     id: 5,
-    title: "Baraat Prasthan",
+    title: "baraat prasthan",
     time: "2:30 PM",
     date: "Tuesday, 10th March",
     description: "The ceremonial procession marking the arrival of the groom",
@@ -104,7 +104,7 @@ const events: TimelineEvent[] = [
   },
   {
     id: 6,
-    title: "Hast Melap",
+    title: "hast melap",
     time: "4:05 PM ",
     date: "Tuesday, 10th March",
     description: "The sacred union where two hands, two hearts, and two families come together",
@@ -120,7 +120,7 @@ const events: TimelineEvent[] = [
   },
   {
     id: 7,
-    title: "Reception",
+    title: "reception",
     time: "7:30 PM onwards",
     date: "Tuesday, 10th March",
     description: "A grand celebration honoring love, togetherness and new beginnings\nChoviyaar Facility Available",
@@ -170,14 +170,15 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
     return guestCounts.global;
   };
 
-  const getGuestDisplayString = (countStr: string) => {
+  // Helper to separate the number/count part
+  const getGuestCountText = (countStr: string) => {
     if (!countStr) return null;
     const c = countStr.toLowerCase();
-    if (c === 'family') return "Looking forward to welcome your Family ";
-    if (c === '2' || c === 'couple') return "Looking forward to welcome 2 guests";
-    if (c === '1' || c === 'couple') return "Looking forward to welcome 1 guest";
-    if (!isNaN(Number(countStr))) return `Looking forward to welcome ${countStr} guests`;
-    return `${countStr} Invited`;
+    if (c === 'family') return "your Family";
+    if (c === '2' || c === 'couple') return "2 guests";
+    if (c === '1') return "1 guest";
+    if (!isNaN(Number(countStr))) return `${countStr} guests`;
+    return `${countStr}`;
   };
 
   const getThemeForGroup = (groupTitle: string): ThemeType => {
@@ -270,7 +271,8 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
     const [isFlipped, setIsFlipped] = useState(false);
     
     const guestCountRaw = getEventSpecificGuestCount(event.title);
-    const guestCountDisplay = getGuestDisplayString(guestCountRaw);
+    // Get just the "2 guests" / "Family" part
+    const guestCountSuffix = getGuestCountText(guestCountRaw);
 
     const handleVenueClick = (e: React.MouseEvent) => {
       e.stopPropagation();
@@ -309,13 +311,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
                 <p className="text-center text-muted-foreground font-display">{event.title}</p>
               </div>
             )}
-            <motion.div
-              className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-all flex items-center justify-center"
-              animate={{ opacity: [0, 0.3, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <p className="text-white font-display text-sm">Click to flip</p>
-            </motion.div>
+
           </motion.div>
 
           {/* Back side */}
@@ -328,13 +324,11 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
           >
             <div className="flex flex-col items-center justify-center mb-4">
               <span className="font-display text-sage-dark text-md mb-1">{event.date}</span>
-              {/* UPDATED: Time is now plain text, no background */}
               <div className="text-sage-dark text-md font-display font-bold">
                 {event.time}
               </div>
             </div>
             
-            {/* UPDATED: Title now has the Green Background pill + Pulse animation */}
             <div className="flex justify-center mb-3">
               <motion.h3 
                 className="font-display text-xl md:text-2xl text-cream-light bg-sage-dark px-6 py-2 rounded-full shadow-sm text-center"
@@ -351,11 +345,13 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
                ))}
             </div>
 
-            {guestCountDisplay && (
+            {guestCountSuffix && (
               <div className="mb-3 text-center">
-                {/* UPDATED: Smaller font (text-xs/sm), removed underline border */}
-                <span className="text-black font-display italic text-sm">
-                  {guestCountDisplay}
+                <span className="block text-black font-display italic text-sm">
+                  Looking forward to welcome
+                </span>
+                <span className="block text-black font-display italic text-sm font-bold mt-1">
+                  {guestCountSuffix}
                 </span>
               </div>
             )}
