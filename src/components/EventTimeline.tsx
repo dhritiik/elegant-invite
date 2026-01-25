@@ -73,8 +73,7 @@ const events: TimelineEvent[] = [
     title: "bhakti sandhya",
     time: "7:30 PM",
     date: "Sunday, 8th March",
-    // UPDATED: Added the Dinner timing line
-    description: "An evening of devotional music, blessings, and spiritual togetherness\n 5:30 to 7:30 PM - Dinner",
+    description: "An evening of devotional music, blessings, and spiritual togetherness\n5:30 to 7:30 PM - Dinner",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "vertical",
     image: "/bhakti.jpg",
@@ -174,7 +173,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
   const getGuestCountText = (countStr: string) => {
     if (!countStr) return null;
     const c = countStr.toLowerCase();
-    if (c === 'family') return "your Family";
+    if (c === 'family') return "your family";
     if (c === '2' || c === 'couple') return "2 guests";
     if (c === '1') return "1 guest";
     if (!isNaN(Number(countStr))) return `${countStr} guests`;
@@ -281,7 +280,6 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
     };
 
     // Logic to split the venue name and address
-    // We assume the first comma separates the Hall Name from the Address
     const [venueName, ...venueAddressParts] = event.venue ? event.venue.split(',') : ["", ""];
     const venueAddress = venueAddressParts.join(',').trim();
 
@@ -344,9 +342,9 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
             
             <div className="font-body text-black leading-relaxed mb-4 text-base flex-grow text-center">
                {event.description.split('\n').map((line, i) => (
-                 // UPDATED: Check for "Dinner" to make line bold
                  <p 
                    key={i} 
+                   // UPDATED: Simply bold the entire line if it contains "Dinner", same size
                    className={`${i > 0 ? "mt-2" : ""} ${line.toLowerCase().includes('dinner') ? "font-bold" : ""}`}
                  >
                    {line}
@@ -354,12 +352,14 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
                ))}
             </div>
 
-            {guestCountSuffix && (
+            {/* GUEST COUNT - HIDDEN FOR BARAAT */}
+            {guestCountSuffix && !event.title.toLowerCase().includes("baraat") && (
               <div className="mb-3 text-center">
                 <span className="block text-black font-display italic text-sm">
-                  Looking forward to welcome
+                  looking forward to welcome
                 </span>
-                <span className="block text-black font-display italic text-sm mt-1">
+                {/* UPDATED: Added font-bold here */}
+                <span className="block text-black font-display italic text-sm mt-1 font-bold">
                   {guestCountSuffix}
                 </span>
               </div>
@@ -368,16 +368,13 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
             {event.venue && (
               <motion.button
                 onClick={handleVenueClick}
-                // UPDATED: Changed to flex-col for 2-line layout
                 className="w-full flex flex-col items-center gap-1 font-body text-sage-dark italic border-t border-sage/20 pt-3 mt-auto hover:text-gold transition-colors cursor-pointer"
                 whileHover={{ scale: 1.05 }}
               >
                 <div className="flex items-center gap-1 text-center leading-tight">
                     <span className="text-xl">📍</span>
-                    {/* Venue Name: Bigger and Bold */}
                     <span className="text-lg font-bold font-display not-italic">{venueName}</span>
                 </div>
-                {/* Address: Normal size, next line */}
                 {venueAddress && (
                     <span className="text-sm opacity-90 font-semibold">{venueAddress}</span>
                 )}
