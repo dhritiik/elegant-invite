@@ -76,17 +76,17 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 1, delay: 1.2 }}
         >
-          {/* LOGO SECTION */}
+{/* LOGO SECTION */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={isVisible ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 1, delay: 1.4 }}
-            className="mb-0 md:mb-10 -mt-32 md:mt-0" 
+            className="mb-0 md:mb-10 -mt-48 md:mt-0" 
           >
             <img 
               src={logo} 
               alt="S&J Wedding Logo" 
-              className="w-56 h-56 md:w-74 md:h-74 object-contain mx-auto drop-shadow-lg rounded-full mix-blend-multiply" 
+              className="w-72 h-72 md:w-80 md:h-80 object-contain mx-auto drop-shadow-lg rounded-full mix-blend-multiply" 
             />
           </motion.div>
 
@@ -95,7 +95,8 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={isVisible ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 1, delay: 1.8 }}
-            className="w-full text-center"
+            // UPDATED: Changed -mt-20 to -mt-8 to move text down and create space
+            className="w-full text-center -mt-8 md:mt-0"
           >
             {/* Saloni */}
             <motion.h1 
@@ -112,7 +113,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               Saloni
             </motion.h1>
 
-            {/* Ampersand - Updated to match style */}
+            {/* Ampersand */}
             <motion.span
               className="block text-5xl md:text-6xl text-red-700 font-imperial my-1 opacity-90 [text-shadow:0.5px_0_0_currentColor]"
               animate={{ 
@@ -141,7 +142,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             >
               Jay
             </motion.h1>
-          </motion.div>   
+          </motion.div> 
         </motion.div>
         
         {/* Scroll indicator */}
@@ -220,7 +221,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              With divine grace and blessings, Vora Family seeks your gracious presence and blessings to celebrate the union of hearts and families.
+               With the blessings of Smt. Kokilaben Lalitbhai Vora & Family, we seek your gracious presence and blessings to celebrate the union of hearts and families.
             </motion.p>
             
             {/* 3. DYNAMIC INVITATION */}
@@ -258,11 +259,12 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
                transition={{ duration: 0.8, delay: 0.6 }}
                className="mb-8"
             >
-                {/* SALONI - Updated to Imperial Script, removed Bold, Title Case */}
-                <h2 className="font-imperial text-5xl md:text-7xl text-gold mb-1 tracking-wide leading-none">Saloni</h2>
                 <p className="font-body text-sm md:text-sm text-muted-foreground uppercase tracking-wide">
                   (D/O Smt. Sejal & Shri Piyush Lalitbhai Vora)
                 </p>
+                {/* SALONI - Updated to Imperial Script, removed Bold, Title Case */}
+                <h2 className="font-imperial text-5xl md:text-7xl text-gold mb-1 tracking-wide leading-none">Saloni</h2>
+                
 
                 <div className="my-6">
                   <span className="font-display text-3xl text-sage-dark/60">&</span>
@@ -276,8 +278,10 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             </motion.div>
 
             {/* 6. CLOSING TEXT */}
+
             <motion.p 
-              className="font-body text-base md:text-lg text-muted-foreground leading-relaxed mb-10 max-w-xl mx-auto italic"
+              // UPDATED: Increased font size (text-xl and md:text-2xl)
+              className="font-body text-xl md:text-2xl text-muted-foreground leading-relaxed mb-10 max-w-xl mx-auto italic"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -296,8 +300,13 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             >
               <p className="font-display text-sage-dark text-md mb-1">With Love & Best Compliments</p>
               <p className="font-display text-gold text-base md:text-lg font-bold">
-                <span className="block">Smt. Kokilaben Lalitbhai Vora</span>
-                <span className="block">& Family</span>
+                <span className="block">Smt. Sejal Piyush Vora</span>
+                <span className="block">Smt. Anjali Paras Vora</span>
+                <span className="block">Smt. Monika Milanbhai Kothari</span>
+               </p>
+              <p className="font-display text-sage-dark text-md mb-1">With Love</p>
+              <p className="font-display text-gold text-base md:text-lg font-bold">
+                <span className="block">Nisarg - Rahil - Jash</span>
               </p>
 
             </motion.div>

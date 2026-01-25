@@ -21,7 +21,7 @@ const events: TimelineEvent[] = [
     title: "mandap muhurat",
     time: "9:00 AM",
     date: "Sunday, 8th March",
-    description: "Invoking the Blessings of Lord Ganesha for a Joyous Beginning",
+    description: "Seeking the Blessings of Lord Ganesha for a Joyous Beginning",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "horizontal",
     image: "/madamandup.png",
@@ -39,7 +39,7 @@ const events: TimelineEvent[] = [
     title: "mameru",
     time: "10:30 AM ",
     date: "Sunday, 8th March",
-    description: "A Shower of Blessings and Love from the Maternal Family",
+    description: "With a shower of blessings and love from the maternal family — Late Smt. Yashomatiben Pravinchandra Gopani, Smt. Rupaben Nileshbhai Gopani, and Smt. Alpaben Yogeshbhai Gopani.",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "horizontal",
     image: "/mameru.jpg",
@@ -285,7 +285,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
 
     return (
       <motion.div
-        className="w-80 h-96 md:w-96 md:h-[28rem] z-10 cursor-pointer"
+        className="w-80 h-[26rem] md:w-96 md:h-[30rem] z-10 cursor-pointer"
         onClick={() => setIsFlipped(!isFlipped)}
         whileHover={{ scale: 1.05 }}
         transition={{ type: "spring", stiffness: 300 }}
