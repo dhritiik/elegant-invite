@@ -38,9 +38,9 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
   const getMainGuestText = (count: string) => {
     if (!count) return null;
     const c = count.toLowerCase();
-    if (c === 'family') return <span className="block text-base text-sage-dark italic opacity-80 mt-1">(and Family)</span>;
-    if (c === '2' || c === 'couple') return <span className="block text-base text-sage-dark italic opacity-80 mt-1">2 seats reserved for you</span>;
-    return <span className="block text-base text-sage-dark italic opacity-80 mt-1">(Guests: {count})</span>;
+    if (c === 'family') return <span className="block text-sm text-sage-dark italic opacity-80 mt-1">(and Family)</span>;
+    if (c === '2' || c === 'couple') return <span className="block text-sm text-sage-dark italic opacity-80 mt-1">2 seats reserved for you</span>;
+    return <span className="block text-sm text-sage-dark italic opacity-80 mt-1">(Guests: {count})</span>;
   };
 
   return (
@@ -97,14 +97,14 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             transition={{ duration: 1, delay: 1.8 }}
             className="w-full text-center"
           >
-            {/* Saloni */}
+            {/* Saloni: Standard weight + very subtle thickening */}
             <motion.h1 
-              className="font-italianno text-7xl md:text-8xl lg:text-[9rem] text-red-600 mb-0 tracking-wide leading-none"
+              className="font-imperial text-7xl md:text-8xl lg:text-[9rem] text-red-700 mb-0 tracking-wide leading-none [text-shadow:0.5px_0_0_currentColor]"
               animate={{ 
                 textShadow: [
-                  "0 0 15px rgba(255, 215, 0, 0.2)",
-                  "0 0 25px rgba(255, 215, 0, 0.4)",
-                  "0 0 15px rgba(255, 215, 0, 0.2)"
+                  "0.5px 0 0 currentColor", // Maintain base thickness
+                  "0.5px 0 0 currentColor, 0 0 15px rgba(255, 215, 0, 0.3)", // Add glow
+                  "0.5px 0 0 currentColor"  // Back to base
                 ]
               }}
               transition={{ duration: 3, repeat: Infinity }}
@@ -114,7 +114,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
 
             {/* Ampersand */}
             <motion.span
-              className="block text-5xl md:text-6xl text-red-600 font-italianno my-1 opacity-90"
+              className="block text-5xl md:text-6xl text-red-600 font-imperial my-1 opacity-90 [text-shadow:0.5px_0_0_currentColor]"
               animate={{ 
                 scale: [1, 1.1, 1],
                 rotate: [0, 5, -5, 0]
@@ -129,14 +129,14 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               &
             </motion.span>
 
-            {/* Jay */}
+            {/* Jay: Added EXTRA thickening (0.8px) to fix the "narrow/thin" look */}
             <motion.h1 
-              className="font-italianno text-7xl md:text-8xl lg:text-[9rem] text-red-600 tracking-wide leading-none"
+              className="font-imperial text-7xl md:text-8xl lg:text-[9rem] text-red-600 tracking-wide leading-none [text-shadow:0.8px_0_0_currentColor]"
               animate={{ 
                 textShadow: [
-                  "0 0 15px rgba(255, 215, 0, 0.2)",
-                  "0 0 25px rgba(255, 215, 0, 0.4)",
-                  "0 0 15px rgba(255, 215, 0, 0.2)"
+                  "0.8px 0 0 currentColor", // Base thickness (thicker than Saloni)
+                  "0.8px 0 0 currentColor, 0 0 15px rgba(255, 215, 0, 0.3)", // Glow
+                  "0.8px 0 0 currentColor"  // Back to base
                 ]
               }}
               transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
@@ -148,7 +148,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
         
         {/* Scroll indicator */}
         <motion.div
-          className="absolute bottom-6 md:bottom-8 flex flex-col items-center justify-center gap-1"
+          className="absolute bottom-6 md:bottom-8 flex flex-col items-center justify-center gap-1 font-bold"
           initial={{ opacity: 0 }}
           animate={isVisible ? { 
             opacity: 1, 
@@ -160,7 +160,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
           }}
         >
           <motion.p
-            className="text-cream-light/80 text-sm md:text-base tracking-widest uppercase font-medium"
+            className="text-cream-light/80 font-bold text-lg md:text-xl tracking-widest uppercase font-bold"
             animate={{ opacity: [0.6, 1, 0.6] }}
             transition={{ duration: 5, repeat: Infinity }}
           >
@@ -256,7 +256,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               )}
             </p>
 
-            {/* 5. BRIDE & GROOM SECTION */}
+            {/* 5. BRIDE & GROOM SECTION - UPDATED */}
             <motion.div
                initial={{ opacity: 0, scale: 0.95 }}
                whileInView={{ opacity: 1, scale: 1 }}
@@ -264,8 +264,8 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
                transition={{ duration: 0.8, delay: 0.6 }}
                className="mb-8"
             >
-                {/* SALONI */}
-                <h2 className="font-cursive font-bold text-4xl md:text-5xl text-gold mb-2 tracking-wide">SALONI</h2>
+                {/* SALONI - Updated to Imperial Script, removed Bold, Title Case */}
+                <h2 className="font-imperial text-5xl md:text-7xl text-gold mb-1 tracking-wide leading-none">Saloni</h2>
                 <p className="font-body text-sm md:text-sm text-muted-foreground uppercase tracking-wide">
                   (D/O Smt. Sejal & Shri Piyush Lalitbhai Vora)
                 </p>
@@ -274,8 +274,8 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
                   <span className="font-display text-3xl text-sage-dark/60">&</span>
                 </div>
 
-                {/* JAY */}
-                <h2 className="font-display font-bold text-4xl md:text-5xl text-gold mb-2 tracking-wide">JAY</h2>
+                {/* JAY - Updated to Imperial Script, removed Bold, Title Case */}
+                <h2 className="font-imperial text-5xl md:text-7xl text-gold mb-1 tracking-wide leading-none">Jay</h2>
                 <p className="font-body text-sm md:text-sm text-muted-foreground uppercase tracking-wide">
                   (S/O Late Leena & Shri Alpesh Jeevanlal Shah)
                 </p>
@@ -301,7 +301,11 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               transition={{ duration: 0.8, delay: 0.8 }}
             >
               <p className="font-display text-sage-dark text-md mb-1">With Love & Best Compliments</p>
-              <p className="font-display text-gold text-base md:text-lg font-bold">Smt. Kokilaben Lalitkumar Vora & Family</p>
+              <p className="font-display text-gold text-base md:text-lg font-bold">
+                <span className="block">Smt. Kokilaben Lalitbhai Vora</span>
+                <span className="block">& Family</span>
+              </p>
+
             </motion.div>
             
             {/* Bottom decorative divider */}
@@ -402,10 +406,14 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
         </div>
       </section>
       
-      <footer className="bg-sage py-12 relative overflow-hidden">
-        <div className="text-center relative z-10">
-          <p className="font-display text-2xl text-cream-light mb-2">S & J</p>
-          <p className="font-body text-cream-light/70 text-sm">10 March, 2026</p>
+      <footer className="bg-sage pt-4 pb-12 md:pt-6 md:pb-16 relative overflow-hidden">
+        <div className="text-center relative z-10 flex flex-col items-center">
+          {/* Logo instead of Text */}
+          <img 
+             src={logo} 
+             alt="S & J Logo" 
+             className="w-56 h-56 md:w-74 md:h-74 object-contain mb-4 opacity-90 drop-shadow-md"
+          />
         </div>
       </footer>
     </motion.div>

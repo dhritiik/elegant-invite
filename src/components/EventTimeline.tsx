@@ -73,7 +73,7 @@ const events: TimelineEvent[] = [
     title: "Bhakti Sandhya",
     time: "7:30 PM",
     date: "Sunday, 8th March",
-    description: "An evening of devotional music, blessings, and spiritual togetherness.\n Choviyaar Compulsory.",
+    description: "An evening of devotional music, blessings, and spiritual togetherness\n Choviyaar Compulsory",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "vertical",
     image: "/bhakti.jpg",
@@ -88,7 +88,7 @@ const events: TimelineEvent[] = [
   },
   {
     id: 5,
-    title: "Baarat Prasthan",
+    title: "Baraat Prasthan",
     time: "2:30 PM",
     date: "Tuesday, 10th March",
     description: "The ceremonial procession marking the arrival of the groom",
@@ -160,7 +160,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
     if (title.includes("bhakti")) {
       return guestCounts.bhakti || guestCounts.global;
     }
-    if (title.includes("baarat") || title.includes("hast melap") || title.includes("wedding")) {
+    if (title.includes("baraat") || title.includes("hast melap") || title.includes("wedding")) {
       return guestCounts.wedding || guestCounts.global;
     }
     if (title.includes("reception")) {
@@ -230,7 +230,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
         let shouldShow = false; 
 
         if (isWedding) {
-          if (titleLower.includes("hast melap") || titleLower.includes("baarat")) {
+          if (titleLower.includes("hast melap") || titleLower.includes("baraat")) {
             shouldShow = true;
           }
         }
@@ -348,7 +348,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
             </div>
 
             {guestCountDisplay && (
-              <div className="mb-4 text-center">
+              <div className="mb-3 text-center">
                 <span className="text-black font-display italic text-base border-b border-black/30 pb-1">
                   {guestCountDisplay}
                 </span>
@@ -415,7 +415,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
                         }`}>
                           <EventCard event={event} />
                           <motion.p
-                            className={`text-center font-body text-sm mt-3 italic transition-colors duration-500 ${
+                            className={`text-center font-bold font-body text-sm mt-3 italic transition-colors duration-500 ${
                                 getThemeForGroup(group.title) === 'reception' ? 'text-white/60' : 'text-muted-foreground'
                             }`}
                             animate={{ opacity: [0.6, 1, 0.6] }}

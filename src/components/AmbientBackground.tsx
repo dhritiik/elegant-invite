@@ -7,7 +7,7 @@ interface AmbientBackgroundProps {
 }
 
 // ---------------------------------------------------------
-// 1. MAYRA: Floating Marigolds (Your existing PNG logic)
+// 1. MAYRA: Floating Marigolds (Using marigold.png)
 // ---------------------------------------------------------
 const PetalsEffect = () => {
   const petals = Array.from({ length: 25 }).map((_, i) => ({
@@ -15,7 +15,7 @@ const PetalsEffect = () => {
     left: `${Math.random() * 100}%`,
     delay: Math.random() * 5,      
     duration: 5 + Math.random() * 5, 
-    size: 15 + Math.random() * 20, // 15px to 35px
+    size: 15 + Math.random() * 20, 
     rotateStart: Math.random() * 360 
   }));
 
@@ -51,28 +51,24 @@ const PetalsEffect = () => {
 };
 
 // ---------------------------------------------------------
-// 2. BHAKTI: Rising Diya Lights (Divine Atmosphere)
+// 2. BHAKTI: Rising Diya Lights
 // ---------------------------------------------------------
 const BhaktiEffect = () => {
-  // Create rising "soul" lights or Diya glow
   const lights = Array.from({ length: 25 }).map((_, i) => ({
     id: i,
     left: `${Math.random() * 100}%`,
     duration: 6 + Math.random() * 4,
     delay: Math.random() * 5,
-    size: 4 + Math.random() * 6, // 4px to 10px core size
+    size: 4 + Math.random() * 6,
   }));
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-      {/* Background Aura */}
       <motion.div 
         className="absolute inset-0 bg-gradient-to-t from-purple-100/30 to-transparent"
         animate={{ opacity: [0.3, 0.6, 0.3] }}
         transition={{ duration: 4, repeat: Infinity }}
       />
-      
-      {/* Rising Lights */}
       {lights.map((light) => (
         <motion.div
           key={light.id}
@@ -81,14 +77,14 @@ const BhaktiEffect = () => {
             left: light.left,
             width: light.size,
             height: light.size,
-            boxShadow: "0 0 15px 2px rgba(251, 191, 36, 0.6)" // Golden Glow
+            boxShadow: "0 0 15px 2px rgba(251, 191, 36, 0.6)"
           }}
           initial={{ y: "105vh", opacity: 0 }}
           animate={{
-            y: "-10vh", // Float UPwards
-            opacity: [0, 1, 0], // Fade in then out
-            scale: [1, 1.5, 1], // Pulse slightly
-            x: [0, Math.random() * 20 - 10] // Gentle drift
+            y: "-10vh", 
+            opacity: [0, 1, 0], 
+            scale: [1, 1.5, 1], 
+            x: [0, Math.random() * 20 - 10] 
           }}
           transition={{
             duration: light.duration,
@@ -103,23 +99,26 @@ const BhaktiEffect = () => {
 };
 
 // ---------------------------------------------------------
-// 3. WEDDING: Aksat (Rice) & Gold Shower
+// 3. WEDDING: Roses & Rice (Aksat)
 // ---------------------------------------------------------
 const WeddingEffect = () => {
   // 1. RICE GRAINS (Aksat)
-  const rice = Array.from({ length: 30 }).map((_, i) => ({
+  const rice = Array.from({ length: 20 }).map((_, i) => ({
     id: i,
     left: `${Math.random() * 100}%`,
     duration: 3 + Math.random() * 2, // Fall faster
     delay: Math.random() * 3,
   }));
 
-  // 2. GOLD CONFETTI
-  const gold = Array.from({ length: 20 }).map((_, i) => ({
+  // 2. ROSES (Using rose.png) - Similar logic to Mayra
+  const roses = Array.from({ length: 20 }).map((_, i) => ({
     id: i,
     left: `${Math.random() * 100}%`,
-    duration: 4 + Math.random() * 3, // Fall slower/fluttery
-    delay: Math.random() * 3,
+    delay: Math.random() * 5,      
+    duration: 6 + Math.random() * 4, 
+    // Roses might be slightly larger than marigolds
+    size: 20 + Math.random() * 25, // 20px to 45px
+    rotateStart: Math.random() * 360 
   }));
 
   return (
@@ -133,13 +132,13 @@ const WeddingEffect = () => {
           style={{
             left: r.left,
             top: -20,
-            width: "6px",
-            height: "10px", // Oval shape
+            width: "5px",
+            height: "8px", 
           }}
           animate={{
             y: ["0vh", "105vh"],
-            rotateX: [0, 360], // Tumble vertically
-            rotateZ: [0, 45, 0] // Wobble
+            rotateX: [0, 360], 
+            rotateZ: [0, 45, 0] 
           }}
           transition={{
             duration: r.duration,
@@ -150,28 +149,29 @@ const WeddingEffect = () => {
         />
       ))}
 
-      {/* GOLD CONFETTI (Square sparkles) */}
-      {gold.map((g) => (
-        <motion.div
-          key={`gold-${g.id}`}
-          className="absolute bg-red-400"
-          style={{
-            left: g.left,
-            top: -20,
-            width: "8px",
-            height: "8px",
+      {/* FALLING ROSES */}
+      {roses.map((rose) => (
+        <motion.img
+          key={`rose-${rose.id}`}
+          src="/rose.png" // Uses your new Rose image
+          alt="falling rose"
+          className="absolute object-contain opacity-90"
+          style={{ 
+            left: rose.left, 
+            top: -60, 
+            width: rose.size,
+            height: rose.size
           }}
           animate={{
-            y: ["0vh", "105vh"],
-            rotate: [0, 360], // Spin flat
-            rotateY: [0, 360], // Flip 3D
-            opacity: [1, 0.8, 1] // Twinkle
+            y: ["0vh", "105vh"], 
+            rotate: [rose.rotateStart, rose.rotateStart + 360], 
+            x: [0, Math.random() * 60 - 30] 
           }}
           transition={{
-            duration: g.duration,
+            duration: rose.duration,
             repeat: Infinity,
             ease: "linear",
-            delay: g.delay
+            delay: rose.delay
           }}
         />
       ))}
@@ -180,36 +180,45 @@ const WeddingEffect = () => {
 };
 
 // ---------------------------------------------------------
-// 4. RECEPTION: Starry Night
+// 4. RECEPTION: Twinkling White Stars (Small & Delicate)
 // ---------------------------------------------------------
 const StarryEffect = () => {
-  const stars = Array.from({ length: 50 }).map((_, i) => ({
+  const stars = Array.from({ length: 60 }).map((_, i) => ({
     id: i,
     left: `${Math.random() * 100}%`,
     top: `${Math.random() * 100}%`,
-    size: Math.random() * 2 + 1
+    // REDUCED SIZE: 7px to 17px (Previous was 15-35px)
+    size: 7 + Math.random() * 10, 
+    duration: 1.5 + Math.random() * 3, 
+    delay: Math.random() * 2
   }));
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {stars.map((s) => (
-        <motion.div
+        <motion.img
           key={s.id}
-          className="absolute bg-white rounded-full blur-[0.5px]"
+          src="/star.png" 
+          alt="star"
+          className="absolute object-contain"
           style={{ 
             left: s.left, 
             top: s.top, 
             width: s.size, 
-            height: s.size 
+            height: s.size,
+            // Inverts black png to white star
+            filter: "brightness(0) invert(1)" 
           }}
           animate={{
-            opacity: [0.1, 0.8, 0.1], // Twinkle effect
-            scale: [1, 1.2, 1]
+            opacity: [0.2, 0.9, 0.2], 
+            scale: [0.8, 1.1, 0.8], 
+            rotate: [0, 30, 0]
           }}
           transition={{
-            duration: 2 + Math.random() * 3,
+            duration: s.duration,
             repeat: Infinity,
-            delay: Math.random() * 5
+            ease: "easeInOut",
+            delay: s.delay
           }}
         />
       ))}
@@ -224,8 +233,8 @@ export const AmbientBackground = ({ currentTheme }: AmbientBackgroundProps) => {
   const getBgClass = () => {
     switch (currentTheme) {
       case 'mayra': return "bg-gradient-to-br from-amber-50 to-orange-100";
-      case 'bhakti': return "bg-gradient-to-b from-slate-50 to-purple-100"; // Deepened purple slightly
-      case 'wedding': return "bg-gradient-to-br from-red-50 via-rose-50 to-amber-50"; // Richer Rose/Red
+      case 'bhakti': return "bg-gradient-to-b from-slate-50 to-purple-100"; 
+      case 'wedding': return "bg-gradient-to-br from-red-50 via-rose-50 to-amber-50"; 
       case 'reception': return "bg-gradient-to-b from-slate-900 via-blue-950 to-slate-900";
       default: return "bg-white";
     }
@@ -239,6 +248,7 @@ export const AmbientBackground = ({ currentTheme }: AmbientBackgroundProps) => {
         backgroundColor: currentTheme === 'reception' ? '#0f172a' : '#ffffff' 
       }}
     >
+      {/* Dark overlay for reception to make stars pop */}
       <div className={`absolute inset-0 transition-opacity duration-1000 ${currentTheme === 'reception' ? 'opacity-0' : 'opacity-40 bg-white/50'}`} />
 
       <AnimatePresence mode="wait">

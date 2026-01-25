@@ -18,6 +18,7 @@ export default {
         elegant: ['"Pinyon Script"', 'cursive'],
         body: ["Cormorant Garamond", "serif"],
         italianno: ['"Italianno"', 'cursive'],
+        imperial: ['"Imperial Script"', 'cursive'],
       },
       colors: {
         border: "hsl(var(--border))",
