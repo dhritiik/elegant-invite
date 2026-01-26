@@ -21,7 +21,7 @@ const events: TimelineEvent[] = [
     title: "mandap muhurat",
     time: "9:00 AM",
     date: "Sunday, 8th March",
-    description: "An auspicious moment dedicated to seeking the divine blessings of Lord Ganesha, invoking wisdom, prosperity and harmony for a joyful and obstacle-free beginning",
+    description: "An auspicious moment dedicated to seeking the divine blessings of Lord Ganesha, seeking wisdom, prosperity and harmony for a joyful and obstacle-free beginning",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "horizontal",
     image: "/madamandup.png",
@@ -39,7 +39,7 @@ const events: TimelineEvent[] = [
     title: "mameru",
     time: "10:30 AM ",
     date: "Sunday, 8th March",
-    description: "With a shower of Blessings and Love from the Maternal Family —\n Late Smt. Yashomatiben Pravinchandra Gopani,\n Smt. Rupaben Nileshbhai Gopani\n & Smt. Alpaben Yogeshbhai Gopani.",
+    description: "With a shower of Blessings and Love from the Maternal Family —\n Late Yashomatiben Pravinchandra Gopani \n Smt. Rupaben Nileshbhai Gopani\n Smt. Alpaben Yogeshbhai Gopani",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "horizontal",
     image: "/mameru.jpg",
@@ -88,8 +88,8 @@ const events: TimelineEvent[] = [
   },
   {
     id: 5,
-    title: "baraat prasthan",
-    time: "2:30 PM",
+    title: "jaan aagman",
+    time: "2:00 PM",
     date: "Tuesday, 10th March",
     description: "A grand ceremonial procession marking the groom’s joyous arrival, filled with music, celebration and blessings as he journeys toward the sacred union",
     venue: "Arcadia Banquet Hall, Sumer Nagar, Borivali West, Mumbai",
@@ -160,7 +160,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
     if (title.includes("bhakti")) {
       return guestCounts.bhakti || guestCounts.global;
     }
-    if (title.includes("baraat") || title.includes("hast melap") || title.includes("wedding")) {
+    if (title.includes("jaan") || title.includes("hast melap") || title.includes("wedding")) {
       return guestCounts.wedding || guestCounts.global;
     }
     if (title.includes("reception")) {
@@ -230,7 +230,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
         let shouldShow = false; 
 
         if (isWedding) {
-          if (titleLower.includes("hast melap") || titleLower.includes("baraat")) {
+          if (titleLower.includes("hast melap") || titleLower.includes("jaan")) {
             shouldShow = true;
           }
         }
@@ -352,8 +352,8 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
                ))}
             </div>
 
-            {/* GUEST COUNT - HIDDEN FOR BARAAT */}
-            {guestCountSuffix && !event.title.toLowerCase().includes("baraat") && (
+            {/* GUEST COUNT - HIDDEN FOR jaan aagman */}
+            {guestCountSuffix && !event.title.toLowerCase().includes("jaan") && (
               <div className="mb-3 text-center">
                 <span className="block text-black font-display text-sm">
                   looking forward to welcome

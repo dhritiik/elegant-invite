@@ -60,13 +60,14 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
       }}
     >
       {/* Hero Section */}
+   {/* Hero Section */}
       <section className="relative min-h-screen flex flex-col items-center justify-center pb-20 md:pb-24 pt-10">
-        {/* Background Image */}
+        {/* Background Image - REMOVED WHITE TINT OVERLAY */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-70"
           style={{ backgroundImage: `url(${heroBackground})` }}
         >
-            <div className="absolute inset-0 bg-gradient-to-b from-foreground/25 via-foreground/12 to-foreground/30" />
+            {/* The gradient overlay div has been removed here */}
         </div>
         
         {/* Content */}
@@ -76,12 +77,12 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 1, delay: 1.2 }}
         >
-{/* LOGO SECTION */}
+          {/* LOGO SECTION */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={isVisible ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 1, delay: 1.4 }}
-            className="mb-0 md:mb-10 -mt-48 md:mt-0" 
+            className="mb-0 md:mb-12 -mt-80 md:mt-0" 
           >
             <img 
               src={logo} 
@@ -95,12 +96,11 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={isVisible ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 1, delay: 1.8 }}
-            // UPDATED: Changed -mt-20 to -mt-8 to move text down and create space
-            className="w-full text-center -mt-8 md:mt-0"
+            className="w-full text-center mt-2 md:mt-0"
           >
-            {/* Saloni */}
+            {/* Saloni & Jay Combined with smaller Ampersand */}
             <motion.h1 
-              className="font-imperial text-7xl md:text-8xl lg:text-[9rem] text-red-700 mb-0 tracking-wide leading-none [text-shadow:0.5px_0_0_currentColor]"
+              className="font-imperial text-red-700 mb-0 tracking-wide leading-none [text-shadow:0.5px_0_0_currentColor]"
               animate={{ 
                 textShadow: [
                   "0.5px 0 0 currentColor", 
@@ -110,39 +110,17 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               }}
               transition={{ duration: 3, repeat: Infinity }}
             >
-              Saloni
+              {/* Name Size */}
+              <span className="text-6xl md:text-8xl lg:text-[9rem]">Saloni </span>
+              
+              {/* Ampersand Size (Smaller) */}
+              <span className="text-4xl md:text-6xl lg:text-[6rem] px-2"> &  </span>
+              
+              {/* Name Size */}
+              <span className="text-6xl md:text-8xl lg:text-[9rem]"> Jay </span>
             </motion.h1>
-
-            {/* Ampersand */}
-            <motion.span
-              className="block text-5xl md:text-6xl text-red-700 font-imperial my-1 opacity-90 [text-shadow:0.5px_0_0_currentColor]"
-              animate={{ 
-                textShadow: [
-                  "0.5px 0 0 currentColor", 
-                  "0.5px 0 0 currentColor, 0 0 15px rgba(255, 215, 0, 0.3)", 
-                  "0.5px 0 0 currentColor"  
-                ]
-              }}
-              transition={{ duration: 3, repeat: Infinity, delay: 0.2 }}
-            >
-              &
-            </motion.span>
-
-            {/* Jay */}
-            <motion.h1 
-              className="font-imperial text-7xl md:text-8xl lg:text-[9rem] text-red-700 tracking-wide leading-none [text-shadow:0.8px_0_0_currentColor]"
-              animate={{ 
-                textShadow: [
-                  "0.8px 0 0 currentColor", 
-                  "0.8px 0 0 currentColor, 0 0 15px rgba(255, 215, 0, 0.3)", 
-                  "0.8px 0 0 currentColor" 
-                ]
-              }}
-              transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
-            >
-              Jay
-            </motion.h1>
-          </motion.div> 
+            
+          </motion.div>
         </motion.div>
         
         {/* Scroll indicator */}
@@ -222,12 +200,13 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               transition={{ duration: 0.8, delay: 0.4 }}
             >
               <span className="block">
-                With the blessings of our beloved elders,
+                With the divine grace & blessings of,
               </span>
 
-              <span className="block mt-2">
+              <span className="block font-bold">
                 Smt. Kokilaben Lalitbhai Vora & Family
               </span>
+
 
               <span className="block">
                 we warmly seek your gracious presence and blessings as we celebrate the union of two hearts and families.
@@ -258,7 +237,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             </motion.div>
 
            {/* 4. EVENT CONTEXT */}
-            <p className="font-body text-muted-foreground mb-4">
+            <p className="font-body text-xl md:text-2xl text-muted-foreground leading-relaxed mb-1 max-w-xl mx-auto italic">
               to bless the sacred union of
             </p>
 
@@ -275,16 +254,16 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               </p>
 
               {/* SALONI */}
-              <h2 className="font-imperial text-5xl md:text-7xl text-gold mb-0 tracking-wide leading-none">
+              <h2 className="font-imperial text-7xl md:text-7xl text-gold mb-0 tracking-wide leading-none">
                 Saloni
               </h2>
 
               <div className="my-2">
-                <span className="font-display text-3xl text-sage-dark/60">&</span>
+                <span className="font-display text-5xl text-sage-dark/60">&</span>
               </div>
 
               {/* JAY */}
-              <h2 className="font-imperial text-5xl md:text-7xl text-gold mb-1 tracking-wide leading-none">
+              <h2 className="font-imperial text-7xl md:text-7xl text-gold mb-1 tracking-wide leading-none">
                 Jay
               </h2>
 
@@ -305,7 +284,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             </motion.p>
 
 
-                        {/* 7. SIGN OFF */}
+            {/* 7. SIGN OFF */}
             <motion.div 
               className="border-t border-gold/30 pt-8 mt-4"
               initial={{ opacity: 0, y: 20 }}
@@ -406,7 +385,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             >
               <div className="font-body text-lg text-muted-foreground leading-relaxed">
                 <p className="mb-4"> Your Presence is the Only Gift We Desire</p>
-                <p>Valet Parking Available</p>
+                <p>Valet Parking Available at All Venues</p>
               </div>
             </motion.div>
 
