@@ -299,7 +299,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               <p className="font-display text-sage-dark text-md mb-1">With Best Compliments</p>
               <p className="font-display text-gold text-base md:text-lg font-bold">
                 <span className="block">Smt. Sejal Piyush Vora</span>
-                <span className="block">Smt. Anjali Paras Vora</span>
+                <span className="block mb-3">Smt. Anjali Paras Vora</span>
               </p>
 
               <p className="font-display text-sage-dark text-md mb-1">With Love</p>
