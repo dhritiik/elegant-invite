@@ -60,7 +60,6 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
       }}
     >
       {/* Hero Section */}
-   {/* Hero Section */}
       <section className="relative min-h-screen flex flex-col items-center justify-center pb-20 md:pb-24 pt-10">
         {/* Background Image - REMOVED WHITE TINT OVERLAY */}
         <div 
@@ -78,8 +77,6 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
           transition={{ duration: 1, delay: 1.2 }}
         >
           {/* LOGO SECTION */}
-         
-
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={isVisible ? { opacity: 1, scale: 1 } : {}}
@@ -89,8 +86,6 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             <img 
               src={logo} 
               alt="S&J Wedding Logo" 
-              // UPDATED: Removed 'rounded-full' to stop the circular cutting
-              // Removed 'mix-blend-multiply' to ensure colors stay solid (optional, add back if needed)
               className="w-64 h-64 md:w-72 md:h-72 object-contain mx-auto drop-shadow-lg" 
             />
           </motion.div>
@@ -164,16 +159,16 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
       {/* Family Blessing Section */}
       <section className="relative bg-white/90 backdrop-blur-sm py-16 md:py-24 overflow-hidden transition-colors duration-700">
         
-        <div className="container max-w-3xl mx-auto px-6 text-center relative z-10">
+        <div className="container max-w-3xl mx-auto px-2 text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            {/* Top decorative divider */}
+            {/* Top decorative divider - REDUCED MARGIN BOTTOM */}
             <motion.div 
-              className="flex items-center justify-center gap-4 mb-8"
+              className="flex items-center justify-center gap-4 mb-4"
               initial={{ opacity: 0, scale: 0 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -297,21 +292,21 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               transition={{ duration: 0.8, delay: 0.8 }}
             >
               <p className="font-display text-sage-dark text-md mb-1">With Best Compliments</p>
-              <p className="font-display text-gold text-base md:text-lg font-bold">
+              <p className="font-display text-gold text-2xl md:text-lg font-bold">
                 <span className="block">Smt. Sejal Piyush Vora</span>
                 <span className="block mb-3">Smt. Anjali Paras Vora</span>
               </p>
 
               <p className="font-display text-sage-dark text-md mb-1">With Love</p>
-              <p className="font-display text-gold text-base md:text-lg font-bold">
-                <span className="block">Nisarg - Rahil </span>
+              <p className="font-display text-gold text-2xl md:text-lg font-bold">
+                <span className="block">Nisarg - Rahil - Jash </span>
               </p>
 
             </motion.div>
             
-            {/* Bottom decorative divider */}
+            {/* Bottom decorative divider - REDUCED MARGIN TOP */}
             <motion.div 
-              className="flex items-center justify-center gap-4 mt-12"
+              className="flex items-center justify-center gap-4 mt-6"
               initial={{ opacity: 0, scale: 0 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -328,8 +323,8 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
       {/* Timeline Section */}
       <section className="relative py-20 md:py-32 overflow-hidden">
         <div className="container max-w-4xl mx-auto px-6 relative z-10">
-           <div className="text-center mb-16">
-              <h2 className={`font-display text-3xl md:text-5xl mb-4 transition-colors duration-500 ${currentTheme === 'reception' ? 'text-white' : 'text-foreground'}`}>
+           <div className="text-center mb-2">
+              <h2 className={`font-display text-3xl md:text-5xl mb-2 transition-colors duration-500 ${currentTheme === 'reception' ? 'text-white' : 'text-foreground'}`}>
                 the celebration
               </h2>
            </div>
@@ -357,8 +352,9 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
+            {/* Additional Details Top Divider - REDUCED MARGIN BOTTOM */}
             <motion.div 
-              className="flex items-center justify-center gap-4 mb-8"
+              className="flex items-center justify-center gap-4 mb-4"
               initial={{ opacity: 0, scale: 0 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -386,14 +382,16 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              <div className="font-body text-lg text-muted-foreground leading-relaxed">
+              {/* UPDATED: Changed text-muted-foreground to text-black */}
+              <div className="font-body font-black text-lg text-black leading-relaxed">
                 <p className="mb-4"> Your Presence is the Only Gift We Desire</p>
                 <p>Valet Parking Available at All Venues</p>
               </div>
             </motion.div>
 
+            {/* Additional Details Bottom Divider - REDUCED MARGIN TOP */}
             <motion.div 
-              className="flex items-center justify-center gap-4 mt-12"
+              className="flex items-center justify-center gap-4 mt-6"
               initial={{ opacity: 0, scale: 0 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}

@@ -21,7 +21,7 @@ const events: TimelineEvent[] = [
     title: "mandap muhurat",
     time: "9:00 AM",
     date: "Sunday, 8th March",
-    description: "An auspicious moment dedicated to seeking the divine blessings of Lord Ganesha, seeking wisdom, prosperity and harmony for a joyful and obstacle-free beginning",
+    description: "Seeking the Blessings of Lord Ganesha for a Joyous Beginning\n Alongside Mehendi",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "horizontal",
     image: "/madamandup.png",
@@ -53,7 +53,7 @@ const events: TimelineEvent[] = [
   },
   {
     id: 3,
-    title: "haldi & mehendi ",
+    title: "haldi",
     time: "11:30 AM",
     date: "Sunday, 8th March",
     description: "As turmeric’s golden hues meet the glow of love, the day blossoms into beautiful shades of sunshine, laughter and memories that will last a lifetime",
@@ -91,7 +91,7 @@ const events: TimelineEvent[] = [
     title: "jaan aagman",
     time: "2:00 PM",
     date: "Tuesday, 10th March",
-    description: "A grand ceremonial procession marking the groom’s joyous arrival, filled with music, celebration and blessings as he journeys toward the sacred union",
+    description: "A grand ceremonial procession marking the groom’s joyous arrival, filled with music, celebration and blessings as he walks toward the sacred union",
     venue: "Arcadia Banquet Hall, Sumer Nagar, Borivali West, Mumbai",
     style: "horizontal",
     image: "/baaraat.jpg",
@@ -123,7 +123,7 @@ const events: TimelineEvent[] = [
     title: "reception",
     time: "6:30 PM onwards",
     date: "Tuesday, 10th March",
-    description: "A grand celebration honoring love, togetherness and new beginnings\nChoviyaar Facility Available",
+    description: "A grand celebration honoring love, togetherness and new beginnings\nChauvihar Facility Available",
     venue: "Arcadia Banquet Hall, Sumer Nagar, Borivali West, Mumbai",
     style: "vertical",
     image: "/reception.jpg",
@@ -192,7 +192,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
   const visibleGroups = useMemo(() => {
     const baseGroups = [
       {
-        title: "madamandap, mameru, haldi & mehendi",
+        title: "mandup muhurat, mameru, haldi & mehendi",
         bgColor: "bg-cream-light",
         events: events.slice(0, 3), 
       },
@@ -279,13 +279,12 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
       }
     };
 
-    // Logic to split the venue name and address
     const [venueName, ...venueAddressParts] = event.venue ? event.venue.split(',') : ["", ""];
     const venueAddress = venueAddressParts.join(',').trim();
 
     return (
       <motion.div
-        className="w-80 h-[26rem] md:w-96 md:h-[30rem] z-10 cursor-pointer"
+        className="w-80 h-96 md:w-96 md:h-[28rem] z-10 cursor-pointer"
         onClick={() => setIsFlipped(!isFlipped)}
         whileHover={{ scale: 1.05 }}
         transition={{ type: "spring", stiffness: 300 }}
@@ -341,25 +340,31 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
             </div>
             
             <div className="font-body text-black leading-relaxed mb-4 text-base flex-grow text-center">
-               {event.description.split('\n').map((line, i) => (
-                 <p 
-                   key={i} 
-                   // UPDATED: Simply bold the entire line if it contains "Dinner", same size
-                   className={`${i > 0 ? "mt-2" : ""} ${line.toLowerCase().includes('dinner') ? "font-bold" : ""}`}
-                 >
-                   {line}
-                 </p>
-               ))}
+               {event.description.split('\n').map((line, i) => {
+                 if (line.toLowerCase().includes('dinner') && line.includes('-')) {
+                    const [timePart, labelPart] = line.split('-');
+                    return (
+                        <p key={i} className="mt-2 flex items-baseline justify-center gap-2">
+                            {/* UPDATED: Removed extra size classes to keep font same size as description */}
+                            <span className="lining-nums">{timePart.trim()}</span>
+                            <span>-</span>
+                            <span>{labelPart.trim()}</span>
+                        </p>
+                    );
+                 }
+                 return (
+                   <p key={i} className={i > 0 ? "mt-2" : ""}>{line}</p>
+                 );
+               })}
             </div>
 
             {/* GUEST COUNT - HIDDEN FOR jaan aagman */}
             {guestCountSuffix && !event.title.toLowerCase().includes("jaan") && (
               <div className="mb-3 text-center">
-                <span className="block text-black font-display text-sm">
+                <span className="block text-yellow font-display italic text-sm">
                   looking forward to welcome
                 </span>
-                {/* UPDATED: Added font-bold here */}
-                <span className="block text-black font-display text-sm mt-1 font-bold">
+                <span className="block text-yellow font-display italic text-sm mt-1 font-bold">
                   {guestCountSuffix}
                 </span>
               </div>
@@ -392,13 +397,13 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
         visibleGroups.map((group, groupIndex) => (
           <motion.div 
             key={groupIndex} 
-            className="py-20 md:py-32 relative overflow-hidden"
+            className="pt-0 pb-20 md:pt-4 md:pb-32 relative overflow-hidden"
             onViewportEnter={() => onThemeChange(getThemeForGroup(group.title))}
             viewport={{ amount: 0.3 }}
           >
             <div className="relative z-10 w-full flex flex-col items-center">
               <motion.h3 
-                className={`text-center font-display text-2xl md:text-3xl mb-16 transition-colors duration-500 ${
+                className={`text-center font-display text-2xl md:text-3xl mb-8 transition-colors duration-500 ${
                   getThemeForGroup(group.title) === 'reception' ? 'text-white' : 'text-foreground'
                 }`}
                 initial={{ opacity: 0, y: -20 }}
