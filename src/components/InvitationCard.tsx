@@ -215,14 +215,25 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
 
             {/* 2. INTRO TEXT */}
             <motion.p 
-              className="font-body font-bold text-lg text-muted-foreground leading-relaxed mb-8 italic"
+              className="font-body text-xl md:text-2xl text-muted-foreground leading-relaxed mb-10 max-w-xl mx-auto italic"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-               With the blessings of Smt. Kokilaben Lalitbhai Vora & Family, we seek your gracious presence and blessings to celebrate the union of hearts and families.
+              <span className="block">
+                With the blessings of our beloved elders,
+              </span>
+
+              <span className="block mt-2">
+                Smt. Kokilaben Lalitbhai Vora & Family
+              </span>
+
+              <span className="block">
+                we warmly seek your gracious presence and blessings as we celebrate the union of two hearts and families.
+              </span>
             </motion.p>
+
             
             {/* 3. DYNAMIC INVITATION */}
             <motion.div 
@@ -246,42 +257,45 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               )}
             </motion.div>
 
-            {/* 4. EVENT CONTEXT */}
-            <p className="font-body text-muted-foreground mb-8">
-                to bless the sacred union of
+           {/* 4. EVENT CONTEXT */}
+            <p className="font-body text-muted-foreground mb-4">
+              to bless the sacred union of
             </p>
 
-            {/* 5. BRIDE & GROOM SECTION - UPDATED */}
+            {/* 5. BRIDE & GROOM SECTION */}
             <motion.div
-               initial={{ opacity: 0, scale: 0.95 }}
-               whileInView={{ opacity: 1, scale: 1 }}
-               viewport={{ once: true }}
-               transition={{ duration: 0.8, delay: 0.6 }}
-               className="mb-8"
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="mb-6"
             >
-                <p className="font-body text-sm md:text-sm text-muted-foreground uppercase tracking-wide">
-                  (D/O Smt. Sejal & Shri Piyush Lalitbhai Vora)
-                </p>
-                {/* SALONI - Updated to Imperial Script, removed Bold, Title Case */}
-                <h2 className="font-imperial text-5xl md:text-7xl text-gold mb-1 tracking-wide leading-none">Saloni</h2>
-                
+              <p className="font-body text-base md:text-base text-muted-foreground uppercase tracking-wide mb-1">
+                (D/O Smt. Sejalben & Shri Piyushbhai Lalitbhai Vora)
+              </p>
 
-                <div className="my-6">
-                  <span className="font-display text-3xl text-sage-dark/60">&</span>
-                </div>
+              {/* SALONI */}
+              <h2 className="font-imperial text-5xl md:text-7xl text-gold mb-0 tracking-wide leading-none">
+                Saloni
+              </h2>
 
-                {/* JAY - Updated to Imperial Script, removed Bold, Title Case */}
-                <h2 className="font-imperial text-5xl md:text-7xl text-gold mb-1 tracking-wide leading-none">Jay</h2>
-                <p className="font-body text-sm md:text-sm text-muted-foreground uppercase tracking-wide">
-                  (S/O Late Leena & Shri Alpesh Jeevanlal Shah)
-                </p>
+              <div className="my-2">
+                <span className="font-display text-3xl text-sage-dark/60">&</span>
+              </div>
+
+              {/* JAY */}
+              <h2 className="font-imperial text-5xl md:text-7xl text-gold mb-1 tracking-wide leading-none">
+                Jay
+              </h2>
+
+              <p className="font-body text-base md:text-base text-muted-foreground uppercase tracking-wide mt-2 mb-2">
+                (S/O Late Leenaben & Shri Alpeshbhai Jeevanlal Shah)
+              </p>
             </motion.div>
 
             {/* 6. CLOSING TEXT */}
-
             <motion.p 
-              // UPDATED: Increased font size (text-xl and md:text-2xl)
-              className="font-body text-xl md:text-2xl text-muted-foreground leading-relaxed mb-10 max-w-xl mx-auto italic"
+              className="font-body text-xl md:text-2xl text-muted-foreground leading-relaxed mt-4 mb-10 max-w-xl mx-auto italic"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -290,7 +304,8 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               As they embark on their journey of love and togetherness, your presence will make their special day even more memorable.
             </motion.p>
 
-            {/* 7. SIGN OFF */}
+
+                        {/* 7. SIGN OFF */}
             <motion.div 
               className="border-t border-gold/30 pt-8 mt-4"
               initial={{ opacity: 0, y: 20 }}
@@ -298,12 +313,13 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.8 }}
             >
-              <p className="font-display text-sage-dark text-md mb-1">With Love & Best Compliments</p>
+              <p className="font-display text-sage-dark text-md mb-1">With Best Compliments</p>
               <p className="font-display text-gold text-base md:text-lg font-bold">
                 <span className="block">Smt. Sejal Piyush Vora</span>
                 <span className="block">Smt. Anjali Paras Vora</span>
-                <span className="block">Smt. Monika Milanbhai Kothari</span>
-               </p>
+                <span className="block mb-3">Smt. Monika Milanbhai Kothari</span>
+              </p>
+
               <p className="font-display text-sage-dark text-md mb-1">With Love</p>
               <p className="font-display text-gold text-base md:text-lg font-bold">
                 <span className="block">Nisarg - Rahil - Jash</span>

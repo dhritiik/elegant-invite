@@ -21,7 +21,7 @@ const events: TimelineEvent[] = [
     title: "mandap muhurat",
     time: "9:00 AM",
     date: "Sunday, 8th March",
-    description: "Seeking the Blessings of Lord Ganesha for a Joyous Beginning",
+    description: "An auspicious moment dedicated to seeking the divine blessings of Lord Ganesha, invoking wisdom, prosperity and harmony for a joyful and obstacle-free beginning",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "horizontal",
     image: "/madamandup.png",
@@ -39,7 +39,7 @@ const events: TimelineEvent[] = [
     title: "mameru",
     time: "10:30 AM ",
     date: "Sunday, 8th March",
-    description: "With a shower of blessings and love from the maternal family — Late Smt. Yashomatiben Pravinchandra Gopani, Smt. Rupaben Nileshbhai Gopani, and Smt. Alpaben Yogeshbhai Gopani.",
+    description: "With a shower of Blessings and Love from the Maternal Family —\n Late Smt. Yashomatiben Pravinchandra Gopani,\n Smt. Rupaben Nileshbhai Gopani\n & Smt. Alpaben Yogeshbhai Gopani.",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "horizontal",
     image: "/mameru.jpg",
@@ -54,9 +54,9 @@ const events: TimelineEvent[] = [
   {
     id: 3,
     title: "haldi & mehendi ",
-    time: "11:30 AM onwards",
+    time: "11:30 AM",
     date: "Sunday, 8th March",
-    description: "Hues of Turmeric + Glow of Love = Shades of Sunshine",
+    description: "As turmeric’s golden hues meet the glow of love, the day blossoms into beautiful shades of sunshine, laughter and memories that will last a lifetime",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "horizontal",
     image: "/haldi.jpg",
@@ -73,7 +73,7 @@ const events: TimelineEvent[] = [
     title: "bhakti sandhya",
     time: "7:30 PM",
     date: "Sunday, 8th March",
-    description: "An evening of devotional music, blessings, and spiritual togetherness\n5:30 to 7:30 PM - Dinner",
+    description: "An evening of Devotional Music, Blessings and Spiritual togetherness\n 5:30 to 7:30 PM - Dinner",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "vertical",
     image: "/bhakti.jpg",
@@ -91,7 +91,7 @@ const events: TimelineEvent[] = [
     title: "baraat prasthan",
     time: "2:30 PM",
     date: "Tuesday, 10th March",
-    description: "The ceremonial procession marking the arrival of the groom",
+    description: "A grand ceremonial procession marking the groom’s joyous arrival, filled with music, celebration and blessings as he journeys toward the sacred union",
     venue: "Arcadia Banquet Hall, Sumer Nagar, Borivali West, Mumbai",
     style: "horizontal",
     image: "/baaraat.jpg",
@@ -107,7 +107,7 @@ const events: TimelineEvent[] = [
     title: "hast melap",
     time: "4:05 PM ",
     date: "Tuesday, 10th March",
-    description: "The sacred union where two hands, two hearts, and two families come together",
+    description: "A sacred and soulful ritual where two hands are joined, two hearts are united and two families are bound together in love, blessings and lifelong togetherness",
     venue: "Arcadia Banquet Hall, Sumer Nagar, Borivali West, Mumbai",
     style: "vertical",
     image: "/wedding.jpg",
@@ -121,7 +121,7 @@ const events: TimelineEvent[] = [
   {
     id: 7,
     title: "reception",
-    time: "7:30 PM onwards",
+    time: "6:30 PM onwards",
     date: "Tuesday, 10th March",
     description: "A grand celebration honoring love, togetherness and new beginnings\nChoviyaar Facility Available",
     venue: "Arcadia Banquet Hall, Sumer Nagar, Borivali West, Mumbai",
@@ -355,11 +355,11 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
             {/* GUEST COUNT - HIDDEN FOR BARAAT */}
             {guestCountSuffix && !event.title.toLowerCase().includes("baraat") && (
               <div className="mb-3 text-center">
-                <span className="block text-black font-display italic text-sm">
+                <span className="block text-black font-display text-sm">
                   looking forward to welcome
                 </span>
                 {/* UPDATED: Added font-bold here */}
-                <span className="block text-black font-display italic text-sm mt-1 font-bold">
+                <span className="block text-black font-display text-sm mt-1 font-bold">
                   {guestCountSuffix}
                 </span>
               </div>
