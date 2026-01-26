@@ -78,6 +78,8 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
           transition={{ duration: 1, delay: 1.2 }}
         >
           {/* LOGO SECTION */}
+         
+
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={isVisible ? { opacity: 1, scale: 1 } : {}}
@@ -87,7 +89,9 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             <img 
               src={logo} 
               alt="S&J Wedding Logo" 
-              className="w-72 h-72 md:w-80 md:h-80 object-contain mx-auto drop-shadow-lg rounded-full mix-blend-multiply" 
+              // UPDATED: Removed 'rounded-full' to stop the circular cutting
+              // Removed 'mix-blend-multiply' to ensure colors stay solid (optional, add back if needed)
+              className="w-64 h-64 md:w-72 md:h-72 object-contain mx-auto drop-shadow-lg" 
             />
           </motion.div>
 
@@ -296,12 +300,11 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               <p className="font-display text-gold text-base md:text-lg font-bold">
                 <span className="block">Smt. Sejal Piyush Vora</span>
                 <span className="block">Smt. Anjali Paras Vora</span>
-                <span className="block mb-3">Smt. Monika Milanbhai Kothari</span>
               </p>
 
               <p className="font-display text-sage-dark text-md mb-1">With Love</p>
               <p className="font-display text-gold text-base md:text-lg font-bold">
-                <span className="block">Nisarg - Rahil - Jash</span>
+                <span className="block">Nisarg - Rahil </span>
               </p>
 
             </motion.div>
