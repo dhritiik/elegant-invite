@@ -363,11 +363,11 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
             {guestCountSuffix && !event.title.toLowerCase().includes("jaan") && (
               <div className="mb-3 text-center">
                 {/* UPDATED: Changed text-black to text-yellow-600 */}
-                <span className="block text-yellow-600 font-display italic text-sm">
+                <span className="block text-yellow-600 font-display text-sm">
                   looking forward to welcome
                 </span>
                 {/* UPDATED: Changed text-black to text-yellow-600 */}
-                <span className="block text-yellow-600 font-display italic text-sm mt-1 font-bold">
+                <span className="block text-yellow-600 font-display text-sm mt-1 font-bold">
                   {guestCountSuffix}
                 </span>
               </div>

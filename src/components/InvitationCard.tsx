@@ -292,13 +292,13 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               transition={{ duration: 0.8, delay: 0.8 }}
             >
               <p className="font-display text-sage-dark text-md mb-1">With Best Compliments</p>
-              <p className="font-display text-gold text-2xl md:text-lg font-bold">
+              <p className="font-display text-gold text-xl md:text-lg font-bold">
                 <span className="block">Smt. Sejal Piyush Vora</span>
                 <span className="block mb-3">Smt. Anjali Paras Vora</span>
               </p>
 
               <p className="font-display text-sage-dark text-md mb-1">With Love</p>
-              <p className="font-display text-gold text-2xl md:text-lg font-bold">
+              <p className="font-display text-gold text-xl md:text-lg font-bold">
                 <span className="block">Nisarg - Rahil - Jash </span>
               </p>
 
