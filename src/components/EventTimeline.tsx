@@ -21,7 +21,7 @@ const events: TimelineEvent[] = [
     title: "mandap muhurat",
     time: "9:00 AM",
     date: "Sunday, 8th March",
-    description: "Seeking the Blessings of Lord Ganesha for a Joyous Beginning\n Alongside Mehendi",
+    description: "Seeking the Blessings of Lord Ganesha for a Joyous Beginning\n (Alongside Mehendi)",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "horizontal",
     image: "/madamandup.png",
@@ -192,7 +192,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
   const visibleGroups = useMemo(() => {
     const baseGroups = [
       {
-        title: "mandup muhurat, mameru, haldi & mehendi",
+        title: "mandap muhurat, mameru, haldi & mehendi",
         bgColor: "bg-cream-light",
         events: events.slice(0, 3), 
       },
@@ -358,7 +358,6 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
                })}
             </div>
 
-            {/* GUEST COUNT - HIDDEN FOR jaan aagman */}
             {/* GUEST COUNT - HIDDEN FOR jaan aagman */}
             {guestCountSuffix && !event.title.toLowerCase().includes("jaan") && (
               <div className="mb-3 text-center">
