@@ -359,12 +359,15 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
             </div>
 
             {/* GUEST COUNT - HIDDEN FOR jaan aagman */}
+            {/* GUEST COUNT - HIDDEN FOR jaan aagman */}
             {guestCountSuffix && !event.title.toLowerCase().includes("jaan") && (
               <div className="mb-3 text-center">
-                <span className="block text-yellow font-display italic text-sm">
+                {/* UPDATED: Changed text-black to text-yellow-600 */}
+                <span className="block text-yellow-600 font-display italic text-sm">
                   looking forward to welcome
                 </span>
-                <span className="block text-yellow font-display italic text-sm mt-1 font-bold">
+                {/* UPDATED: Changed text-black to text-yellow-600 */}
+                <span className="block text-yellow-600 font-display italic text-sm mt-1 font-bold">
                   {guestCountSuffix}
                 </span>
               </div>
