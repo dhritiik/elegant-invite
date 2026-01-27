@@ -39,7 +39,7 @@ const events: TimelineEvent[] = [
     title: "mameru",
     time: "10:30 AM ",
     date: "Sunday, 8th March",
-    description: "With a shower of Blessings and Love from the Maternal Family —\n Late Yashomatiben Pravinchandra Gopani \n Smt. Rupaben Nileshbhai Gopani\n Smt. Alpaben Yogeshbhai Gopani",
+    description: "With a shower of Blessings and Love from the Maternal Family —\n Late Yashomatiben Pravinchandra Gopani \n Smt. Rupaben Nileshbhai Gopani\n Smt. Alpaben Yogeshbhai Gopani\n (Followed by Lunch)",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "horizontal",
     image: "/mameru.jpg",
@@ -123,7 +123,7 @@ const events: TimelineEvent[] = [
     title: "reception",
     time: "6:30 PM onwards",
     date: "Tuesday, 10th March",
-    description: "A grand celebration honoring love, togetherness and new beginnings\nChauvihar Facility Available",
+    description: "A grand celebration honoring love, togetherness and new beginnings\nChauvihar Facility Available\n (Followed by Dinner)",
     venue: "Arcadia Banquet Hall, Sumer Nagar, Borivali West, Mumbai",
     style: "vertical",
     image: "/reception.jpg",
@@ -335,8 +335,8 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
             }}
           >
             <div className="flex flex-col items-center justify-center mb-4">
-              <span className="font-display text-sage-dark text-md mb-1">{event.date}</span>
-              <div className="text-sage-dark text-md font-display font-bold">
+              <span className="font-display text-black text-md mb-1">{event.date}</span>
+              <div className="text-black text-md font-display font-bold">
                 {event.time}
               </div>
             </div>
