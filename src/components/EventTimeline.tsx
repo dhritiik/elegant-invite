@@ -282,13 +282,25 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
     // Helper for Title Background Colors
     const getTitleStyles = (title: string) => {
       const t = title.toLowerCase();
-      if (t.includes('mandap')) return 'bg-red-700 text-white';
-      if (t.includes('mameru')) return 'bg-purple-700 text-white';
-      if (t.includes('haldi')) return 'bg-yellow-500 text-black'; // Black text for better contrast on yellow
-      if (t.includes('bhakti')) return 'bg-blue-600 text-white';
-      if (t.includes('jaan') || t.includes('wedding')) return 'bg-gradient-to-r from-yellow-500 to-pink-600 text-white';
-      if (t.includes('hast melap') || t.includes('wedding')) return 'bg-gradient-to-r from-yellow-500 to-pink-600 text-white';
-      return 'bg-sage-dark text-cream-light'; // Default for Reception, Jaan, etc.
+      // Mandap: Red
+      if (t.includes('mandap')) return 'bg-[#f74862] text-white';
+      
+      // Mameru: Purple
+      if (t.includes('mameru')) return 'bg-[#9d56f5] text-white';
+      
+      // Haldi: Yellow (Black text)
+      if (t.includes('haldi')) return 'bg-[#FACC15] text-black'; 
+      
+      // Bhakti: Bluish
+      if (t.includes('bhakti')) return 'bg-[#6a9dfc] text-white';
+      
+      // Wedding/Jaan/Hast Melap: Gradient Yellow to Rani Pink
+      if (t.includes('jaan') || t.includes('wedding') || t.includes('hast melap')) {
+        return 'bg-gradient-to-r from-[#FACC15] to-[#E11D48] text-white';
+      }
+      
+      // Default (Reception, etc.)
+      return 'bg-[#0c0f4a] text-[#FDFBF7]'; 
     };
 
     const [venueName, ...venueAddressParts] = event.venue ? event.venue.split(',') : ["", ""];
