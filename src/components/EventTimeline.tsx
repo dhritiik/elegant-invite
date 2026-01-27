@@ -21,7 +21,7 @@ const events: TimelineEvent[] = [
     title: "mandap muhurat",
     time: "9:00 AM",
     date: "Sunday, 8th March",
-    description: "Seeking the Blessings of Lord Ganesha for a Joyous Beginning\n (Alongside Mehendi)",
+    description: "Seeking the Blessings of Lord Ganesha for a Joyous Beginning\n Alongside Mehendi",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "horizontal",
     image: "/madamandup.png",
@@ -192,7 +192,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
   const visibleGroups = useMemo(() => {
     const baseGroups = [
       {
-        title: "mandap muhurat, mameru, haldi & mehendi",
+        title: "mandup muhurat, mameru, haldi & mehendi",
         bgColor: "bg-cream-light",
         events: events.slice(0, 3), 
       },
@@ -279,6 +279,18 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
       }
     };
 
+    // Helper for Title Background Colors
+    const getTitleStyles = (title: string) => {
+      const t = title.toLowerCase();
+      if (t.includes('mandap')) return 'bg-red-700 text-white';
+      if (t.includes('mameru')) return 'bg-purple-700 text-white';
+      if (t.includes('haldi')) return 'bg-yellow-500 text-black'; // Black text for better contrast on yellow
+      if (t.includes('bhakti')) return 'bg-blue-600 text-white';
+      if (t.includes('jaan') || t.includes('wedding')) return 'bg-gradient-to-r from-yellow-500 to-pink-600 text-white';
+      if (t.includes('hast melap') || t.includes('wedding')) return 'bg-gradient-to-r from-yellow-500 to-pink-600 text-white';
+      return 'bg-sage-dark text-cream-light'; // Default for Reception, Jaan, etc.
+    };
+
     const [venueName, ...venueAddressParts] = event.venue ? event.venue.split(',') : ["", ""];
     const venueAddress = venueAddressParts.join(',').trim();
 
@@ -331,7 +343,8 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
             
             <div className="flex justify-center mb-3">
               <motion.h3 
-                className="font-display text-xl md:text-2xl text-cream-light bg-sage-dark px-6 py-2 rounded-full shadow-sm text-center"
+                // UPDATED: Dynamically assign class based on event title
+                className={`font-display text-xl md:text-2xl px-6 py-2 rounded-full shadow-sm text-center ${getTitleStyles(event.title)}`}
                 animate={{ scale: [1, 1.02, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
@@ -345,7 +358,6 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
                     const [timePart, labelPart] = line.split('-');
                     return (
                         <p key={i} className="mt-2 flex items-baseline justify-center gap-2">
-                            {/* UPDATED: Removed extra size classes to keep font same size as description */}
                             <span className="lining-nums">{timePart.trim()}</span>
                             <span>-</span>
                             <span>{labelPart.trim()}</span>
@@ -358,15 +370,15 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
                })}
             </div>
 
-            {/* GUEST COUNT - HIDDEN FOR jaan aagman */}
-            {guestCountSuffix && !event.title.toLowerCase().includes("jaan") && (
+            {/* GUEST COUNT - HIDDEN FOR jaan aagman AND HALDI */}
+            {guestCountSuffix && 
+             !event.title.toLowerCase().includes("jaan") && 
+             !event.title.toLowerCase().includes("haldi") && (
               <div className="mb-3 text-center">
-                {/* UPDATED: Changed text-black to text-yellow-600 */}
-                <span className="block text-yellow-600 font-display text-sm">
+                <span className="block text-yellow-600 font-display italic text-sm">
                   looking forward to welcome
                 </span>
-                {/* UPDATED: Changed text-black to text-yellow-600 */}
-                <span className="block text-yellow-600 font-display text-sm mt-1 font-bold">
+                <span className="block text-yellow-600 font-display italic text-sm mt-1 font-bold">
                   {guestCountSuffix}
                 </span>
               </div>

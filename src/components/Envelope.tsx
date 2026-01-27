@@ -56,11 +56,11 @@ const Envelope = ({ onOpen }: EnvelopeProps) => {
               className="w-full h-full object-cover"
             />
             
-            {/* Optional: Overlay Text/Seal if it's not baked into the image */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center pb-12">
-               {/* You can place a clickable 'invisible' div here or just let the whole image trigger it */}
-               <div className="mt-40 animate-pulse text-cream-light/60 text-sm">
-                 
+            {/* UPDATED: justify-center aligns it to the middle. 
+                mt-[13.5rem] is approx "mt-54" (custom value), placing it exactly between 52 and 56. */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+               <div className="mt-[11.5 rem] animate-pulse text-black text-lg md:text-xl font-bold tracking-widest uppercase">
+                 Tap to Open
                </div>
             </div>
           </motion.div>

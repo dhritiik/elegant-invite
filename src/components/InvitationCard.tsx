@@ -136,7 +136,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
           }}
         >
           <motion.p
-            className="text-cream-light/80 font-bold text-lg md:text-xl tracking-widest uppercase font-bold"
+            className="text-black font-bold text-2xl md:text-xl tracking-widest uppercase font-bold"
             animate={{ opacity: [0.6, 1, 0.6] }}
             transition={{ duration: 5, repeat: Infinity }}
           >
@@ -144,7 +144,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
           </motion.p>
           
           <motion.svg
-            className="w-5 h-5 md:w-6 md:h-6 text-cream-light/80"
+            className="w-5 h-5 md:w-6 md:h-6 text-black"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -215,7 +215,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             
             {/* 3. DYNAMIC INVITATION */}
             <motion.div 
-              className="font-body text-xl md:text-2xl text-sage-dark mb-4"
+              className="font-body text-xl md:text-2xl text-muted-foreground mb-4"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -225,13 +225,13 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               
               {guestDetails.name ? (
                 <div className="mt-1 mb-4">
-                  <span className="block font-display text-1xl md:text-2xl text-sage-dark mb-1">
+                  <span className="block font-display font-bold text-1xl md:text-2xl text-sage-dark mb-1">
                     {guestDetails.name}
                   </span>
                   {getMainGuestText(guestDetails.guests)}
                 </div>
               ) : (
-                <span className="font-display text-sage-dark px-2"> You </span>
+                <span className="font-display font-bold text-sage-dark px-2"> You </span>
               )}
             </motion.div>
 
@@ -248,7 +248,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               transition={{ duration: 0.8, delay: 0.6 }}
               className="mb-6"
             >
-              <p className="font-body text-base md:text-base text-muted-foreground uppercase tracking-wide mb-1">
+              <p className="font-body font-black text-base md:text-base uppercase tracking-wide mb-1">
                 (D/O Smt. Sejalben & Shri Piyushbhai Lalitbhai Vora)
               </p>
 
@@ -266,7 +266,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
                 Jay
               </h2>
 
-              <p className="font-body text-base md:text-base text-muted-foreground uppercase tracking-wide mt-2 mb-2">
+              <p className="font-body font-black text-base md:text-base uppercase tracking-wide mt-2 mb-2">
                 (S/O Late Leenaben & Shri Alpeshbhai Jeevanlal Shah)
               </p>
             </motion.div>
