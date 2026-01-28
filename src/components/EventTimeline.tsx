@@ -289,7 +289,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
       if (t.includes('mameru')) return 'bg-[#9d56f5] text-white';
       
       // Haldi: Yellow (Black text)
-      if (t.includes('haldi')) return 'bg-[#FACC15] text-black'; 
+      if (t.includes('haldi')) return 'bg-[#FACC15] text-white'; 
       
       // Bhakti: Bluish
       if (t.includes('bhakti')) return 'bg-[#6a9dfc] text-white';
@@ -387,10 +387,10 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
              !event.title.toLowerCase().includes("jaan") && 
              !event.title.toLowerCase().includes("haldi") && (
               <div className="mb-3 text-center">
-                <span className="block text-yellow-600 font-display italic text-sm">
+                <span className="block text-yellow-600 font-display text-sm">
                   looking forward to welcome
                 </span>
-                <span className="block text-yellow-600 font-display italic text-sm mt-1 font-bold">
+                <span className="block text-yellow-600 font-display text-sm mt-1 font-bold">
                   {guestCountSuffix}
                 </span>
               </div>

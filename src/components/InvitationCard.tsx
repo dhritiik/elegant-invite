@@ -168,15 +168,15 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
           >
             {/* Top decorative divider - REDUCED MARGIN BOTTOM */}
             <motion.div 
-              className="flex items-center justify-center gap-4 mb-4"
+              className="flex items-center justify-center gap-4 mt-6"
               initial={{ opacity: 0, scale: 0 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.9 }}
             >
-              <motion.div className="h-px w-12 md:w-20 bg-gold/50" animate={{ scaleX: [1, 1.5, 1] }} transition={{ duration: 3, repeat: Infinity }} />
+              <div className="h-px w-16 md:w-24 bg-gold/50" />
               <span className="text-gold text-xl">✦</span>
-              <motion.div className="h-px w-12 md:w-20 bg-gold/50" animate={{ scaleX: [1, 1.5, 1] }} transition={{ duration: 3, repeat: Infinity, delay: 1 }} />
+              <div className="h-px w-16 md:w-24 bg-gold/50" />
             </motion.div>
             
             {/* 1. RELIGIOUS HEADER */}
@@ -187,7 +187,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              || Shri Ganeshay Namah || <br className="md:hidden"/> || Shri Neminathay Namah || <br className="md:hidden"/> || Shri Chamunda Bhavani Matay Namah ||
+              || Shree Ganeshay Namah || <br className="md:hidden"/> || Shree Neminathay Namah || <br className="md:hidden"/> || Shree Chamunda Bhavani Matay Namah ||
             </motion.p>
 
             {/* 2. INTRO TEXT */}
@@ -236,7 +236,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             </motion.div>
 
            {/* 4. EVENT CONTEXT */}
-            <p className="font-body text-xl md:text-2xl text-muted-foreground leading-relaxed mb-1 max-w-xl mx-auto italic">
+            <p className="font-body text-xl md:text-2xl text-muted-foreground leading-relaxed mb-3 max-w-xl mx-auto italic">
               to bless the sacred union of
             </p>
 
@@ -294,7 +294,8 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               <p className="font-display text-sage-dark text-md mb-1">With Best Compliments</p>
               <p className="font-display text-gold text-xl md:text-lg font-bold">
                 <span className="block">Smt. Sejal Piyush Vora</span>
-                <span className="block mb-3">Smt. Anjali Paras Vora</span>
+                <span className="block">Smt. Anjali Paras Vora</span>
+                <span className="block mb-3">Smt. Monika Milanbhai Kothari</span>
               </p>
 
               <p className="font-display text-sage-dark text-md mb-1">With Love</p>
