@@ -124,7 +124,9 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
         
         {/* Scroll indicator */}
         <motion.div
-          className="absolute bottom-6 md:bottom-8 flex flex-col items-center justify-center gap-1 font-bold"
+          // UPDATED: Added 'left-0 right-0' for perfect centering
+          // Increased 'bottom-10' to prevent it from being cut off on mobile screens
+          className="absolute bottom-10 md:bottom-12 left-0 right-0 flex flex-col items-center justify-center gap-1 z-20"
           initial={{ opacity: 0 }}
           animate={isVisible ? { 
             opacity: 1, 
@@ -136,7 +138,8 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
           }}
         >
           <motion.p
-            className="text-black font-bold text-2xl md:text-xl tracking-widest uppercase font-bold"
+            // UPDATED: Text is now Black, Bold, and Larger (text-xl on mobile, 2xl on desktop)
+            className="text-black font-bold text-xl md:text-2xl tracking-widest uppercase"
             animate={{ opacity: [0.6, 1, 0.6] }}
             transition={{ duration: 5, repeat: Infinity }}
           >
@@ -144,17 +147,17 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
           </motion.p>
           
           <motion.svg
-            className="w-5 h-5 md:w-6 md:h-6 text-black"
+            // UPDATED: Icon is Black and slightly larger
+            className="w-6 h-6 md:w-8 md:h-8 text-black"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
             animate={{ y: [0, 3, 0] }} 
             transition={{ duration: 1.5, repeat: Infinity }}
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </motion.svg>
         </motion.div>
-      </section>
       
       {/* Family Blessing Section */}
       <section className="relative bg-white/90 backdrop-blur-sm py-16 md:py-24 overflow-hidden transition-colors duration-700">
