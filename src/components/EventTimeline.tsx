@@ -192,7 +192,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
   const visibleGroups = useMemo(() => {
     const baseGroups = [
       {
-        title: "mandup muhurat, mameru, haldi & mehendi",
+        title: "mandap muhurat, mameru, haldi & mehendi",
         bgColor: "bg-cream-light",
         events: events.slice(0, 3), 
       },

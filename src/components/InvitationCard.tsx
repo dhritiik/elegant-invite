@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import heroBackground from "/hero-background.jpg";
 import logo from "/logo_sj.png"; 
 import EventTimeline from "./EventTimeline";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { AmbientBackground, ThemeType } from "./AmbientBackground";
 
 interface InvitationCardProps {
@@ -21,6 +21,9 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
   });
 
   const [currentTheme, setCurrentTheme] = useState<ThemeType>('default');
+  
+  // Ref to control the scrolling container
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -35,6 +38,45 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
     });
   }, []);
 
+// Auto-scroll logic
+  useEffect(() => {
+    if (!isVisible) return;
+
+    const timer = setTimeout(() => {
+      const container = containerRef.current;
+      // Check if container exists and user hasn't scrolled down yet (buffer of 50px)
+      if (container && container.scrollTop < 50) {
+        const start = container.scrollTop;
+        const target = window.innerHeight * 0.3; // Target: 30% down the viewport
+        const distance = target - start;
+        const duration = 2500; // 2.5 seconds (Much slower and smoother)
+        let startTime: number | null = null;
+
+        const animation = (currentTime: number) => {
+          if (startTime === null) startTime = currentTime;
+          const timeElapsed = currentTime - startTime;
+          const progress = Math.min(timeElapsed / duration, 1);
+
+          // Ease-in-out Cubic function: Starts slow, speeds up slightly, slows down at end
+          const ease = progress < 0.5 
+            ? 4 * progress * progress * progress 
+            : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+          container.scrollTop = start + (distance * ease);
+
+          if (timeElapsed < duration) {
+            requestAnimationFrame(animation);
+          }
+        };
+
+        requestAnimationFrame(animation);
+      }
+    }, 5000); // 5 seconds delay
+
+    return () => clearTimeout(timer);
+  }, [isVisible]);
+
+
   const getMainGuestText = (count: string) => {
     if (!count) return null;
     const c = count.toLowerCase();
@@ -48,6 +90,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
     <AmbientBackground currentTheme={currentTheme} />
     
     <motion.div
+      ref={containerRef} // Attached ref here to control scrolling
       className="fixed inset-0 overflow-y-auto overflow-x-hidden"
       initial={{ opacity: 0 }}
       animate={isVisible ? { opacity: 1 } : { opacity: 0, pointerEvents: "none" }}
@@ -59,8 +102,6 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
         }
       }}
     >
-
-    
       {/* Hero Section */}
       <section className="relative min-h-screen flex flex-col items-center justify-center pb-20 md:pb-24 pt-10">
         {/* Background Image - REMOVED WHITE TINT OVERLAY */}
@@ -128,7 +169,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
         <motion.div
           // UPDATED: Added 'left-0 right-0' for perfect centering
           // Increased 'bottom-10' to prevent it from being cut off on mobile screens
-          className="absolute bottom-10 md:bottom-12 left-0 right-0 flex flex-col items-center justify-center gap-1 z-20"
+          className="absolute bottom-10 md:bottom-14 left-0 right-0 flex flex-col items-center justify-center gap-1 z-20"
           initial={{ opacity: 0 }}
           animate={isVisible ? { 
             opacity: 1, 
@@ -161,6 +202,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
           </motion.svg>
         </motion.div>
       </section>
+      
       {/* Family Blessing Section */}
       <section className="relative bg-white/90 backdrop-blur-sm py-16 md:py-24 overflow-hidden transition-colors duration-700">
         
@@ -173,7 +215,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
           >
             {/* Top decorative divider - REDUCED MARGIN BOTTOM */}
             <motion.div 
-              className="flex items-center justify-center gap-4 mt-6"
+              className="flex items-center justify-center gap-2 mt-2"
               initial={{ opacity: 0, scale: 0 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
