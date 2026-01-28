@@ -59,6 +59,8 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
         }
       }}
     >
+
+    
       {/* Hero Section */}
       <section className="relative min-h-screen flex flex-col items-center justify-center pb-20 md:pb-24 pt-10">
         {/* Background Image - REMOVED WHITE TINT OVERLAY */}
@@ -158,7 +160,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </motion.svg>
         </motion.div>
-      
+      </section>
       {/* Family Blessing Section */}
       <section className="relative bg-white/90 backdrop-blur-sm py-16 md:py-24 overflow-hidden transition-colors duration-700">
         
