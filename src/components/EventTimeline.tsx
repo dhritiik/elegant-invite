@@ -308,7 +308,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
 
     return (
       <motion.div
-        className="w-80 h-96 md:w-96 md:h-[28rem] z-10 cursor-pointer"
+        className="w-80 h-[25rem] md:w-96 md:h-[25rem] z-10 cursor-pointer"
         onClick={() => setIsFlipped(!isFlipped)}
         whileHover={{ scale: 1.05 }}
         transition={{ type: "spring", stiffness: 300 }}
@@ -397,19 +397,25 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
             )}
 
             {event.venue && (
-              <motion.button
-                onClick={handleVenueClick}
-                className="w-full flex flex-col items-center gap-1 font-body text-sage-dark italic border-t border-sage/20 pt-3 mt-auto hover:text-gold transition-colors cursor-pointer"
-                whileHover={{ scale: 1.05 }}
-              >
-                <div className="flex items-center gap-1 text-center leading-tight">
-                    <span className="text-xl">📍</span>
-                    <span className="text-lg font-bold font-display not-italic">{venueName}</span>
+              <div className="w-full flex flex-col items-center gap-1 font-body text-sage-dark italic border-t border-sage/20 pt-3 mt-auto">
+                <motion.button
+                  onClick={handleVenueClick}
+                  className="w-full flex flex-col items-center gap-1 hover:text-gold transition-colors cursor-pointer"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <div className="flex items-center gap-1 text-center leading-tight">
+                      <span className="text-xl">📍</span>
+                      <span className="text-lg font-bold font-display not-italic">{venueName}</span>
+                  </div>
+                  {venueAddress && (
+                      <span className="text-sm opacity-90 font-semibold">{venueAddress}</span>
+                  )}
+                </motion.button>
+                <div className="text-center font-body text-sm text-sage-dark italic mt-2">
+                  <p>(Tap Above for the Address.)</p>
+                  <p>(Valet Parking Available)</p>
                 </div>
-                {venueAddress && (
-                    <span className="text-sm opacity-90 font-semibold">{venueAddress}</span>
-                )}
-              </motion.button>
+              </div>
             )}
           </motion.div>
         </motion.div>

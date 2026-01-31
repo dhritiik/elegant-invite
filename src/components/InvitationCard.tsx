@@ -391,63 +391,51 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
         </div>
       </section>
 
-      {/* Additional Details Section */}
-      <section className="relative bg-cream-light paper-texture py-16 md:py-24 overflow-hidden">
-        <div className="container max-w-3xl mx-auto px-6 text-center relative z-10">
+      {/* Additional Details Section (tightened spacing & reduced height) */}
+      <section className="relative bg-cream-light paper-texture py-8 md:py-8 overflow-hidden">
+        <div className="container max-w-2xl mx-auto px-4 text-center relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.7 }}
           >
-            {/* Additional Details Top Divider - REDUCED MARGIN BOTTOM */}
+            {/* Top Divider (reduced spacing) */}
             <motion.div 
-              className="flex items-center justify-center gap-4 mb-4"
+              className="flex items-center justify-center gap-3 mt-6"
               initial={{ opacity: 0, scale: 0 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.5, delay: 0.35 }}
             >
-              <motion.div className="h-px w-12 md:w-20 bg-gold/50" animate={{ scaleX: [1, 1.5, 1] }} transition={{ duration: 3, repeat: Infinity }} />
+              <div className="h-px w-12 md:w-20 bg-gold/50" />
               <span className="text-gold text-xl">✦</span>
-              <motion.div className="h-px w-12 md:w-20 bg-gold/50" animate={{ scaleX: [1, 1.5, 1] }} transition={{ duration: 3, repeat: Infinity, delay: 1 }} />
+              <div className="h-px w-12 md:w-20 bg-gold/50" />
             </motion.div>
 
-            <motion.h2 
-              className="font-display text-3xl md:text-4xl text-foreground mb-8"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            >
-              Additional Details
-            </motion.h2>
-
             <motion.div
-              className="space-y-6"
+              className="space-y-4"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
             >
-              {/* UPDATED: Changed text-muted-foreground to text-black */}
               <div className="font-body font-black text-lg text-black leading-relaxed">
-                <p className="mb-4"> Your Presence is the Only Gift We Desire</p>
-                <p>Valet Parking Available at All Venues</p>
+                <p className="mb-2">Your Blessings are the Only Gift We Desire</p>
               </div>
             </motion.div>
 
-            {/* Additional Details Bottom Divider - REDUCED MARGIN TOP */}
+            {/* Bottom Divider (reduced spacing) */}
             <motion.div 
-              className="flex items-center justify-center gap-4 mt-6"
+              className="flex items-center justify-center gap-3 mt-4"
               initial={{ opacity: 0, scale: 0 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.5 }}
+              transition={{ duration: 0.5, delay: 0.35 }}
             >
-              <div className="h-px w-16 md:w-24 bg-gold/50" />
+              <div className="h-px w-12 md:w-20 bg-gold/50" />
               <span className="text-gold text-xl">✦</span>
-              <div className="h-px w-16 md:w-24 bg-gold/50" />
+              <div className="h-px w-12 md:w-20 bg-gold/50" />
             </motion.div>
           </motion.div>
         </div>
