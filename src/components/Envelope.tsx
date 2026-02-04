@@ -2,7 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 // Replace these with your actual asset imports
 import envelopeImage from "/bg.png"; 
-import envelopeVideo from "/intro.mp4";
+
+const envelopeVideo = "https://n7kwk6h7z8gkdqba.public.blob.vercel-storage.com/intro.mp4";
 
 interface EnvelopeProps {
   onOpen: () => void;
