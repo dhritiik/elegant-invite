@@ -1,7 +1,8 @@
+"use client";
+
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-// Replace these with your actual asset imports
-import envelopeImage from "/bg.png"; 
+import envelopeImage from "/bg.png"; // Ensure this path is correct
 
 const envelopeVideo = "https://n7kwk6h7z8gkdqba.public.blob.vercel-storage.com/intro.mp4";
 
@@ -10,62 +11,79 @@ interface EnvelopeProps {
 }
 
 const Envelope = ({ onOpen }: EnvelopeProps) => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  // videoReady controls the image fade. 
+  // We only set this true when the video actually starts playing.
+  const [videoReady, setVideoReady] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const handleStart = () => {
-    setIsPlaying(true);
-    if (videoRef.current) {
-      videoRef.current.play();
-    }
-  };
-
-  const handleVideoEnd = () => {
-    // Optional: Add a small delay before unmounting for smoothness
-    setTimeout(() => {
-      onOpen();
-    }, 200);
-  };
-
-  // Auto-start after 5s if user doesn't click
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!isPlaying) {
-        handleStart();
+    // 1. Force Autoplay immediately on mount
+    const playVideo = async () => {
+      if (videoRef.current) {
+        try {
+          // Mobile requires muted to autoplay
+          videoRef.current.muted = true; 
+          await videoRef.current.play();
+        } catch (err) {
+          console.log("Autoplay failed:", err);
+        }
       }
+    };
+
+    playVideo();
+
+    // 2. The "Redirect" Timer
+    // Regardless of what happens, after 5 seconds, we go to the next page.
+    const redirectTimer = setTimeout(() => {
+      onOpen();
     }, 5000);
 
-    return () => clearTimeout(timer);
-  }, [isPlaying]);
+    return () => clearTimeout(redirectTimer);
+  }, [onOpen]);
+
+  // 3. This function runs ONLY when the video actually creates the first frame
+  const handleVideoPlaying = () => {
+    setVideoReady(true);
+  };
 
   return (
-    <div className="fixed inset-0 z-50 cursor-pointer bg-[#FDFBF7]">
-      {/* 1. The Video Layer - render only after user starts to avoid preloading */}
-      
+    <div 
+      className="fixed inset-0 z-50 bg-[#FDFBF7] cursor-pointer"
+      onClick={onOpen} // User can click to skip immediately
+    >
+      {/* VIDEO LAYER 
+         - playsInline & muted are MANDATORY for iOS/Android autoplay
+         - onPlaying is the secret sauce: it tells us "I am running now"
+      */}
       <video
         ref={videoRef}
         src={envelopeVideo}
         className="w-full h-full object-cover"
         playsInline
-        preload="auto"
+        webkit-playsinline="true"
         muted
-        onEnded={handleVideoEnd}
+        autoPlay
+        preload="auto"
+        onPlaying={handleVideoPlaying} 
+        onEnded={onOpen}
       />
 
-      {/* 2. The Static Image Layer (Sits on top) */}
-      {/* We use AnimatePresence to smoothly fade this out when isPlaying becomes true */}
+      {/* IMAGE LAYER
+         - This sits on top.
+         - It ONLY disappears when 'videoReady' is true.
+         - This prevents the white flash.
+      */}
       <AnimatePresence>
-        {!isPlaying && (
+        {!videoReady && (
           <motion.div
             className="absolute inset-0 z-10"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            onClick={handleStart}
           >
             <img
               src={envelopeImage}
-              alt="Envelope Cover"
+              alt="Loading..."
               className="w-full h-full object-cover"
             />
           </motion.div>
