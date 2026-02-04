@@ -1,8 +1,6 @@
-"use client";
-
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import envelopeImage from "/bg.png"; // Ensure this path is correct
+import envelopeImage from "/bg.png";
 
 const envelopeVideo = "https://n7kwk6h7z8gkdqba.public.blob.vercel-storage.com/intro.mp4";
 
@@ -11,50 +9,51 @@ interface EnvelopeProps {
 }
 
 const Envelope = ({ onOpen }: EnvelopeProps) => {
-  // videoReady controls the image fade. 
-  // We only set this true when the video actually starts playing.
   const [videoReady, setVideoReady] = useState(false);
+  const [hasClicked, setHasClicked] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    // 1. Force Autoplay immediately on mount
-    const playVideo = async () => {
-      if (videoRef.current) {
-        try {
-          // Mobile requires muted to autoplay
-          videoRef.current.muted = true; 
-          await videoRef.current.play();
-        } catch (err) {
+    // 10s timeout: if user hasn't clicked, trigger autoplay and redirect
+    const autoplayTimer = setTimeout(() => {
+      if (!hasClicked && videoRef.current) {
+        videoRef.current.muted = true;
+        videoRef.current.play().catch((err) => {
           console.log("Autoplay failed:", err);
-        }
+        });
       }
-    };
+    }, 10000);
 
-    playVideo();
-
-    // 2. The "Redirect" Timer
-    // Regardless of what happens, after 5 seconds, we go to the next page.
+    // Redirect after 15s (gives video time to play if autoplay triggers at 15s)
     const redirectTimer = setTimeout(() => {
       onOpen();
-    }, 5000);
+    }, 15000);
 
-    return () => clearTimeout(redirectTimer);
-  }, [onOpen]);
+    return () => {
+      clearTimeout(autoplayTimer);
+      clearTimeout(redirectTimer);
+    };
+  }, [hasClicked, onOpen]);
 
-  // 3. This function runs ONLY when the video actually creates the first frame
   const handleVideoPlaying = () => {
     setVideoReady(true);
+  };
+
+  const handleClick = () => {
+    setHasClicked(true);
+    if (videoRef.current) {
+      videoRef.current.muted = true;
+      videoRef.current.play().catch((err) => {
+        console.log("Play failed:", err);
+      });
+    }
   };
 
   return (
     <div 
       className="fixed inset-0 z-50 bg-[#FDFBF7] cursor-pointer"
-      onClick={onOpen} // User can click to skip immediately
+      onClick={handleClick}
     >
-      {/* VIDEO LAYER 
-         - playsInline & muted are MANDATORY for iOS/Android autoplay
-         - onPlaying is the secret sauce: it tells us "I am running now"
-      */}
       <video
         ref={videoRef}
         src={envelopeVideo}
@@ -62,17 +61,11 @@ const Envelope = ({ onOpen }: EnvelopeProps) => {
         playsInline
         webkit-playsinline="true"
         muted
-        autoPlay
         preload="auto"
         onPlaying={handleVideoPlaying} 
         onEnded={onOpen}
       />
 
-      {/* IMAGE LAYER
-         - This sits on top.
-         - It ONLY disappears when 'videoReady' is true.
-         - This prevents the white flash.
-      */}
       <AnimatePresence>
         {!videoReady && (
           <motion.div
