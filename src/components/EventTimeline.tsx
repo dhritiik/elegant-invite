@@ -308,7 +308,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
 
     return (
       <motion.div
-        className="w-80 h-[25rem] md:w-96 md:h-[25rem] z-10 cursor-pointer"
+        className="w-80 h-[30rem] md:w-96 md:h-[30rem] z-10 cursor-pointer"
         onClick={() => setIsFlipped(!isFlipped)}
         whileHover={{ scale: 1.05 }}
         transition={{ type: "spring", stiffness: 300 }}

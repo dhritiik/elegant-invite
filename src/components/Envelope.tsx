@@ -28,16 +28,19 @@ const Envelope = ({ onOpen }: EnvelopeProps) => {
 
   return (
     <div className="fixed inset-0 z-50 cursor-pointer bg-[#FDFBF7]">
-      {/* 1. The Video Layer (Always present at the bottom) */}
-      <video
-        ref={videoRef}
-        src={envelopeVideo}
-        className="w-full h-full object-cover"
-        playsInline
-        preload="auto"
-        muted // Muted often helps autoplay policies, but remove if sound is needed
-        onEnded={handleVideoEnd}
-      />
+      {/* 1. The Video Layer - render only after user starts to avoid preloading */}
+      {isPlaying && (
+        <video
+          ref={videoRef}
+          src={envelopeVideo}
+          className="w-full h-full object-cover"
+          playsInline
+          autoPlay
+          muted
+          preload="metadata"
+          onEnded={handleVideoEnd}
+        />
+      )}
 
       {/* 2. The Static Image Layer (Sits on top) */}
       {/* We use AnimatePresence to smoothly fade this out when isPlaying becomes true */}
@@ -47,7 +50,7 @@ const Envelope = ({ onOpen }: EnvelopeProps) => {
             className="absolute inset-0 z-10"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }} // Smooth fade into video
+            transition={{ duration: 0.5 }}
             onClick={handleStart}
           >
             <img
@@ -55,14 +58,6 @@ const Envelope = ({ onOpen }: EnvelopeProps) => {
               alt="Envelope Cover"
               className="w-full h-full object-cover"
             />
-            
-            {/* UPDATED: justify-center aligns it to the middle. 
-                mt-[13.5rem] is approx "mt-54" (custom value), placing it exactly between 52 and 56. */}
-            {/* <div className="absolute inset-0 flex flex-col items-center justify-center">
-               <div className="mt-[11.5 rem] animate-pulse text-black text-lg md:text-xl font-bold tracking-widest uppercase">
-                 Tap to Open
-               </div>
-            </div> */}
           </motion.div>
         )}
       </AnimatePresence>
