@@ -268,6 +268,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
 
   const EventCard = ({ event }: { event: TimelineEvent }) => {
     const [isFlipped, setIsFlipped] = useState(false);
+    const isMameru = event.title.toLowerCase().includes('mameru');
     
     const guestCountRaw = getEventSpecificGuestCount(event.title);
     const guestCountSuffix = getGuestCountText(guestCountRaw);
@@ -308,7 +309,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
 
     return (
       <motion.div
-        className="w-80 h-[30rem] md:w-96 md:h-[30rem] z-10 cursor-pointer"
+        className={`${isMameru ? 'w-96 h-[36rem] md:w-[30rem] md:h-[36rem]' : 'w-80 h-[30rem] md:w-96 md:h-[30rem]'} z-10 cursor-pointer`}
         onClick={() => setIsFlipped(!isFlipped)}
         whileHover={{ scale: 1.05 }}
         transition={{ type: "spring", stiffness: 300 }}
@@ -364,12 +365,13 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
               </motion.h3>
             </div>
             
-            <div className="font-body text-black leading-relaxed mb-4 text-base flex-grow text-center">
+            <div className="font-body text-black leading-snug mb-4 text-base flex-grow text-center">
                {event.description.split('\n').map((line, i) => {
-                 if (line.toLowerCase().includes('dinner') && line.includes('-')) {
-                    const [timePart, labelPart] = line.split('-');
+                 const trimmed = line.trim();
+                 if (trimmed.toLowerCase().includes('dinner') && trimmed.includes('-')) {
+                    const [timePart, labelPart] = trimmed.split('-');
                     return (
-                        <p key={i} className="mt-2 flex items-baseline justify-center gap-2">
+                        <p key={i} className="mt-1 flex items-baseline justify-center gap-2">
                             <span className="lining-nums">{timePart.trim()}</span>
                             <span>-</span>
                             <span>{labelPart.trim()}</span>
@@ -377,7 +379,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
                     );
                  }
                  return (
-                   <p key={i} className={i > 0 ? "mt-2" : ""}>{line}</p>
+                   <p key={i} className={i > 0 ? "mt-1" : ""}>{trimmed}</p>
                  );
                })}
             </div>
@@ -460,8 +462,8 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: eventIndex * 0.15 }}
                       >
-                        <div className={`w-80 md:w-96 z-10 relative mx-auto ${
-                            eventIndex % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
+                        <div className={`${event.title.toLowerCase().includes('mameru') ? 'w-96 md:w-[30rem]' : 'w-80 md:w-96'} z-10 relative mx-auto ${
+                          eventIndex % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
                         }`}>
                           <EventCard event={event} />
                           <motion.p
