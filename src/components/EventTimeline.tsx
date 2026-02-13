@@ -309,7 +309,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
 
     return (
       <motion.div
-        className={`${isMameru ? 'w-96 h-[36rem] md:w-[30rem] md:h-[36rem]' : 'w-80 h-[30rem] md:w-96 md:h-[30rem]'} z-10 cursor-pointer`}
+        className={`${isMameru ? 'w-80 h-[32rem] md:w-96 md:h-[32rem]' : 'w-80 h-[30rem] md:w-96 md:h-[30rem]'} z-10 cursor-pointer`}
         onClick={() => setIsFlipped(!isFlipped)}
         whileHover={{ scale: 1.05 }}
         transition={{ type: "spring", stiffness: 300 }}
@@ -462,7 +462,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: eventIndex * 0.15 }}
                       >
-                        <div className={`${event.title.toLowerCase().includes('mameru') ? 'w-96 md:w-[30rem]' : 'w-80 md:w-96'} z-10 relative mx-auto ${
+                        <div className={`w-80 md:w-96 z-10 relative mx-auto ${
                           eventIndex % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
                         }`}>
                           <EventCard event={event} />
