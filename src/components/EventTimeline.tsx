@@ -21,7 +21,7 @@ const events: TimelineEvent[] = [
     title: "mandap muhurat",
     time: "9:00 AM",
     date: "Sunday, 8th March",
-    description: "Seeking the Blessings of Lord Ganesha for a Joyous Beginning\n Alongside Mehendi",
+    description: "Seeking the Blessings of Lord Ganesha for a Joyous Beginning\n (Alongside Mehendi)",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "horizontal",
     image: "/madamandup.png",
@@ -39,7 +39,7 @@ const events: TimelineEvent[] = [
     title: "mameru",
     time: "10:30 AM ",
     date: "Sunday, 8th March",
-    description: "With a shower of Blessings and Love from the Maternal Family —\n Late Yashomatiben Pravinchandra Gopani \n Smt. Rupaben Nileshbhai Gopani\n Smt. Alpaben Yogeshbhai Gopani\n (Followed by Lunch)",
+    description: "With Blessings from the Maternal Family:\n Late Yashomatiben Pravinchandra Gopani \n Smt. Rupaben Nileshbhai Gopani\n Smt. Alpaben Yogeshbhai Gopani\n (Followed by Lunch)",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "horizontal",
     image: "/mameru.jpg",
@@ -412,8 +412,9 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
                   )}
                 </motion.button>
                 <div className="text-center font-body text-sm text-sage-dark italic mt-2">
-                  <p>(Tap Above for the Address.)</p>
                   <p>(Valet Parking Available)</p>
+                  <p>(Tap Above for the Google Maps.)</p>
+                  
                 </div>
               </div>
             )}

@@ -284,7 +284,7 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
 
            {/* 4. EVENT CONTEXT */}
             <p className="font-body text-xl md:text-2xl text-muted-foreground leading-relaxed mb-3 max-w-xl mx-auto italic">
-              to bless the sacred union of
+              to grace the wedding ceremony of
             </p>
 
             {/* 5. BRIDE & GROOM SECTION */}
@@ -421,13 +421,13 @@ const InvitationCard = ({ isVisible }: InvitationCardProps) => {
               transition={{ duration: 0.7, delay: 0.3 }}
             >
               <div className="font-body font-black text-lg text-black leading-relaxed">
-                <p className="mb-2">Your Blessings are the Only Gift We Desire</p>
+                <p>Your Blessings are the Only Gift We Desire</p>
               </div>
             </motion.div>
 
             {/* Bottom Divider (reduced spacing) */}
             <motion.div 
-              className="flex items-center justify-center gap-3 mt-4"
+              className="flex items-center justify-center gap-3 "
               initial={{ opacity: 0, scale: 0 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
