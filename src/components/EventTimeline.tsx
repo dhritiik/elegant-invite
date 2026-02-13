@@ -365,7 +365,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
               </motion.h3>
             </div>
             
-            <div className="font-body text-black leading-snug mb-4 text-base flex-grow text-center">
+            <div className="font-body text-black leading-snug text-base flex-grow text-center flex flex-col justify-center">
                {event.description.split('\n').map((line, i) => {
                  const trimmed = line.trim();
                  if (trimmed.toLowerCase().includes('dinner') && trimmed.includes('-')) {
@@ -388,7 +388,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
             {guestCountSuffix && 
              !event.title.toLowerCase().includes("jaan") && 
              !event.title.toLowerCase().includes("haldi") && (
-              <div className="mb-3 text-center">
+              <div className="mt-2 mb-1 text-center">
                 <span className="block text-yellow-600 font-display text-sm">
                   looking forward to welcome
                 </span>
