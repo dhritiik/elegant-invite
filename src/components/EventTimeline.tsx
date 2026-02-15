@@ -398,6 +398,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
               </div>
             )}
 
+           
             {event.venue && (
               <div className="w-full flex flex-col items-center gap-1 font-body text-sage-dark italic border-t border-sage/20 pt-3 mt-auto">
                 <motion.button
@@ -410,16 +411,17 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
                       <span className="text-lg font-bold font-display not-italic">{venueName}</span>
                   </div>
                   {venueAddress && (
-                      <span className="text-sm opacity-90 font-semibold">{venueAddress}</span>
+                      <span className="text-sm opacity-90 font-semibold font-body italic">{venueAddress}</span>
                   )}
                 </motion.button>
                 <div className="text-center font-body text-sm text-sage-dark italic -mt-2 pt-0">
 
                   <p>(Tap Above for the Google Maps.)</p>
-                  <p className="mt-2 text-sm opacity-90 font-semibold">(Valet Parking Available)</p>
+                  <p className="mt-2 text-sm opacity-90 font-semibold font-body italic">(Valet Parking Available)</p>
                 </div>
               </div>
             )}
+          
           </motion.div>
         </motion.div>
       </motion.div>
