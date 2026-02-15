@@ -413,10 +413,9 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
                       <span className="text-sm opacity-90 font-semibold">{venueAddress}</span>
                   )}
                 </motion.button>
-                <div className="text-center font-body text-sm text-sage-dark italic mt-2">
-                  <p>(Valet Parking Available)</p>
+                <div className="text-center font-body text-sm text-sage-dark italic mt-0 pt-0">
                   <p>(Tap Above for the Google Maps.)</p>
-                  
+                  <p className="mt-1">(Valet Parking Available)</p>
                 </div>
               </div>
             )}
