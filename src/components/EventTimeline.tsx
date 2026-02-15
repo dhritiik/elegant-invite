@@ -39,7 +39,7 @@ const events: TimelineEvent[] = [
     title: "mameru",
     time: "10:30 AM ",
     date: "Sunday, 8th March",
-    description: "With Blessings from the Maternal Family:\n Late Yashomatiben Pravinchandra Gopani \n Smt. Rupaben Nileshbhai Gopani\n Smt. Alpaben Yogeshbhai Gopani\n (Followed by Lunch)",
+    description: "With Blessings from the Maternal Family:\n Late Yashomatiben Pravinchandra Gopani \n Smt. Rupaben Nileshbhai Gopani\n Smt. Alpaben Yogeshbhai Gopani\n \n \n(Followed by Lunch)",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "horizontal",
     image: "/mameru.jpg",
@@ -73,7 +73,7 @@ const events: TimelineEvent[] = [
     title: "bhakti sandhya",
     time: "7:30 PM",
     date: "Sunday, 8th March",
-    description: "An evening of Devotional Music, Blessings and Spiritual togetherness\n 5:30 to 7:30 PM - Dinner",
+    description: "An evening of Devotional Music, Blessings and Spiritual togetherness\n (5:30 to 7:30 PM - Dinner)",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "vertical",
     image: "/bhakti.jpg",
@@ -356,7 +356,6 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
             
             <div className="flex justify-center mb-3">
               <motion.h3 
-                // UPDATED: Dynamically assign class based on event title
                 className={`font-display text-xl md:text-2xl px-6 py-2 rounded-full shadow-sm text-center ${getTitleStyles(event.title)}`}
                 animate={{ scale: [1, 1.02, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
@@ -373,7 +372,8 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
                     return (
                         <p key={i} className="mt-1 flex items-baseline justify-center gap-2">
                             <span className="lining-nums">{timePart.trim()}</span>
-                            <span>-</span>
+                            {/* FIX: Forcing 'font-sans' and normal style to guarantee a straight hyphen */}
+                            <span className="not-italic font-sans" style={{ fontStyle: "normal" }}>-</span>
                             <span>{labelPart.trim()}</span>
                         </p>
                     );
@@ -413,9 +413,10 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
                       <span className="text-sm opacity-90 font-semibold">{venueAddress}</span>
                   )}
                 </motion.button>
-                <div className="text-center font-body text-sm text-sage-dark italic mt-0 pt-0">
+                <div className="text-center font-body text-sm text-sage-dark italic -mt-2 pt-0">
+
                   <p>(Tap Above for the Google Maps.)</p>
-                  <p className="mt-1">(Valet Parking Available)</p>
+                  <p className="mt-2 text-sm opacity-90 font-semibold">(Valet Parking Available)</p>
                 </div>
               </div>
             )}
