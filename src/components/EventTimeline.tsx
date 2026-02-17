@@ -73,7 +73,7 @@ const events: TimelineEvent[] = [
     title: "bhakti sandhya",
     time: "7:30 PM",
     date: "Sunday, 8th March",
-    description: "An evening of Devotional Music, Blessings and Spiritual togetherness\n (5:30 to 7:30 PM - Dinner)",
+    description: "An evening of Devotional Music, Blessings and Spiritual togetherness\n (5:30 to 7:00 PM - Dinner)",
     venue: "Kandivali Recreation Club (KRC), Shantilal Modi Road, Kandivali West",
     style: "vertical",
     image: "/bhakti.jpg",
