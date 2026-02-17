@@ -249,7 +249,7 @@ const InvitationCard = ({ isVisible, isMuted = false, onMuteChange, audioRef }: 
             transition={{ duration: 0.8 }}
           >
             {/* Top decorative divider - REDUCED MARGIN BOTTOM */}
-            <motion.div 
+            {/* <motion.div 
               className="flex items-center justify-center gap-2 mt-2"
               initial={{ opacity: 0, scale: 0 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -259,7 +259,7 @@ const InvitationCard = ({ isVisible, isMuted = false, onMuteChange, audioRef }: 
               <div className="h-px w-16 md:w-24 bg-gold/50" />
               <span className="text-gold text-xl">✦</span>
               <div className="h-px w-16 md:w-24 bg-gold/50" />
-            </motion.div>
+            </motion.div> */}
             
             {/* 1. RELIGIOUS HEADER */}
             <motion.p 
@@ -274,13 +274,13 @@ const InvitationCard = ({ isVisible, isMuted = false, onMuteChange, audioRef }: 
 
             {/* 2. INTRO TEXT */}
             <motion.p 
-              className="font-body text-xl md:text-2xl text-muted-foreground leading-relaxed mb-10 max-w-xl mx-auto italic"
+              className="font-body text-xl md:text-2xl text-black leading-relaxed mb-10 max-w-xl mx-auto italic"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              <span className="block">
+              <span className="block text-black">
                 With the divine grace & blessings of,
               </span>
 
@@ -297,7 +297,7 @@ const InvitationCard = ({ isVisible, isMuted = false, onMuteChange, audioRef }: 
             
             {/* 3. DYNAMIC INVITATION */}
             <motion.div 
-              className="font-body text-xl md:text-2xl text-muted-foreground mb-4"
+              className="font-body text-xl md:text-2xl text-black mb-4"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -318,7 +318,7 @@ const InvitationCard = ({ isVisible, isMuted = false, onMuteChange, audioRef }: 
             </motion.div>
 
            {/* 4. EVENT CONTEXT */}
-            <p className="font-body text-xl md:text-2xl text-muted-foreground leading-relaxed mb-3 max-w-xl mx-auto italic">
+            <p className="font-body text-xl md:text-2xl text-black leading-relaxed mb-3 max-w-xl mx-auto italic">
               to grace the wedding ceremony of
             </p>
 
@@ -355,7 +355,7 @@ const InvitationCard = ({ isVisible, isMuted = false, onMuteChange, audioRef }: 
 
             {/* 6. CLOSING TEXT */}
             <motion.p 
-              className="font-body text-xl md:text-2xl text-muted-foreground leading-relaxed mt-4 mb-10 max-w-xl mx-auto italic"
+              className="font-body text-xl md:text-2xl text-black leading-relaxed mt-4 mb-10 max-w-xl mx-auto italic"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}

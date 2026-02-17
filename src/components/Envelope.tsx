@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import envelopeImage from "/bg.png";
+
 
 const envelopeVideo = "https://n7kwk6h7z8gkdqba.public.blob.vercel-storage.com/intro.mp4";
-
+const envelopeImage = "https://n7kwk6h7z8gkdqba.public.blob.vercel-storage.com/bg.png"
 interface EnvelopeProps {
   onOpen: () => void;
   isMuted?: boolean;

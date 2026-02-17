@@ -3,7 +3,7 @@ import { AnimatePresence } from "framer-motion";
 import Envelope from "@/components/Envelope";
 import InvitationCard from "@/components/InvitationCard";
 
-const backgroundAudio = "https://n7kwk6h7z8gkdqba.public.blob.vercel-storage.com/intro-music.mp3";
+const backgroundAudio = "https://n7kwk6h7z8gkdqba.public.blob.vercel-storage.com/intro-audio.mp3";
 
 const Index = () => {
   // Rename state to 'showEnvelope' for clarity
