@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef, useEffect, useImperativeHandle } from "react";
 import { ThemeType } from "./AmbientBackground";
 
 interface TimelineEvent {
@@ -266,8 +266,89 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
     }).filter(group => group.events.length > 0);
   }, [filteredEventName]);
 
-  const EventCard = ({ event }: { event: TimelineEvent }) => {
+  // Refs and state for auto-flip behavior
+  const elementRefs = useRef<Record<number, HTMLElement | null>>({});
+  const cardApiRefs = useRef<Record<number, React.RefObject<any>>>({});
+  const lastInteractionRef = useRef<Record<number, number>>({});
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [activeEventId, setActiveEventId] = useState<number | null>(null);
+
+  // Called when user taps/clicks a card to reset auto-flip timer
+  const handleUserInteraction = (id: number) => {
+    lastInteractionRef.current[id] = Date.now();
+    if (timerRef.current) {
+      clearTimeout(timerRef.current as any);
+      timerRef.current = null;
+    }
+  };
+
+  // Observe which card is most visible and mark it active
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        let best: IntersectionObserverEntry | null = null;
+        let bestRatio = 0;
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > bestRatio) {
+            bestRatio = entry.intersectionRatio;
+            best = entry;
+          }
+        });
+        if (best && best.target) {
+          const idStr = (best.target as HTMLElement).dataset.eventId;
+          const id = idStr ? Number(idStr) : NaN;
+          if (!isNaN(id)) setActiveEventId(id);
+        }
+      },
+      { threshold: [0, 0.25, 0.5, 0.75, 1] }
+    );
+
+    Object.values(elementRefs.current).forEach((el) => {
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [visibleGroups]);
+
+  // Start/clear auto-flip timer when active card changes
+  useEffect(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current as any);
+      timerRef.current = null;
+    }
+
+    if (activeEventId == null) return;
+
+    const apiRef = cardApiRefs.current[activeEventId];
+    const api = apiRef && apiRef.current;
+    const last = lastInteractionRef.current[activeEventId] || 0;
+
+    if (api && !api.isFlipped) {
+      timerRef.current = setTimeout(() => {
+        const nowLast = lastInteractionRef.current[activeEventId] || 0;
+        if (Date.now() - nowLast >= 3000) {
+          api.toggleFlip && api.toggleFlip();
+        }
+      }, 3000);
+    }
+
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current as any);
+        timerRef.current = null;
+      }
+    };
+  }, [activeEventId]);
+
+  const EventCard = React.forwardRef(function EventCard(
+    { event, onUserInteraction }: { event: TimelineEvent; onUserInteraction: (id: number) => void },
+    ref: any
+  ) {
     const [isFlipped, setIsFlipped] = useState(false);
+    useImperativeHandle(ref, () => ({
+      toggleFlip: () => setIsFlipped((v) => !v),
+      isFlipped,
+    }), [isFlipped]);
     const isMameru = event.title.toLowerCase().includes('mameru');
     
     const guestCountRaw = getEventSpecificGuestCount(event.title);
@@ -310,7 +391,10 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
     return (
       <motion.div
         className={`${isMameru ? 'w-80 h-[32rem] md:w-96 md:h-[32rem]' : 'w-80 h-[30rem] md:w-96 md:h-[30rem]'} z-10 cursor-pointer`}
-        onClick={() => setIsFlipped(!isFlipped)}
+        onClick={() => {
+          setIsFlipped(!isFlipped);
+          onUserInteraction(event.id);
+        }}
         whileHover={{ scale: 1.05 }}
         transition={{ type: "spring", stiffness: 300 }}
       >
@@ -426,7 +510,8 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
         </motion.div>
       </motion.div>
     );
-  };
+  });
+  EventCard.displayName = 'EventCard';
 
   return (
     <div className="relative">
@@ -453,34 +538,41 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
 
               <div className="relative w-full max-w-4xl mx-auto px-6 flex flex-col items-center">
                 <div className="space-y-12 md:space-y-20 w-full flex flex-col items-center">
-                  {group.events.map((event, eventIndex) => (
-                    <div key={event.id} className="w-full flex flex-col items-center">
-                      <motion.div
-                        className={`relative flex items-center justify-center gap-6 md:gap-0 ${
-                          eventIndex % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                        }`}
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: eventIndex * 0.15 }}
-                      >
-                        <div className={`w-80 md:w-96 z-10 relative mx-auto ${
-                          eventIndex % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
-                        }`}>
-                          <EventCard event={event} />
-                          <motion.p
-                            className={`text-center font-bold font-body text-sm mt-3 italic transition-colors duration-500 ${
-                                getThemeForGroup(group.title) === 'reception' ? 'text-white/60' : 'text-muted-foreground'
+                  {group.events.map((event, eventIndex) => {
+                    if (!cardApiRefs.current[event.id]) cardApiRefs.current[event.id] = React.createRef();
+                    return (
+                      <div key={event.id} className="w-full flex flex-col items-center">
+                        <motion.div
+                          className={`relative flex items-center justify-center gap-6 md:gap-0 ${
+                            eventIndex % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+                          }`}
+                          initial={{ opacity: 0, y: 30 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.6, delay: eventIndex * 0.15 }}
+                        >
+                          <div
+                            data-event-id={event.id}
+                            ref={(el) => (elementRefs.current[event.id] = el)}
+                            className={`w-80 md:w-96 z-10 relative mx-auto ${
+                              eventIndex % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
                             }`}
-                            animate={{ opacity: [0.6, 1, 0.6] }}
-                            transition={{ duration: 2, repeat: Infinity }}
                           >
-                            Tap Above to Flip
-                          </motion.p>
-                        </div>
-                      </motion.div>
-                    </div>
-                  ))}
+                            <EventCard ref={cardApiRefs.current[event.id]} event={event} onUserInteraction={handleUserInteraction} />
+                            <motion.p
+                              className={`text-center font-bold font-body text-sm mt-3 italic transition-colors duration-500 ${
+                                  getThemeForGroup(group.title) === 'reception' ? 'text-white/60' : 'text-muted-foreground'
+                              }`}
+                              animate={{ opacity: [0.6, 1, 0.6] }}
+                              transition={{ duration: 2, repeat: Infinity }}
+                            >
+                              Tap Above to Flip
+                            </motion.p>
+                          </div>
+                        </motion.div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
