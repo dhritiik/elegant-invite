@@ -136,6 +136,172 @@ const events: TimelineEvent[] = [
   },
 ];
 
+// Helper extracted outside to prevent re-renders
+const getTitleStyles = (title: string) => {
+  const t = title.toLowerCase();
+  if (t.includes('mandap')) return 'bg-[#f74862] text-white';
+  if (t.includes('mameru')) return 'bg-[#9d56f5] text-white';
+  if (t.includes('haldi')) return 'bg-[#FACC15] text-white'; 
+  if (t.includes('bhakti')) return 'bg-[#6a9dfc] text-white';
+  if (t.includes('jaan') || t.includes('wedding') || t.includes('hast melap')) {
+    return 'bg-gradient-to-r from-[#FACC15] to-[#E11D48] text-white';
+  }
+  return 'bg-[#0c0f4a] text-[#FDFBF7]'; 
+};
+
+// 1. EXTRACTED EVENT CARD OUTSIDE 
+// This fixes the images reloading/flickering issue entirely.
+const EventCard = React.forwardRef(function EventCard(
+  { 
+    event, 
+    guestCountSuffix, 
+    onUserInteraction 
+  }: { 
+    event: TimelineEvent; 
+    guestCountSuffix: string | null;
+    onUserInteraction: (id: number) => void 
+  },
+  ref: any
+) {
+  const [isFlipped, setIsFlipped] = useState(false);
+  
+  useImperativeHandle(ref, () => ({
+    setFlippedState: (val: boolean) => setIsFlipped(val),
+  }), []);
+  
+  const isMameru = event.title.toLowerCase().includes('mameru');
+
+  const handleVenueClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (event.mapsUrl) {
+      window.open(event.mapsUrl, '_blank');
+    }
+  };
+
+  const [venueName, ...venueAddressParts] = event.venue ? event.venue.split(',') : ["", ""];
+  const venueAddress = venueAddressParts.join(',').trim();
+
+  return (
+    <motion.div
+      className={`${isMameru ? 'w-80 h-[32rem] md:w-96 md:h-[32rem]' : 'w-80 h-[30rem] md:w-96 md:h-[30rem]'} z-10 cursor-pointer`}
+      onClick={() => {
+        setIsFlipped(!isFlipped);
+        onUserInteraction(event.id);
+      }}
+      whileHover={{ scale: 1.05 }}
+      transition={{ type: "spring", stiffness: 300 }}
+    >
+      <motion.div
+        className="relative w-full h-full"
+        initial={false}
+        animate={{ rotateY: isFlipped ? 180 : 0 }}
+        transition={{ duration: 0.6 }}
+        style={{ transformStyle: "preserve-3d" }}
+      >
+        {/* Front side */}
+        <motion.div
+          className="absolute w-full h-full bg-cream rounded-lg overflow-hidden invitation-shadow"
+          style={{ backfaceVisibility: "hidden" }}
+        >
+          {event.image ? (
+            <img
+              src={event.image}
+              alt={event.title}
+              className="w-full h-full object-cover object-bottom"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-gold/20 to-sage/20 flex items-center justify-center">
+              <p className="text-center text-muted-foreground font-display">{event.title}</p>
+            </div>
+          )}
+        </motion.div>
+
+        {/* Back side */}
+        <motion.div
+          className="absolute w-full h-full bg-cream rounded-lg p-6 invitation-shadow flex flex-col overflow-y-auto"
+          style={{ 
+            backfaceVisibility: "hidden",
+            transform: "rotateY(180deg)"
+          }}
+        >
+          <div className="flex flex-col items-center justify-center mb-4">
+            <span className="font-display text-black text-md mb-1">{event.date}</span>
+            <div className="text-black text-md font-display font-bold">
+              {event.time}
+            </div>
+          </div>
+          
+          <div className="flex justify-center mb-3">
+            <motion.h3 
+              className={`font-display text-xl md:text-2xl px-6 py-2 rounded-full shadow-sm text-center ${getTitleStyles(event.title)}`}
+              animate={{ scale: [1, 1.02, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              {event.title}
+            </motion.h3>
+          </div>
+          
+          <div className="font-body text-black leading-snug text-base flex-grow text-center flex flex-col justify-center">
+             {event.description.split('\n').map((line, i) => {
+               const trimmed = line.trim();
+               if (trimmed.toLowerCase().includes('dinner') && trimmed.includes('-')) {
+                  const [timePart, labelPart] = trimmed.split('-');
+                  return (
+                      <p key={i} className="mt-1 flex items-baseline justify-center gap-2">
+                          <span className="lining-nums">{timePart.trim()}</span>
+                          <span className="not-italic font-sans" style={{ fontStyle: "normal" }}>-</span>
+                          <span>{labelPart.trim()}</span>
+                      </p>
+                  );
+               }
+               return (
+                 <p key={i} className={i > 0 ? "mt-1" : ""}>{trimmed}</p>
+               );
+             })}
+          </div>
+
+          {guestCountSuffix && 
+           !event.title.toLowerCase().includes("jaan") && 
+           !event.title.toLowerCase().includes("haldi") && (
+            <div className="mt-2 mb-1 text-center">
+              <span className="block text-yellow-600 font-display text-sm">
+                looking forward to welcome
+              </span>
+              <span className="block text-yellow-600 font-display text-sm mt-1 font-bold">
+                {guestCountSuffix}
+              </span>
+            </div>
+          )}
+
+          {event.venue && (
+            <div className="w-full flex flex-col items-center gap-1 font-body text-sage-dark italic border-t border-sage/20 pt-3 mt-auto">
+              <motion.button
+                onClick={handleVenueClick}
+                className="w-full flex flex-col items-center gap-1 hover:text-gold transition-colors cursor-pointer"
+                whileHover={{ scale: 1.05 }}
+              >
+                <div className="flex items-center gap-1 text-center leading-tight">
+                    <span className="text-xl">📍</span>
+                    <span className="text-lg font-bold font-display not-italic">{venueName}</span>
+                </div>
+                {venueAddress && (
+                    <span className="text-sm opacity-90 font-semibold font-body italic">{venueAddress}</span>
+                )}
+              </motion.button>
+              <div className="text-center font-body text-sm text-sage-dark italic -mt-2 pt-0">
+                <p>(Tap Above for the Google Maps.)</p>
+                <p className="mt-2 text-sm opacity-90 font-semibold font-body italic">(Valet Parking Available)</p>
+              </div>
+            </div>
+          )}
+        </motion.div>
+      </motion.div>
+    </motion.div>
+  );
+});
+EventCard.displayName = 'EventCard';
+
+
 interface EventTimelineProps {
   filteredEventName?: string;
   guestCounts?: {
@@ -151,9 +317,7 @@ interface EventTimelineProps {
 const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventTimelineProps) => {
   const getEventSpecificGuestCount = (eventTitle: string) => {
     if (!guestCounts) return "";
-    
     const title = eventTitle.toLowerCase();
-    
     if (title.includes("mandap") || title.includes("mameru") || title.includes("haldi")) {
       return guestCounts.mayra || guestCounts.global;
     }
@@ -166,7 +330,6 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
     if (title.includes("reception")) {
       return guestCounts.reception || guestCounts.global;
     }
-    
     return guestCounts.global;
   };
 
@@ -218,7 +381,6 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
     }
 
     const searchStr = filteredEventName.toLowerCase();
-
     const isWedding = searchStr.includes("wedding") || searchStr.includes("lagan") || searchStr.includes("shaadi");
     const isMayra = searchStr.includes("mayra") || searchStr.includes("mameru");
     const isReception = searchStr.includes("reception");
@@ -229,40 +391,20 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
         const titleLower = event.title.toLowerCase();
         let shouldShow = false; 
 
-        if (isWedding) {
-          if (titleLower.includes("hast melap") || titleLower.includes("jaan")) {
-            shouldShow = true;
-          }
-        }
-        if (isMayra) {
-          if (titleLower.includes("mameru") || titleLower.includes("mandap") || titleLower.includes("haldi")) {
-            shouldShow = true;
-          }
-        }
-        if (isReception) {
-          if (titleLower.includes("reception")) {
-            shouldShow = true;
-          }
-        }
-        if (isBhakti) {
-          if (titleLower.includes("bhakti")) {
-            shouldShow = true;
-          }
-        }
+        if (isWedding && (titleLower.includes("hast melap") || titleLower.includes("jaan"))) shouldShow = true;
+        if (isMayra && (titleLower.includes("mameru") || titleLower.includes("mandap") || titleLower.includes("haldi"))) shouldShow = true;
+        if (isReception && titleLower.includes("reception")) shouldShow = true;
+        if (isBhakti && titleLower.includes("bhakti")) shouldShow = true;
         
         if (!isWedding && !isMayra && !isReception && !isBhakti) {
             if (titleLower.includes(searchStr) || searchStr.includes(titleLower)) {
                 shouldShow = true;
             }
         }
-
         return shouldShow;
       });
 
-      return {
-        ...group,
-        events: filteredEvents
-      };
+      return { ...group, events: filteredEvents };
     }).filter(group => group.events.length > 0);
   }, [filteredEventName]);
 
@@ -270,248 +412,85 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
   const elementRefs = useRef<Record<number, HTMLElement | null>>({});
   const cardApiRefs = useRef<Record<number, React.RefObject<any>>>({});
   const lastInteractionRef = useRef<Record<number, number>>({});
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [activeEventId, setActiveEventId] = useState<number | null>(null);
+  const timersRef = useRef<Record<number, ReturnType<typeof setTimeout>>>({});
+  const intersectionRatiosRef = useRef<Record<number, number>>({});
+  
+  // 2. FIXED JITTER: We track the actively flipped card explicitly so we don't spam commands.
+  const activeCardIdRef = useRef<number | null>(null);
 
-  // Called when user taps/clicks a card to reset auto-flip timer
   const handleUserInteraction = (id: number) => {
     lastInteractionRef.current[id] = Date.now();
-    if (timerRef.current) {
-      clearTimeout(timerRef.current as any);
-      timerRef.current = null;
-    }
   };
 
-  // Observe which card is most visible and mark it active
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        let best: IntersectionObserverEntry | null = null;
-        let bestRatio = 0;
         entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > bestRatio) {
-            bestRatio = entry.intersectionRatio;
-            best = entry;
+          const idStr = (entry.target as HTMLElement).dataset.eventId;
+          if (idStr) {
+            intersectionRatiosRef.current[Number(idStr)] = entry.intersectionRatio;
           }
         });
-        if (best && best.target) {
-          const idStr = (best.target as HTMLElement).dataset.eventId;
-          const id = idStr ? Number(idStr) : NaN;
-          if (!isNaN(id)) setActiveEventId(id);
+
+        let bestId: number | null = null;
+        let maxRatio = 0;
+
+        Object.entries(intersectionRatiosRef.current).forEach(([idStr, ratio]) => {
+          if (ratio > maxRatio) {
+            maxRatio = ratio;
+            bestId = Number(idStr);
+          }
+        });
+
+        // The card must be at least 40% visible to trigger an auto-flip
+        if (maxRatio < 0.4) {
+          bestId = null;
+        }
+
+        // Only issue new flip/unflip commands if the "best" card has actually changed
+        if (activeCardIdRef.current !== bestId) {
+          const prevId = activeCardIdRef.current;
+          activeCardIdRef.current = bestId;
+
+          // 1. Gently unflip the previous card
+          if (prevId !== null) {
+            const prevApi = cardApiRefs.current[prevId]?.current;
+            clearTimeout(timersRef.current[prevId]);
+            if (prevApi) {
+              timersRef.current[prevId] = setTimeout(() => {
+                prevApi.setFlippedState(false);
+              }, 600); // 600ms buffer prevents immediate jarring close
+            }
+          }
+
+          // 2. Flip the new focus card
+          if (bestId !== null) {
+            const nextApi = cardApiRefs.current[bestId]?.current;
+            clearTimeout(timersRef.current[bestId]);
+            if (nextApi) {
+              timersRef.current[bestId] = setTimeout(() => {
+                const lastInt = lastInteractionRef.current[bestId!] || 0;
+                // Don't auto-flip if user explicitly clicked it recently
+                if (Date.now() - lastInt > 2000) {
+                  nextApi.setFlippedState(true);
+                }
+              }, 150); 
+            }
+          }
         }
       },
-      { threshold: [0, 0.25, 0.5, 0.75, 1] }
+      { threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] }
     );
 
     Object.values(elementRefs.current).forEach((el) => {
       if (el) observer.observe(el);
     });
 
-    return () => observer.disconnect();
-  }, [visibleGroups]);
-
-  // Start/clear auto-flip timer when active card changes
-  useEffect(() => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current as any);
-      timerRef.current = null;
-    }
-
-    if (activeEventId == null) return;
-
-    const apiRef = cardApiRefs.current[activeEventId];
-    const api = apiRef && apiRef.current;
-    const last = lastInteractionRef.current[activeEventId] || 0;
-
-    if (api && !api.isFlipped) {
-      timerRef.current = setTimeout(() => {
-        const nowLast = lastInteractionRef.current[activeEventId] || 0;
-        if (Date.now() - nowLast >= 3000) {
-          api.toggleFlip && api.toggleFlip();
-        }
-      }, 3000);
-    }
-
     return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current as any);
-        timerRef.current = null;
-      }
+      observer.disconnect();
+      Object.values(timersRef.current).forEach(clearTimeout);
     };
-  }, [activeEventId]);
-
-  const EventCard = React.forwardRef(function EventCard(
-    { event, onUserInteraction }: { event: TimelineEvent; onUserInteraction: (id: number) => void },
-    ref: any
-  ) {
-    const [isFlipped, setIsFlipped] = useState(false);
-    useImperativeHandle(ref, () => ({
-      toggleFlip: () => setIsFlipped((v) => !v),
-      isFlipped,
-    }), [isFlipped]);
-    const isMameru = event.title.toLowerCase().includes('mameru');
-    
-    const guestCountRaw = getEventSpecificGuestCount(event.title);
-    const guestCountSuffix = getGuestCountText(guestCountRaw);
-
-    const handleVenueClick = (e: React.MouseEvent) => {
-      e.stopPropagation();
-      if (event.mapsUrl) {
-        window.open(event.mapsUrl, '_blank');
-      }
-    };
-
-    // Helper for Title Background Colors
-    const getTitleStyles = (title: string) => {
-      const t = title.toLowerCase();
-      // Mandap: Red
-      if (t.includes('mandap')) return 'bg-[#f74862] text-white';
-      
-      // Mameru: Purple
-      if (t.includes('mameru')) return 'bg-[#9d56f5] text-white';
-      
-      // Haldi: Yellow (Black text)
-      if (t.includes('haldi')) return 'bg-[#FACC15] text-white'; 
-      
-      // Bhakti: Bluish
-      if (t.includes('bhakti')) return 'bg-[#6a9dfc] text-white';
-      
-      // Wedding/Jaan/Hast Melap: Gradient Yellow to Rani Pink
-      if (t.includes('jaan') || t.includes('wedding') || t.includes('hast melap')) {
-        return 'bg-gradient-to-r from-[#FACC15] to-[#E11D48] text-white';
-      }
-      
-      // Default (Reception, etc.)
-      return 'bg-[#0c0f4a] text-[#FDFBF7]'; 
-    };
-
-    const [venueName, ...venueAddressParts] = event.venue ? event.venue.split(',') : ["", ""];
-    const venueAddress = venueAddressParts.join(',').trim();
-
-    return (
-      <motion.div
-        className={`${isMameru ? 'w-80 h-[32rem] md:w-96 md:h-[32rem]' : 'w-80 h-[30rem] md:w-96 md:h-[30rem]'} z-10 cursor-pointer`}
-        onClick={() => {
-          setIsFlipped(!isFlipped);
-          onUserInteraction(event.id);
-        }}
-        whileHover={{ scale: 1.05 }}
-        transition={{ type: "spring", stiffness: 300 }}
-      >
-        <motion.div
-          className="relative w-full h-full"
-          initial={false}
-          animate={{ rotateY: isFlipped ? 180 : 0 }}
-          transition={{ duration: 0.6 }}
-          style={{ transformStyle: "preserve-3d" }}
-        >
-          {/* Front side */}
-          <motion.div
-            className="absolute w-full h-full bg-cream rounded-lg overflow-hidden invitation-shadow"
-            style={{ backfaceVisibility: "hidden" }}
-          >
-            {event.image ? (
-              <img
-                src={event.image}
-                alt={event.title}
-                className="w-full h-full object-cover object-bottom"
-              />
-            ) : (
-              <div className="w-full h-full bg-gradient-to-br from-gold/20 to-sage/20 flex items-center justify-center">
-                <p className="text-center text-muted-foreground font-display">{event.title}</p>
-              </div>
-            )}
-          </motion.div>
-
-          {/* Back side */}
-          <motion.div
-            className="absolute w-full h-full bg-cream rounded-lg p-6 invitation-shadow flex flex-col overflow-y-auto"
-            style={{ 
-              backfaceVisibility: "hidden",
-              transform: "rotateY(180deg)"
-            }}
-          >
-            <div className="flex flex-col items-center justify-center mb-4">
-              <span className="font-display text-black text-md mb-1">{event.date}</span>
-              <div className="text-black text-md font-display font-bold">
-                {event.time}
-              </div>
-            </div>
-            
-            <div className="flex justify-center mb-3">
-              <motion.h3 
-                className={`font-display text-xl md:text-2xl px-6 py-2 rounded-full shadow-sm text-center ${getTitleStyles(event.title)}`}
-                animate={{ scale: [1, 1.02, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                {event.title}
-              </motion.h3>
-            </div>
-            
-            <div className="font-body text-black leading-snug text-base flex-grow text-center flex flex-col justify-center">
-               {event.description.split('\n').map((line, i) => {
-                 const trimmed = line.trim();
-                 if (trimmed.toLowerCase().includes('dinner') && trimmed.includes('-')) {
-                    const [timePart, labelPart] = trimmed.split('-');
-                    return (
-                        <p key={i} className="mt-1 flex items-baseline justify-center gap-2">
-                            <span className="lining-nums">{timePart.trim()}</span>
-                            {/* FIX: Forcing 'font-sans' and normal style to guarantee a straight hyphen */}
-                            <span className="not-italic font-sans" style={{ fontStyle: "normal" }}>-</span>
-                            <span>{labelPart.trim()}</span>
-                        </p>
-                    );
-                 }
-                 return (
-                   <p key={i} className={i > 0 ? "mt-1" : ""}>{trimmed}</p>
-                 );
-               })}
-            </div>
-
-            {/* GUEST COUNT - HIDDEN FOR jaan aagman AND HALDI */}
-            {guestCountSuffix && 
-             !event.title.toLowerCase().includes("jaan") && 
-             !event.title.toLowerCase().includes("haldi") && (
-              <div className="mt-2 mb-1 text-center">
-                <span className="block text-yellow-600 font-display text-sm">
-                  looking forward to welcome
-                </span>
-                <span className="block text-yellow-600 font-display text-sm mt-1 font-bold">
-                  {guestCountSuffix}
-                </span>
-              </div>
-            )}
-
-           
-            {event.venue && (
-              <div className="w-full flex flex-col items-center gap-1 font-body text-sage-dark italic border-t border-sage/20 pt-3 mt-auto">
-                <motion.button
-                  onClick={handleVenueClick}
-                  className="w-full flex flex-col items-center gap-1 hover:text-gold transition-colors cursor-pointer"
-                  whileHover={{ scale: 1.05 }}
-                >
-                  <div className="flex items-center gap-1 text-center leading-tight">
-                      <span className="text-xl">📍</span>
-                      <span className="text-lg font-bold font-display not-italic">{venueName}</span>
-                  </div>
-                  {venueAddress && (
-                      <span className="text-sm opacity-90 font-semibold font-body italic">{venueAddress}</span>
-                  )}
-                </motion.button>
-                <div className="text-center font-body text-sm text-sage-dark italic -mt-2 pt-0">
-
-                  <p>(Tap Above for the Google Maps.)</p>
-                  <p className="mt-2 text-sm opacity-90 font-semibold font-body italic">(Valet Parking Available)</p>
-                </div>
-              </div>
-            )}
-          
-          </motion.div>
-        </motion.div>
-      </motion.div>
-    );
-  });
-  EventCard.displayName = 'EventCard';
+  }, [visibleGroups]);
 
   return (
     <div className="relative">
@@ -540,6 +519,10 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
                 <div className="space-y-12 md:space-y-20 w-full flex flex-col items-center">
                   {group.events.map((event, eventIndex) => {
                     if (!cardApiRefs.current[event.id]) cardApiRefs.current[event.id] = React.createRef();
+                    
+                    const guestCountRaw = getEventSpecificGuestCount(event.title);
+                    const guestCountSuffix = getGuestCountText(guestCountRaw);
+
                     return (
                       <div key={event.id} className="w-full flex flex-col items-center">
                         <motion.div
@@ -558,7 +541,12 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
                               eventIndex % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
                             }`}
                           >
-                            <EventCard ref={cardApiRefs.current[event.id]} event={event} onUserInteraction={handleUserInteraction} />
+                            <EventCard 
+                              ref={cardApiRefs.current[event.id]} 
+                              event={event} 
+                              guestCountSuffix={guestCountSuffix}
+                              onUserInteraction={handleUserInteraction} 
+                            />
                             <motion.p
                               className={`text-center font-bold font-body text-sm mt-3 italic transition-colors duration-500 ${
                                   getThemeForGroup(group.title) === 'reception' ? 'text-white/60' : 'text-muted-foreground'
