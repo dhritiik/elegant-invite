@@ -465,7 +465,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
                 if (Date.now() - lastInt > 2000) {
                   nextApi.setFlippedState(true);
                 }
-              }, 2000); // Changed from 150 to 2000 for a 2-second delay
+              }, 4000); // Changed from 150 to 2000 for a 2-second delay
             }
           }
         }
