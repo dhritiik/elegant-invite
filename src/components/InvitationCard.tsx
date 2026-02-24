@@ -344,7 +344,7 @@ const InvitationCard = ({ isVisible, isMuted = false, onMuteChange, audioRef }: 
               </div>
 
               {/* JAY */}
-              <h2 className="font-imperial text-7xl md:text-7xl text-gold mb-1 tracking-wide leading-none">
+              <h2 className="font-imperial text-7xl md:text-7xl text-gold mb-3 tracking-wide leading-none">
                 Jay
               </h2>
 

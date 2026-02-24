@@ -136,7 +136,6 @@ const events: TimelineEvent[] = [
   },
 ];
 
-// Helper extracted outside to prevent re-renders
 const getTitleStyles = (title: string) => {
   const t = title.toLowerCase();
   if (t.includes('mandap')) return 'bg-[#f74862] text-white';
@@ -149,8 +148,6 @@ const getTitleStyles = (title: string) => {
   return 'bg-[#0c0f4a] text-[#FDFBF7]'; 
 };
 
-// 1. EXTRACTED EVENT CARD OUTSIDE 
-// This fixes the images reloading/flickering issue entirely.
 const EventCard = React.forwardRef(function EventCard(
   { 
     event, 
@@ -408,14 +405,11 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
     }).filter(group => group.events.length > 0);
   }, [filteredEventName]);
 
-  // Refs and state for auto-flip behavior
   const elementRefs = useRef<Record<number, HTMLElement | null>>({});
   const cardApiRefs = useRef<Record<number, React.RefObject<any>>>({});
   const lastInteractionRef = useRef<Record<number, number>>({});
   const timersRef = useRef<Record<number, ReturnType<typeof setTimeout>>>({});
   const intersectionRatiosRef = useRef<Record<number, number>>({});
-  
-  // 2. FIXED JITTER: We track the actively flipped card explicitly so we don't spam commands.
   const activeCardIdRef = useRef<number | null>(null);
 
   const handleUserInteraction = (id: number) => {
@@ -442,39 +436,36 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
           }
         });
 
-        // The card must be at least 40% visible to trigger an auto-flip
         if (maxRatio < 0.4) {
           bestId = null;
         }
 
-        // Only issue new flip/unflip commands if the "best" card has actually changed
         if (activeCardIdRef.current !== bestId) {
           const prevId = activeCardIdRef.current;
           activeCardIdRef.current = bestId;
 
-          // 1. Gently unflip the previous card
+          // Gently unflip the previous card
           if (prevId !== null) {
             const prevApi = cardApiRefs.current[prevId]?.current;
             clearTimeout(timersRef.current[prevId]);
             if (prevApi) {
               timersRef.current[prevId] = setTimeout(() => {
                 prevApi.setFlippedState(false);
-              }, 600); // 600ms buffer prevents immediate jarring close
+              }, 600); 
             }
           }
 
-          // 2. Flip the new focus card
+          // Flip the new focus card with a 2-second delay
           if (bestId !== null) {
             const nextApi = cardApiRefs.current[bestId]?.current;
             clearTimeout(timersRef.current[bestId]);
             if (nextApi) {
               timersRef.current[bestId] = setTimeout(() => {
                 const lastInt = lastInteractionRef.current[bestId!] || 0;
-                // Don't auto-flip if user explicitly clicked it recently
                 if (Date.now() - lastInt > 2000) {
                   nextApi.setFlippedState(true);
                 }
-              }, 150); 
+              }, 2000); // Changed from 150 to 2000 for a 2-second delay
             }
           }
         }
