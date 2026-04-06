@@ -2,10 +2,17 @@ import { useState, useRef, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import Envelope from "@/components/Envelope";
 import InvitationCard from "@/components/InvitationCard";
+import Wedding2Index from "../events/wedding2/Index";
+import AnniIndex from "../events/anni/Index";
 
 const backgroundAudio = "https://n7kwk6h7z8gkdqba.public.blob.vercel-storage.com/intro-audio.mp3";
 
 const Index = () => {
+  const params = new URLSearchParams(window.location.search);
+  const invite = params.get("invite");
+
+  if (invite === "wedding2") return <Wedding2Index />;
+  if (invite === "anni") return <AnniIndex />;
   // Rename state to 'showEnvelope' for clarity
   const [showEnvelope, setShowEnvelope] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
