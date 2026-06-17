@@ -1,21 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
-import Envelope from "@/components/Envelope";
-import InvitationCard from "@/components/InvitationCard";
-import Wedding2Index from "../events/wedding2/Index";
-import Wedding1Index from "../events/wedding1/Index";
-import AnniIndex from "../events/anni/Index";
+import Envelope from "./components/Envelope";
+import InvitationCard from "./components/InvitationCard";
 
 const backgroundAudio = "https://n7kwk6h7z8gkdqba.public.blob.vercel-storage.com/intro-audio.mp3";
 
 const Index = () => {
-  const params = new URLSearchParams(window.location.search);
-  const invite = params.get("invite");
-
-  if (invite === "wedding2") return <Wedding2Index />;
-  if (invite === "wedding1") return <Wedding1Index />;
-  if (invite === "anni") return <AnniIndex />;
-  // Rename state to 'showEnvelope' for clarity
   const [showEnvelope, setShowEnvelope] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -37,12 +27,12 @@ const Index = () => {
         loop
         playsInline
       />
-
+      
       {/* 1. The Invitation Card sits in the background (z-0).
            It is present but covered by the envelope initially.
       */}
       <div className="absolute inset-0 z-0">
-        <InvitationCard
+        <InvitationCard 
           isVisible={!showEnvelope}
           isMuted={isMuted}
           onMuteChange={setIsMuted}
@@ -56,7 +46,7 @@ const Index = () => {
       */}
       <AnimatePresence>
         {showEnvelope && (
-          <Envelope
+          <Envelope 
             onOpen={() => setShowEnvelope(false)}
             isMuted={isMuted}
             onMuteChange={setIsMuted}
@@ -64,7 +54,6 @@ const Index = () => {
           />
         )}
       </AnimatePresence>
-
     </div>
   );
 };

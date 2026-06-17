@@ -20,12 +20,12 @@ const events: TimelineEvent[] = [
     id: 1,
     title: "mandap muhurat",
     time: "9:00 AM",
-    date: "Sunday, 8th March",
-    description: "Seeking the Blessings of Lord Ganesha for a Joyous Beginning\n (Alongside Mehendi)",
-    venue: "The Taj Mahal Palace, Mumbai",
+    date: "Sunday, 6th December",
+    description: "Invoking the divine presence of Lord Ganesha to bless the wedding pavilion and mark the sacred beginning of our celebrations.\n (Alongside Mehendi)",
+    venue: "The Palace Grounds, Gate No. 2, Near Bellary Road, Jayamahal, Bengaluru",
     style: "horizontal",
-    image: "/wedding2-mandap.jpg",
-    mapsUrl: "https://maps.google.com/?q=The+Taj+Mahal+Palace,+Mumbai",
+    image: "/madamandup.png",
+    mapsUrl: "https://maps.google.com/?q=Palace+Grounds+Bengaluru",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <path d="M12 2L2 7L12 12L22 7L12 2Z" />
@@ -37,13 +37,13 @@ const events: TimelineEvent[] = [
   {
     id: 2,
     title: "mameru",
-    time: "10:30 AM ",
-    date: "Sunday, 8th March",
-    description: "With Blessings from the Maternal Family experience the joyous celebration of Mameru \n(Followed by Lunch)",
-    venue: "The St. Regis Mumbai, Lower Parel",
+    time: "11:00 AM",
+    date: "Sunday, 6th December",
+    description: "Welcoming the traditional gifts, love, and auspicious offerings brought by the maternal uncles and family to bless the bride.\n \n Smt. Radhaben & Shri. Rajeshbhai Shah\n Smt. Kavita & Shri. Nitinbhai Mehta\n \n(Followed by traditional lunch)",
+    venue: "The Palace Grounds, Gate No. 2, Near Bellary Road, Jayamahal, Bengaluru",
     style: "horizontal",
-    image: "/wedding2-mameru.jpg",
-    mapsUrl: "https://maps.google.com/?q=The+St.+Regis+Mumbai",
+    image: "/mameru.jpg",
+    mapsUrl: "https://maps.google.com/?q=Palace+Grounds+Bengaluru",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <circle cx="9" cy="9" r="7" />
@@ -54,13 +54,13 @@ const events: TimelineEvent[] = [
   {
     id: 3,
     title: "haldi",
-    time: "11:30 AM",
-    date: "Sunday, 8th March",
-    description: "As turmeric’s golden hues meet the glow of love, the day blossoms into beautiful shades of sunshine, laughter and memories that will last a lifetime",
-    venue: "The St. Regis Mumbai, Lower Parel",
+    time: "1:00 PM",
+    date: "Sunday, 6th December",
+    description: "An auspicious ceremony filled with laughter, love, and traditional music as we coat the couple in golden turmeric paste to prep them for the big day.",
+    venue: "The Palace Grounds, Gate No. 2, Near Bellary Road, Jayamahal, Bengaluru",
     style: "horizontal",
-    image: "/wedding2-haldi.jpg",
-    mapsUrl: "https://maps.google.com/?q=The+St.+Regis+Mumbai",
+    image: "/haldi.jpg",
+    mapsUrl: "https://maps.google.com/?q=Palace+Grounds+Bengaluru",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <circle cx="9" cy="9" r="7" />
@@ -71,13 +71,13 @@ const events: TimelineEvent[] = [
   {
     id: 4,
     title: "sangeet sandhya",
-    time: "7:30 PM",
-    date: "Sunday, 8th March",
-    description: "An evening of Music, Dance and Celebration",
-    venue: "Jio World Convention Centre, BKC, Mumbai",
+    time: "7:00 PM",
+    date: "Sunday, 6th December",
+    description: "An evening of music, dance, and celebration as we celebrate the union of two families.\n (5:30 to 7:00 PM - Dinner)",
+    venue: "The Palace Grounds, Gate No. 2, Near Bellary Road, Jayamahal, Bengaluru",
     style: "vertical",
-    image: "/wedding2-bhakti.jpg",
-    mapsUrl: "https://maps.google.com/?q=Jio+World+Convention+Centre",
+    image: "/wedding1-sangeet.png",
+    mapsUrl: "https://maps.google.com/?q=Palace+Grounds+Bengaluru",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <path d="M9 18V5L21 3V16" />
@@ -89,13 +89,13 @@ const events: TimelineEvent[] = [
   {
     id: 5,
     title: "jaan aagman",
-    time: "2:00 PM",
-    date: "Tuesday, 10th March",
-    description: "A grand ceremonial procession marking the groom’s joyous arrival, filled with music, celebration and blessings as he walks toward the sacred union",
-    venue: "The Taj Mahal Palace, Colaba, Mumbai",
+    time: "3:30 PM",
+    date: "Tuesday, 8th December",
+    description: "Let's welcome the groom and his high-spirited procession! Bring your best dance moves for a high-energy dhol reception as the groom arrives.",
+    venue: "Leela Palace Grand Ballroom, Old Airport Road, Kodihalli, Bengaluru",
     style: "horizontal",
-    image: "/wedding2-baaraat.jpg",
-    mapsUrl: "https://maps.google.com/?q=The+Taj+Mahal+Palace,+Mumbai",
+    image: "/baaraat.jpg",
+    mapsUrl: "https://maps.google.com/?q=The+Leela+Palace+Bengaluru",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
@@ -105,13 +105,13 @@ const events: TimelineEvent[] = [
   {
     id: 6,
     title: "hast melap",
-    time: "4:05 PM ",
-    date: "Tuesday, 10th March",
-    description: "A sacred and soulful ritual where two hands are joined, two hearts are united and two families are bound together in love, blessings and lifelong togetherness",
-    venue: "The Taj Mahal Palace, Colaba, Mumbai",
+    time: "5:15 PM",
+    date: "Tuesday, 8th December",
+    description: "The most sacred moment where the hands of the bride and groom are joined, binding their souls and families together for seven lifetimes.",
+    venue: "Leela Palace Grand Ballroom, Old Airport Road, Kodihalli, Bengaluru",
     style: "vertical",
-    image: "/wedding2-hast.jpg",
-    mapsUrl: "https://maps.google.com/?q=The+Taj+Mahal+Palace,+Mumbai",
+    image: "/wedding.jpg",
+    mapsUrl: "https://maps.google.com/?q=The+Leela+Palace+Bengaluru",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
@@ -121,13 +121,13 @@ const events: TimelineEvent[] = [
   {
     id: 7,
     title: "reception",
-    time: "6:30 PM onwards",
-    date: "Tuesday, 10th March",
-    description: "A grand celebration honoring love, togetherness and new beginnings\n (Followed by Dinner)",
-    venue: "The Taj Mahal Palace, Colaba, Mumbai",
+    time: "8:00 PM onwards",
+    date: "Tuesday, 8th December",
+    description: "Celebrate the newlyweds over a spectacular evening of music, standard cocktails, and an elaborate global dinner spread.\nChauvihar Facility Available\n (Followed by Dinner)",
+    venue: "Leela Palace Grand Ballroom, Old Airport Road, Kodihalli, Bengaluru",
     style: "vertical",
-    image: "/wedding2-reception.jpg",
-    mapsUrl: "https://maps.google.com/?q=The+Taj+Mahal+Palace,+Mumbai",
+    image: "/reception.jpg",
+    mapsUrl: "https://maps.google.com/?q=The+Leela+Palace+Bengaluru",
     icon: (
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
@@ -141,7 +141,7 @@ const getTitleStyles = (title: string) => {
   if (t.includes('mandap')) return 'bg-[#f74862] text-white';
   if (t.includes('mameru')) return 'bg-[#9d56f5] text-white';
   if (t.includes('haldi')) return 'bg-[#FACC15] text-white';
-  if (t.includes('sangeet') || t.includes('bhakti')) return 'bg-[#0a163d] text-white';
+  if (t.includes('bhakti') || t.includes('sangeet')) return 'bg-[#6a9dfc] text-white';
   if (t.includes('jaan') || t.includes('wedding') || t.includes('hast melap')) {
     return 'bg-gradient-to-r from-[#FACC15] to-[#E11D48] text-white';
   }
@@ -495,7 +495,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
           >
             <div className="relative z-10 w-full flex flex-col items-center">
               <motion.h3
-                className={`text-center font-display text-2xl md:text-3xl mb-8 transition-colors duration-500 ${getThemeForGroup(group.title) === 'reception' ? 'text-black' : 'text-foreground'
+                className={`text-center font-display text-2xl md:text-3xl mb-8 transition-colors duration-500 ${getThemeForGroup(group.title) === 'reception' ? 'text-white' : 'text-foreground'
                   }`}
                 initial={{ opacity: 0, y: -20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -536,7 +536,7 @@ const EventTimeline = ({ filteredEventName, guestCounts, onThemeChange }: EventT
                               onUserInteraction={handleUserInteraction}
                             />
                             <motion.p
-                              className={`text-center font-bold font-body text-sm mt-3 italic transition-colors duration-500 ${getThemeForGroup(group.title) === 'reception' ? 'text-black/60' : 'text-muted-foreground'
+                              className={`text-center font-bold font-body text-sm mt-3 italic transition-colors duration-500 ${getThemeForGroup(group.title) === 'reception' ? 'text-white/60' : 'text-muted-foreground'
                                 }`}
                               animate={{ opacity: [0.6, 1, 0.6] }}
                               transition={{ duration: 2, repeat: Infinity }}
