@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import heroBackground from "/hero-background.jpg";
-import logo from "/logo_sj.png";
+import logo from "/logo_aa.png";
 import EventTimeline from "./EventTimeline";
 import { useEffect, useState, useRef } from "react";
 import { AmbientBackground, ThemeType } from "./AmbientBackground";
