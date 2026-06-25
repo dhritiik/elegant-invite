@@ -1,495 +1,608 @@
-import { motion } from "framer-motion";
-import heroBackground from "/hero-background.jpg";
-import logo from "/logo_aa.png";
-import EventTimeline from "./EventTimeline";
-import { useEffect, useState, useRef } from "react";
-import { AmbientBackground, ThemeType } from "./AmbientBackground";
+"use client";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  ChevronRight,
+  X,
+  Plus,
+  Calendar,
+  Music,
+  Wine,
+  Heart,
+  ChevronDown,
+  ExternalLink,
+  Maximize2,
+} from "lucide-react";
 
-interface InvitationCardProps {
-  isVisible: boolean;
-  isMuted?: boolean;
-  onMuteChange?: (muted: boolean) => void;
-  audioRef?: React.RefObject<HTMLAudioElement>;
+/* ─── Data ─────────────────────────────────────────────────────────── */
+
+type Theme = "wedding1" | "wedding2" | "anni";
+
+const LIVE_WEDDING_EVENTS = [
+  { id: "wedding", label: "Wedding", icon: Calendar },
+  { id: "mayra", label: "Mayra", icon: Heart },
+  { id: "bhakti", label: "Bhakti", icon: Music },
+  { id: "reception", label: "Reception", icon: Wine },
+];
+
+const EVENT_COLORS = ["#c9a96e", "#d4a0a7", "#a0b4d4", "#a0d4b4"];
+
+const samples = [
+  {
+    title: "Priya Sharma",
+    subtitle: "Luxury Grand Wedding",
+    theme: "wedding1" as Theme,
+    defaultName: "Priya Sharma",
+    defaultEvents: ["wedding", "mayra", "bhakti", "reception"],
+    defaultGuests: {
+      wedding: "Family",
+      mayra: "Family",
+      bhakti: "Family",
+      reception: "Family",
+    },
+    events: ["Wedding", "Mayra", "Bhakti", "Reception"],
+    location: "Mumbai",
+    color: "#c9a96e",
+  },
+  {
+    title: "Ria Vora",
+    subtitle: "Elegant Destination Wedding",
+    theme: "wedding2" as Theme,
+    defaultName: "Ria Vora",
+    defaultEvents: ["wedding", "mayra", "bhakti", "reception"],
+    defaultGuests: {
+      wedding: "Family",
+      mayra: "Family",
+      bhakti: "Family",
+      reception: "Family",
+    },
+    events: ["Wedding", "Mayra", "Bhakti", "Reception"],
+    location: "Udaipur",
+    color: "#d4a0a7",
+  },
+  {
+    title: "Dhriti",
+    subtitle: "50th Anniversary Celebration",
+    theme: "anni" as Theme,
+    defaultName: "Dhriti",
+    defaultEvents: [],
+    defaultGuests: {},
+    events: ["Anniversary Celebration", "Gala Dinner"],
+    location: "Gujarat",
+    color: "#a0b4d4",
+  },
+];
+
+/* ─── URL Builder ───────────────────────────────────────────────────── */
+
+function buildUrl(
+  theme: Theme,
+  guestName: string,
+  liveEvents: string[],
+  liveGuestCounts: Record<string, string>
+) {
+  const base = "https://sj-zeta.vercel.app/";
+  const p = new URLSearchParams();
+  if (theme === "wedding1" || theme === "wedding2") {
+    p.set("invite", theme);
+    p.set("name", guestName.replace(/\s+/g, "_"));
+    p.set("event", liveEvents.join(","));
+    liveEvents.forEach((e) => p.set(`guests_${e}`, liveGuestCounts[e] || "Family"));
+  } else {
+    p.set("invite", "anni");
+    p.set("name", guestName.replace(/\s+/g, "_"));
+  }
+  return `${base}?${p.toString()}`;
 }
 
-const InvitationCard = ({ isVisible, isMuted = false, onMuteChange, audioRef }: InvitationCardProps) => {
-  const [guestDetails, setGuestDetails] = useState({
-    name: "",
-    guests: "",
-    event: "",
-    guestsMayra: "",
-    guestsBhakti: "",
-    guestsWedding: "",
-    guestsReception: ""
-  });
+/* ─── Phone Mockup (Responsive Fix) ─────────────────────────────────── */
 
-  const [currentTheme, setCurrentTheme] = useState<ThemeType>('default');
-
-  // Ref to control the scrolling container
-  const containerRef = useRef<HTMLDivElement>(null);
+function PhoneMockup({
+  url,
+  color,
+  width = 280,
+  height = 520,
+}: {
+  url: string | null;
+  color: string;
+  width?: number;
+  height?: number;
+}) {
+  const [loading, setLoading] = useState(true);
+  const [currentUrl, setCurrentUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    setGuestDetails({
-      name: params.get("name")?.replace(/_/g, " ") || "",
-      guests: params.get("guests") || "",
-      event: params.get("event")?.replace(/_/g, " ") || "",
-      guestsMayra: params.get("guests_mayra") || "",
-      guestsBhakti: params.get("guests_sangeet") || params.get("guests_bhakti") || "",
-      guestsWedding: params.get("guests_wedding") || "",
-      guestsReception: params.get("guests_reception") || ""
-    });
-  }, []);
+    setLoading(true);
+    setCurrentUrl(url);
+  }, [url]);
 
-  // Auto-scroll logic
-  useEffect(() => {
-    if (!isVisible) return;
+  // Target standard canvas size for embedded display mapping
+  const iframeW = 390;
+  const iframeH = 844;
 
-    const timer = setTimeout(() => {
-      const container = containerRef.current;
-      // Check if container exists and user hasn't scrolled down yet (buffer of 50px)
-      if (container && container.scrollTop < 50) {
-        const start = container.scrollTop;
-        const target = window.innerHeight * 0.3; // Target: 30% down the viewport
-        const distance = target - start;
-        const duration = 2500; // 2.5 seconds (Much slower and smoother)
-        let startTime: number | null = null;
-
-        const animation = (currentTime: number) => {
-          if (startTime === null) startTime = currentTime;
-          const timeElapsed = currentTime - startTime;
-          const progress = Math.min(timeElapsed / duration, 1);
-
-          // Ease-in-out Cubic function: Starts slow, speeds up slightly, slows down at end
-          const ease = progress < 0.5
-            ? 4 * progress * progress * progress
-            : 1 - Math.pow(-2 * progress + 2, 3) / 2;
-
-          container.scrollTop = start + (distance * ease);
-
-          if (timeElapsed < duration) {
-            requestAnimationFrame(animation);
-          }
-        };
-
-        requestAnimationFrame(animation);
-      }
-    }, 5000); // 5 seconds delay
-
-    return () => clearTimeout(timer);
-  }, [isVisible]);
-
-
-  const getMainGuestText = (count: string) => {
-    if (!count) return null;
-    const c = count.toLowerCase();
-    if (c === 'family') return <span className="block text-sm text-sage-dark italic opacity-80 mt-1">(and Family)</span>;
-    if (c === '2' || c === 'couple') return <span className="block text-sm text-sage-dark italic opacity-80 mt-1">2 seats reserved for you</span>;
-    return <span className="block text-sm text-sage-dark italic opacity-80 mt-1">(Guests: {count})</span>;
-  };
-
-  const handleMuteToggle = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const newMutedState = !isMuted;
-    if (onMuteChange) {
-      onMuteChange(newMutedState);
-    }
-  };
+  // Screen area calculation within simulated physical chassis bezel limits
+  const screenH = height - 12;
+  const iframeScale = screenH / iframeH;
 
   return (
-    <>
-      <AmbientBackground currentTheme={currentTheme} />
+    <div
+      className="relative flex-shrink-0 mx-auto select-none"
+      style={{ width, height }}
+    >
+      {/* Phone chassis shell structure */}
+      <div
+        className="absolute inset-0 rounded-[3rem]"
+        style={{
+          background: "linear-gradient(160deg, #e8e0d5 0%, #c8bfb0 100%)",
+          boxShadow:
+            "0 30px 60px rgba(0,0,0,0.45), inset 0 2px 4px rgba(255,255,255,0.6), inset 0 -2px 4px rgba(0,0,0,0.2)",
+        }}
+      />
+      {/* Side structural button shapes */}
+      <div className="absolute left-0 top-[22%] w-[3px] h-10 rounded-l-full" style={{ background: "#bdb5aa", marginLeft: "-1px" }} />
+      <div className="absolute left-0 top-[35%] w-[3px] h-8 rounded-l-full" style={{ background: "#bdb5aa", marginLeft: "-1px" }} />
+      <div className="absolute left-0 top-[46%] w-[3px] h-8 rounded-l-full" style={{ background: "#bdb5aa", marginLeft: "-1px" }} />
+      <div className="absolute right-0 top-[30%] w-[3px] h-14 rounded-r-full" style={{ background: "#bdb5aa", marginRight: "-1px" }} />
 
+      {/* Screen area layout boundaries mask */}
+      <div
+        className="absolute rounded-[2.6rem] overflow-hidden bg-black"
+        style={{ inset: "6px" }}
+      >
+        {/* Dynamic Island Shape Overlay */}
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-28 h-7 bg-black rounded-full z-30 pointer-events-none" />
+
+        {/* Display Panel Container Frame */}
+        <div className="absolute inset-0 bg-white overflow-hidden flex items-center justify-center">
+          {/* Progress loader overlay layer */}
+          <AnimatePresence>
+            {loading && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-black"
+              >
+                <div
+                  className="w-8 h-8 rounded-full border-[3px] animate-spin"
+                  style={{
+                    borderColor: `${color}30`,
+                    borderTopColor: color,
+                  }}
+                />
+                <p
+                  className="font-sans text-[9px] tracking-[0.2em] uppercase font-bold"
+                  style={{ color }}
+                >
+                  Loading
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* 
+            FIXED REALIGNMENT: 
+            Enforces flawless alignment by absolute centering inside the viewport 
+            instead of using offset coordinate math that breaks layout on small containers.
+          */}
+          {currentUrl && (
+            <div
+              className="absolute flex items-center justify-center"
+              style={{
+                width: `${iframeW}px`,
+                height: `${iframeH}px`,
+                transform: `scale(${iframeScale})`,
+                transformOrigin: "center center",
+              }}
+            >
+              <iframe
+                src={currentUrl}
+                title="Live invite preview"
+                loading="lazy"
+                onLoad={() => setLoading(false)}
+                className="w-full h-full border-none pointer-events-none"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Operating system base home indicator handle bar */}
+        <div className="absolute bottom-2 inset-x-0 flex justify-center z-30 pointer-events-none">
+          <div className="w-24 h-1 bg-white/40 rounded-full" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Modal ─────────────────────────────────────────────────────────── */
+
+type SampleType = (typeof samples)[0];
+
+function PreviewModal({ sample, onClose }: { sample: SampleType; onClose: () => void }) {
+  const [guestName, setGuestName] = useState(sample.defaultName);
+  const [liveEvents, setLiveEvents] = useState<string[]>(sample.defaultEvents);
+  const [liveGuestCounts, setLiveGuestCounts] = useState<Record<string, string>>(sample.defaultGuests);
+  const [isEventExpanded, setIsEventExpanded] = useState(false);
+  const [debouncedUrl, setDebouncedUrl] = useState<string | null>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isWedding = sample.theme !== "anni";
+
+  const getLiveUrl = useCallback(
+    () => buildUrl(sample.theme, guestName, liveEvents, liveGuestCounts),
+    [sample.theme, guestName, liveEvents, liveGuestCounts]
+  );
+
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => setDebouncedUrl(getLiveUrl()), 600);
+    return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
+  }, [getLiveUrl]);
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  useEffect(() => {
+    const h = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", h);
+    return () => window.removeEventListener("keydown", h);
+  }, [onClose]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[200] flex items-stretch p-4 overflow-y-auto"
+      style={{ backdropFilter: "blur(12px)", background: "rgba(5,5,10,0.88)" }}
+      onClick={onClose}
+    >
       <motion.div
-        ref={containerRef} // Attached ref here to control scrolling
-        className="fixed inset-0 overflow-y-auto overflow-x-hidden"
-        initial={{ opacity: 0 }}
-        animate={isVisible ? { opacity: 1 } : { opacity: 0, pointerEvents: "none" }}
-        transition={{ duration: 1.2, delay: 0.8 }}
-        onScroll={(e) => {
-          const target = e.target as HTMLElement;
-          if (target.scrollTop < 500) {
-            if (currentTheme !== 'default') setCurrentTheme('default');
-          }
+        initial={{ opacity: 0, y: 40, scale: 0.96 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 40, scale: 0.96 }}
+        transition={{ type: "spring", bounce: 0.18, duration: 0.5 }}
+        onClick={(e) => e.stopPropagation()}
+        className="relative m-auto w-full flex flex-col lg:flex-row overflow-hidden shadow-2xl"
+        style={{
+          maxWidth: "960px",
+          maxHeight: "94vh",
+          borderRadius: "28px",
+          background: "#161213",
+          border: `1px solid ${sample.color}30`,
         }}
       >
-        {/* Mute Button */}
-        {isVisible && (
-          <motion.button
-            onClick={handleMuteToggle}
-            className="fixed bottom-8 right-8 z-50 p-3 rounded-full bg-black/60 hover:bg-black/80 transition-colors"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            title={isMuted ? "Unmute" : "Mute"}
-          >
-            {isMuted ? (
-              /* Proper Muted Icon with Slash */
-              <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73 4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
-              </svg>
-            ) : (
-              /* Standard Speaker Icon */
-              <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
-              </svg>
-            )}
-          </motion.button>
+        <div
+          className="absolute top-0 inset-x-0 h-[2px] rounded-t-[28px]"
+          style={{ background: `linear-gradient(90deg, transparent, ${sample.color}, transparent)` }}
+        />
 
-        )}
-
-        {/* Hero Section */}
-        <section className="relative min-h-screen flex flex-col items-center justify-center pb-20 md:pb-24 pt-10">
-          {/* Background Image - REMOVED WHITE TINT OVERLAY */}
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-70"
-            style={{ backgroundImage: `url(${heroBackground})` }}
-          >
-            {/* The gradient overlay div has been removed here */}
+        {/* ── LEFT: Phone Preview ── */}
+        <div
+          className="flex flex-col items-center justify-center gap-6 p-6 lg:p-10 flex-1"
+          style={{ background: `radial-gradient(ellipse at 50% 40%, ${sample.color}0d 0%, transparent 70%)` }}
+        >
+          <div className="flex items-center gap-2 self-start">
+            <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: sample.color }} />
+            <span className="font-sans text-[10px] font-bold tracking-[0.25em] uppercase" style={{ color: sample.color }}>
+              Live Preview
+            </span>
           </div>
 
-          {/* Content */}
-          <motion.div
-            className="relative z-10 text-center px-4 md:px-6 flex flex-col items-center w-full"
-            initial={{ opacity: 0, y: 40 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1, delay: 1.2 }}
-          >
-            {/* LOGO SECTION */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={isVisible ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 1, delay: 1.4 }}
-              className="mb-0 md:mb-12 -mt-80 md:mt-0"
-            >
-              <img
-                src={logo}
-                alt="A&A Wedding Logo"
-                className="w-64 h-64 md:w-72 md:h-72 object-contain mx-auto drop-shadow-lg"
-              />
-            </motion.div>
+          <PhoneMockup url={debouncedUrl} color={sample.color} width={260} height={520} />
 
-            {/* Names Container */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={isVisible ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 1, delay: 1.8 }}
-              className="w-full text-center mt-2 md:mt-0"
-            >
-              {/* Aarav & Ananya Combined with smaller Ampersand */}
-              <motion.h1
-                className="font-imperial text-red-700 mb-0 tracking-wide leading-none [text-shadow:0.5px_0_0_currentColor]"
-                animate={{
-                  textShadow: [
-                    "0.5px 0 0 currentColor",
-                    "0.5px 0 0 currentColor, 0 0 15px rgba(255, 215, 0, 0.3)",
-                    "0.5px 0 0 currentColor"
-                  ]
+          <div className="flex flex-wrap justify-center gap-2">
+            {sample.events.map((ev, i) => (
+              <span
+                key={ev}
+                className="font-sans text-[10px] px-2.5 py-1 rounded-full"
+                style={{
+                  background: EVENT_COLORS[i % EVENT_COLORS.length] + "18",
+                  border: `1px solid ${EVENT_COLORS[i % EVENT_COLORS.length]}40`,
+                  color: EVENT_COLORS[i % EVENT_COLORS.length],
                 }}
-                transition={{ duration: 3, repeat: Infinity }}
               >
-                {/* Name Size */}
-                <span className="text-6xl md:text-8xl lg:text-[9rem]">Aarav </span>
-
-                {/* Ampersand Size (Smaller) */}
-                <span className="text-4xl md:text-6xl lg:text-[6rem] px-2"> &  </span>
-
-                {/* Name Size */}
-                <span className="text-6xl md:text-8xl lg:text-[9rem]"> Ananya </span>
-              </motion.h1>
-
-            </motion.div>
-          </motion.div>
-
-          {/* Scroll indicator */}
-          <motion.div
-            // UPDATED: Added 'left-0 right-0' for perfect centering
-            // Increased 'bottom-10' to prevent it from being cut off on mobile screens
-            className="absolute bottom-10 md:bottom-14 left-0 right-0 flex flex-col items-center justify-center gap-1 z-20"
-            initial={{ opacity: 0 }}
-            animate={isVisible ? {
-              opacity: 1,
-              y: [0, 10, 0],
-            } : {}}
-            transition={{
-              opacity: { duration: 0.8, delay: 2.5 },
-              y: { duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 2.5 }
-            }}
-          >
-            <motion.p
-              // UPDATED: Text is now Black, Bold, and Larger (text-xl on mobile, 2xl on desktop)
-              className="text-black font-bold text-xl md:text-2xl tracking-widest uppercase"
-              animate={{ opacity: [0.6, 1, 0.6] }}
-              transition={{ duration: 5, repeat: Infinity }}
-            >
-              Scroll for more
-            </motion.p>
-
-            <motion.svg
-              // UPDATED: Icon is Black and slightly larger
-              className="w-6 h-6 md:w-8 md:h-8 text-black"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              animate={{ y: [0, 3, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-            </motion.svg>
-          </motion.div>
-        </section>
-
-        {/* Family Blessing Section */}
-        <section className="relative bg-white/90 backdrop-blur-sm py-16 md:py-24 overflow-hidden transition-colors duration-700">
-
-          <div className="container max-w-3xl mx-auto px-2 text-center relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              {/* Top decorative divider - REDUCED MARGIN BOTTOM */}
-              {/* <motion.div 
-              className="flex items-center justify-center gap-2 mt-2"
-              initial={{ opacity: 0, scale: 0 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.9 }}
-            >
-              <div className="h-px w-16 md:w-24 bg-gold/50" />
-              <span className="text-gold text-xl">✦</span>
-              <div className="h-px w-16 md:w-24 bg-gold/50" />
-            </motion.div> */}
-
-              {/* 1. RELIGIOUS HEADER */}
-              <motion.p
-                className="font-display font-bold text-sage-dark/80 text-xs md:text-sm tracking-widest mb-8 leading-loose uppercase"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-              >
-                || Shree Ganeshay Namah || <br className="md:hidden" /> || Shree Neminathay Namah || <br className="md:hidden" /> || Shree Chamunda Bhavani Matay Namah ||
-              </motion.p>
-
-              {/* 2. INTRO TEXT */}
-              <motion.p
-                className="font-body text-xl md:text-2xl text-black leading-relaxed mb-10 max-w-xl mx-auto italic"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-              >
-                <span className="block text-black">
-                  With the divine grace & blessings of,
-                </span>
-
-                <span className="block font-bold">
-                  Smt. Radhaben Rajeshbhai Shah & Family
-                </span>
-
-
-                <span className="block">
-                  we warmly seek your gracious presence and blessings as we celebrate the union of two hearts and families.
-                </span>
-              </motion.p>
-
-
-              {/* 3. DYNAMIC INVITATION */}
-              <motion.div
-                className="font-body text-xl md:text-2xl text-black mb-4"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.5 }}
-              >
-                We cordially invite
-
-                {guestDetails.name ? (
-                  <div className="mt-1 mb-4">
-                    <span className="block font-display font-bold text-1xl md:text-2xl text-sage-dark mb-1">
-                      {guestDetails.name}
-                    </span>
-                    {getMainGuestText(guestDetails.guests)}
-                  </div>
-                ) : (
-                  <span className="font-display font-bold text-sage-dark px-2"> You </span>
-                )}
-              </motion.div>
-
-              {/* 4. EVENT CONTEXT */}
-              <p className="font-body text-xl md:text-2xl text-black leading-relaxed mb-3 max-w-xl mx-auto italic">
-                to grace the wedding ceremony of
-              </p>
-
-              {/* 5. BRIDE & GROOM SECTION */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="mb-6"
-              >
-                <p className="font-body font-black text-base md:text-base uppercase tracking-wide mb-1">
-                  (D/O Smt. Kavita & Shri Nitinbhai Mehta)
-                </p>
-
-                {/* AARAV */}
-                <h2 className="font-imperial text-7xl md:text-7xl text-gold mb-0 tracking-wide leading-none">
-                  Aarav
-                </h2>
-
-                <div className="my-2">
-                  <span className="font-display text-5xl text-sage-dark/60">&</span>
-                </div>
-
-                {/* ANANYA */}
-                <h2 className="font-imperial text-7xl md:text-7xl text-gold mb-3 tracking-wide leading-none">
-                  Ananya
-                </h2>
-
-                <p className="font-body font-black text-base md:text-base uppercase tracking-wide mt-2 mb-2">
-                  (S/O Smt. Harini & Shri Anandkumar Sharma)
-                </p>
-              </motion.div>
-
-              {/* 6. CLOSING TEXT */}
-              <motion.p
-                className="font-body text-xl md:text-2xl text-black leading-relaxed mt-4 mb-10 max-w-xl mx-auto italic"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.7 }}
-              >
-                As they embark on their journey of love and togetherness, your presence will make their special day even more memorable.
-              </motion.p>
-
-
-              {/* 7. SIGN OFF */}
-              <motion.div
-                className="border-t border-gold/30 pt-8 mt-4"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.8 }}
-              >
-                <p className="font-display text-sage-dark text-sm mb-1">With Best Compliments</p>
-                <p className="font-display text-gold text-lg md:text-base font-bold">
-                  <span className="block">smt. kavita nitin mehta</span>
-                  <span className="block">smt. meena suresh sharma</span>
-                  <span className="block mb-3">smt. priya alok pathak</span>
-                </p>
-
-                <p className="font-display text-sage-dark text-sm mb-1">With Love</p>
-                <p className="font-display text-gold text-lg md:text-base font-bold">
-                  <span className="block">rohan - diya - vihaan </span>
-                </p>
-
-              </motion.div>
-
-              {/* Bottom decorative divider - REDUCED MARGIN TOP */}
-              <motion.div
-                className="flex items-center justify-center gap-4 mt-6"
-                initial={{ opacity: 0, scale: 0 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.9 }}
-              >
-                <div className="h-px w-16 md:w-24 bg-gold/50" />
-                <span className="text-gold text-xl">✦</span>
-                <div className="h-px w-16 md:w-24 bg-gold/50" />
-              </motion.div>
-            </motion.div>
+                {ev}
+              </span>
+            ))}
           </div>
-        </section>
+        </div>
 
-        {/* Timeline Section */}
-        <section className="relative py-20 md:py-32 overflow-hidden">
-          <div className="container max-w-4xl mx-auto px-6 relative z-10">
-            <div className="text-center mb-2">
-              <h2 className={`font-display text-3xl md:text-5xl mb-2 transition-colors duration-500 ${currentTheme === 'reception' ? 'text-white' : 'text-foreground'}`}>
-                the celebration
-              </h2>
+        {/* ── RIGHT: Controls ── */}
+        <div
+          className="w-full lg:w-[340px] flex-shrink-0 flex flex-col overflow-y-auto bg-[#1a1617]"
+          style={{ borderLeft: `1px solid ${sample.color}18` }}
+        >
+          <div className="p-6 pb-5 border-b border-white/5 flex items-start justify-between gap-4 flex-shrink-0">
+            <div>
+              <p className="font-sans text-xs uppercase tracking-[0.25em] mb-1.5" style={{ color: sample.color }}>
+                Customize Invite
+              </p>
+              <h3 className="font-display text-xl font-bold text-white leading-tight">
+                {sample.title}
+              </h3>
+              <p className="font-sans text-xs text-neutral-400 mt-1">{sample.subtitle}</p>
+            </div>
+            <button
+              onClick={onClose}
+              className="w-8 h-8 rounded-xl flex items-center justify-center text-neutral-400 hover:text-white hover:bg-white/10 transition-colors flex-shrink-0 mt-0.5"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="p-6 flex flex-col gap-5 flex-1">
+            <div>
+              <label className="block font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-neutral-400 mb-2">
+                Guest Name
+              </label>
+              <input
+                type="text"
+                value={guestName}
+                onChange={(e) => setGuestName(e.target.value)}
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 font-sans text-base text-white focus:outline-none focus:border-neutral-500 transition-all"
+                placeholder="e.g. Smt. Anita Shah"
+                style={{ caretColor: sample.color }}
+              />
             </div>
 
-            <EventTimeline
-              filteredEventName={guestDetails.event}
-              guestCounts={{
-                global: guestDetails.guests,
-                mayra: guestDetails.guestsMayra,
-                bhakti: guestDetails.guestsBhakti,
-                wedding: guestDetails.guestsWedding,
-                reception: guestDetails.guestsReception
+            {isWedding && (
+              <div className="rounded-2xl overflow-hidden border border-white/10 bg-black/20">
+                <button
+                  onClick={() => setIsEventExpanded((v) => !v)}
+                  className="flex items-center justify-between w-full px-4 py-3 select-none hover:bg-white/5 transition-colors"
+                >
+                  <span className="flex items-center gap-2 font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-neutral-400">
+                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${isEventExpanded ? "rotate-180" : ""}`} />
+                    Events
+                  </span>
+                  <span className="font-sans text-[10px] font-bold px-2.5 py-0.5 rounded-full" style={{ background: `${sample.color}18`, color: sample.color }}>
+                    {liveEvents.length} active
+                  </span>
+                </button>
+
+                <AnimatePresence initial={false}>
+                  {isEventExpanded && (
+                    <motion.div
+                      key="events"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="overflow-hidden"
+                    >
+                      <div className="flex flex-col gap-2 px-4 pb-4 pt-1">
+                        {LIVE_WEDDING_EVENTS.map((event) => {
+                          const on = liveEvents.includes(event.id);
+                          return (
+                            <div key={event.id} className="flex flex-col gap-1.5">
+                              <button
+                                onClick={() =>
+                                  setLiveEvents((prev) =>
+                                    prev.includes(event.id)
+                                      ? prev.filter((e) => e !== event.id)
+                                      : [...prev, event.id]
+                                  )
+                                }
+                                className="flex items-center gap-3 w-full"
+                              >
+                                <div
+                                  className="rounded-md border flex items-center justify-center flex-shrink-0 transition-all"
+                                  style={{
+                                    width: "18px",
+                                    height: "18px",
+                                    background: on ? sample.color : "transparent",
+                                    borderColor: on ? sample.color : "rgba(255,255,255,0.15)",
+                                  }}
+                                >
+                                  {on && <Plus className="w-3 h-3 text-white rotate-45" />}
+                                </div>
+                                <span className={`font-sans text-sm ${on ? "text-white font-semibold" : "text-neutral-400"}`}>
+                                  {event.label}
+                                </span>
+                              </button>
+                              {on && (
+                                <input
+                                  type="text"
+                                  value={liveGuestCounts[event.id] || ""}
+                                  onChange={(e) =>
+                                    setLiveGuestCounts((prev) => ({ ...prev, [event.id]: e.target.value }))
+                                  }
+                                  className="w-full bg-black/40 border border-white/10 rounded-lg px-3 py-1.5 text-xs font-sans text-white focus:outline-none ml-7"
+                                  placeholder="e.g. Family, VIP, 2 guests"
+                                />
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
+
+            <p className="font-sans text-[11px] text-neutral-400/70 leading-relaxed">
+              * Changes reflect live in the invite preview
+            </p>
+          </div>
+
+          <div className="p-6 pt-0 flex flex-col gap-3 flex-shrink-0">
+            <a
+              href={debouncedUrl || "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 w-full font-sans text-sm font-bold py-3.5 rounded-2xl transition-all hover:scale-[1.02] active:scale-[0.98]"
+              style={{
+                background: `linear-gradient(135deg, ${sample.color}, ${sample.color}cc)`,
+                color: "#fff",
+                boxShadow: `0 8px 24px ${sample.color}35`,
               }}
-              onThemeChange={setCurrentTheme}
-            />
-          </div>
-        </section>
-
-        {/* Additional Details Section (tightened spacing & reduced height) */}
-        <section className="relative bg-cream-light paper-texture py-8 md:py-8 overflow-hidden">
-          <div className="container max-w-2xl mx-auto px-4 text-center relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
             >
-              {/* Top Divider (reduced spacing) */}
-              <motion.div
-                className="flex items-center justify-center gap-3 mt-6"
-                initial={{ opacity: 0, scale: 0 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.35 }}
-              >
-                <div className="h-px w-12 md:w-20 bg-gold/50" />
-                <span className="text-gold text-xl">✦</span>
-                <div className="h-px w-12 md:w-20 bg-gold/50" />
-              </motion.div>
-
-              <motion.div
-                className="space-y-4"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: 0.3 }}
-              >
-                <div className="font-body font-black text-lg text-black leading-relaxed">
-                  <p>Your Blessings are the Only Gift We Desire</p>
-                </div>
-              </motion.div>
-
-              {/* Bottom Divider (reduced spacing) */}
-              <motion.div
-                className="flex items-center justify-center gap-3 "
-                initial={{ opacity: 0, scale: 0 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.35 }}
-              >
-                <div className="h-px w-12 md:w-20 bg-gold/50" />
-                <span className="text-gold text-xl">✦</span>
-                <div className="h-px w-12 md:w-20 bg-gold/50" />
-              </motion.div>
-            </motion.div>
+              <ExternalLink className="w-4 h-4" />
+              Open Full Invite
+            </a>
+            <button
+              onClick={onClose}
+              className="w-full font-sans text-xs text-neutral-400 py-2 hover:text-white transition-colors"
+            >
+              Close
+            </button>
           </div>
-        </section>
-
-        <footer className="bg-sage pt-4 pb-12 md:pt-6 md:pb-16 relative overflow-hidden">
-          <div className="text-center relative z-10 flex flex-col items-center">
-            {/* Logo instead of Text */}
-            <img
-              src={logo}
-              alt="A & A Logo"
-              className="w-56 h-56 md:w-74 md:h-74 object-contain mb-4 opacity-90 drop-shadow-md"
-            />
-            <p className="font-body text-cream-light/70 text-sm">Aarav & Ananya</p>
-          </div>
-        </footer>
+        </div>
       </motion.div>
-    </>
+    </motion.div>
   );
-};
+}
 
-export default InvitationCard;
+/* ─── Card (with embedded phone preview) ───────────────────────────── */
+
+type CardSample = (typeof samples)[0];
+
+function SampleCard({ sample, onClick }: { sample: CardSample; onClick: () => void }) {
+  const staticUrl = buildUrl(
+    sample.theme,
+    sample.defaultName,
+    sample.defaultEvents,
+    sample.defaultGuests
+  );
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 36 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.55, ease: "easeOut" }}
+      whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      onClick={onClick}
+      className="group relative cursor-pointer flex flex-col items-center"
+    >
+      <div className="relative">
+        <PhoneMockup url={staticUrl} color={sample.color} width={240} height={480} />
+
+        <div className="absolute inset-0 rounded-[3rem] flex items-end justify-center pb-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20"
+          style={{ background: `linear-gradient(to top, ${sample.color}cc 0%, transparent 50%)` }}
+        >
+          <span className="flex items-center gap-1.5 font-sans text-white text-xs font-bold tracking-wider uppercase">
+            <Maximize2 className="w-3.5 h-3.5" />
+            Customize
+          </span>
+        </div>
+
+        <div
+          className="absolute top-5 right-4 flex items-center gap-1.5 px-2.5 py-1 rounded-full z-30"
+          style={{
+            background: "rgba(5,5,10,0.75)",
+            backdropFilter: "blur(8px)",
+            border: `1px solid ${sample.color}40`,
+          }}
+        >
+          <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: sample.color }} />
+          <span className="font-sans text-[9px] font-bold tracking-widest uppercase" style={{ color: sample.color }}>
+            Live
+          </span>
+        </div>
+      </div>
+
+      <div className="mt-5 text-center px-2">
+        <h3 className="font-sans text-lg font-bold text-white group-hover:text-amber-200 transition-colors">
+          {sample.title}
+        </h3>
+        <p className="font-sans text-xs text-neutral-400 mt-1">{sample.subtitle}</p>
+        <div className="flex flex-wrap justify-center gap-1.5 mt-3">
+          {sample.events.map((ev, i) => (
+            <span
+              key={ev}
+              className="font-sans text-[9px] px-2 py-0.5 rounded-full"
+              style={{
+                background: EVENT_COLORS[i % EVENT_COLORS.length] + "12",
+                border: `1px solid ${EVENT_COLORS[i % EVENT_COLORS.length]}30`,
+                color: EVENT_COLORS[i % EVENT_COLORS.length],
+              }}
+            >
+              {ev}
+            </span>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ─── Section ───────────────────────────────────────────────────────── */
+
+export default function SamplesSection() {
+  const [activeSample, setActiveSample] = useState<(typeof samples)[0] | null>(null);
+
+  return (
+    <section id="samples" className="relative py-20 sm:py-28 px-4 sm:px-6 overflow-hidden bg-black">
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full blur-[120px] opacity-10 pointer-events-none"
+        style={{ background: "linear-gradient(135deg, #c9a96e, #863745)" }}
+      />
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          viewport={{ once: true }}
+          className="mb-16 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4"
+        >
+          <div>
+            <span className="font-sans text-xs tracking-[0.35em] uppercase text-amber-500 mb-3 block">
+              Live Examples
+            </span>
+            <h2 className="font-sans text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight">
+              Click. Open. Be <span className="text-amber-200">Amazed.</span>
+            </h2>
+          </div>
+          <p className="font-sans text-sm text-neutral-400 sm:text-right sm:max-w-[220px] leading-relaxed flex-shrink-0">
+            Real, working invites. Type a name, pick events — watch it update live.
+          </p>
+        </motion.div>
+
+        <div className="flex flex-wrap justify-center gap-12 lg:gap-16">
+          {samples.map((sample) => (
+            <SampleCard
+              key={sample.title}
+              sample={sample}
+              onClick={() => setActiveSample(sample)}
+            />
+          ))}
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          viewport={{ once: true }}
+          className="mt-24 flex flex-col sm:flex-row items-center justify-center gap-6 text-center"
+        >
+          <p className="font-sans text-base text-neutral-400 italic">
+            "Every guest is different. Every invite should be too."
+          </p>
+          <a
+            href="#contact"
+            className="flex items-center gap-2 font-sans text-sm font-semibold px-8 py-4 rounded-full flex-shrink-0 transition-transform hover:scale-105"
+            style={{
+              background: "linear-gradient(135deg, #c9a96e, #863745)",
+              color: "#fff",
+              boxShadow: "0 10px 30px rgba(201, 169, 110, 0.2)",
+            }}
+          >
+            Create My Custom Invite <ChevronRight className="w-4 h-4" />
+          </a>
+        </motion.div>
+      </div>
+
+      <AnimatePresence>
+        {activeSample && (
+          <PreviewModal sample={activeSample} onClose={() => setActiveSample(null)} />
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}

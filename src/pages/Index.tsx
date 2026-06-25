@@ -5,6 +5,7 @@ import InvitationCard from "@/components/InvitationCard";
 import Wedding2Index from "../events/wedding2/Index";
 import Wedding1Index from "../events/wedding1/Index";
 import AnniIndex from "../events/anni/Index";
+import WeddingNewIndex from "../events/wedding-new/Index";
 
 const backgroundAudio = "https://n7kwk6h7z8gkdqba.public.blob.vercel-storage.com/intro-audio.mp3";
 
@@ -15,6 +16,7 @@ const Index = () => {
   if (invite === "wedding2") return <Wedding2Index />;
   if (invite === "wedding1") return <Wedding1Index />;
   if (invite === "anni") return <AnniIndex />;
+  if (invite === "wedding-new") return <WeddingNewIndex />;
   // Rename state to 'showEnvelope' for clarity
   const [showEnvelope, setShowEnvelope] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
