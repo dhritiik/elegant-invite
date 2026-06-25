@@ -16,7 +16,7 @@ import {
 
 /* ─── Data ─────────────────────────────────────────────────────────── */
 
-type Theme = "wedding1" | "wedding2" | "anni";
+type Theme = "wedding1" | "wedding2" | "anni" | "wedding-new";
 
 const LIVE_WEDDING_EVENTS = [
   { id: "wedding", label: "Wedding", icon: Calendar },
@@ -61,6 +61,22 @@ const samples = [
     color: "#d4a0a7",
   },
   {
+    title: "Arjun & Meera",
+    subtitle: "Royal Mughal-Style Wedding",
+    theme: "wedding-new" as Theme,
+    defaultName: "Arjun & Meera",
+    defaultEvents: ["wedding", "mayra", "bhakti", "reception"],
+    defaultGuests: {
+      wedding: "Family",
+      mayra: "Family",
+      bhakti: "Family",
+      reception: "Family",
+    },
+    events: ["Wedding", "Mayra", "Bhakti", "Reception"],
+    location: "Mumbai",
+    color: "#c79b4a",
+  },
+  {
     title: "Dhriti",
     subtitle: "50th Anniversary Celebration",
     theme: "anni" as Theme,
@@ -81,9 +97,9 @@ function buildUrl(
   liveEvents: string[],
   liveGuestCounts: Record<string, string>
 ) {
-  const base = "https://sj-zeta.vercel.app/";
+  const base = `${window.location.origin}/`;
   const p = new URLSearchParams();
-  if (theme === "wedding1" || theme === "wedding2") {
+  if (theme === "wedding1" || theme === "wedding2" || theme === "wedding-new") {
     p.set("invite", theme);
     p.set("name", guestName.replace(/\s+/g, "_"));
     p.set("event", liveEvents.join(","));
